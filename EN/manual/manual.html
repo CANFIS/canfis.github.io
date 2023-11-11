@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instruction manual</title>
+  </head>
+  
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      font-size: 20px;
+      color: white;
+      background-image: url('media/background.jpeg');
+    }
+    
+    ul	{
+      list-style-position: inside;
+    }
+    
+    li {
+      margin-bottom: -1em;
+    }
+    
+    .contents li {
+      list-style-image: url('media/selector.png');
+    }
+    
+    .contents li:hover {
+      list-style-image: url('media/selected.png');
+    }
+    
+    h1, h2, h2 {
+      color: #c4c4c4;
+    }
+    
+    li {
+      padding: 10px;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+    
+    a:link, a:visited {
+      color: #bd0808;
+    }
+    
+    .contents a:link, .contents a:visited, figcaption a:link, figcaption a:visited, .white_link:link, .white_link:visited {
+      color: white;
+    }
+    
+    a:hover, a:active, .contents a:hover, .contents a:active, figcaption a:active, figcaption a:hover, .white_link:active, .white_link:hover {
+      color: red;
+    }
+    
+    #using_each_menu_ul, #using_each_menu_ul ul {
+      list-style:none;
+      margin-bottom: -0.5em;
+    }
+  </style>
+  
+  <body>
+    <center>
+      <figure>
+        <img style="width:25%" src="media/logo.png">
+      </figure>
+    </center>
+    
+    <hr>
+    
+    <h1>Contents</h1>
+    <ul class="contents">
+      <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#notes">Notes</a></li>
+      <li><a href="#getting_started">Getting started</a></li>
+      <li><a href="#operating_the_menu">Operating the menu</a></li>
+      <li><a href="#using_each_menu">Using each menu</a></li>
+      <ul>
+        <li><a href="#main_menu">Main menu</a></li>
+        <ul>
+          <li><a href="#ecu_data">ECU data</a></li>
+          <ul>
+            <li><a href="#graph">Graph</a></li>
+            <ul>
+              <li><a href="#configure_graph">Configure</a></li>
+              <li><a href="#draw_graph">Draw</a></li>
+            </ul>
+            <li><a href="#style">Style</a></li>
+          </ul>
+          <li><a href="#diagnostics">Diagnostics</a></li>
+          <ul>
+            <li><a href="#identification">Identification</a></li>
+            <li><a href="#fault_codes">Fault codes</a></li>
+            <li><a href="#meas_blocks">Measuring blocks</a></li>
+          </ul>
+          <li><a href="#tools">Tools</a></li>
+          <ul>
+            <li><a href="#acceleration_timer">Acceleration</a></li>
+            <ul>
+              <li><a href="#configure_acceleration">Configure</a></li>
+              <li><a href="#begin_acceleration">Begin</a></li>
+            </ul>
+            <li><a href="#oil_level_checker">Oil level</a></li>
+          </ul>
+          <li><a href="#settings">Settings</a></li>
+          <ul>
+            <li><a href="#start_menu">Start menu</a></li>
+            <li><a href="#factory_reset">Factory reset</a></li>
+            <li><a href="#software_version">Software version</a></li>
+            <li><a href="#update">Update</a></li>
+          </ul>
+        </ul>
+        <li><a href="#parking_sensors">Parking sensors</a></li>
+      </ul>
+      <li><a href="#config_editor">Using the configuration editor</a></li>
+      <ul>
+        <li><a href="#config_editor_notes">Notes</a></li>
+        <li><a href="#config_editor_optional_step">Optional step</a></li>
+        <li><a href="#config_editor_step1">Step 1</a></li>
+        <li><a href="#config_editor_step2">Step 2</a></li>
+        <li><a href="#config_editor_step3">Step 3</a></li>
+        <ul>
+          <li><a href="#config_editor_step3_pages">Pages</a></li>
+          <li><a href="#config_editor_step3_parameters">Parameters</a></li>
+          <li><a href="#config_editor_step3_parameter_source">Parameter source</a></li>
+          <li><a href="#config_editor_step3_value_display">Value display</a></li>
+          <li><a href="#config_editor_step3_value_warning">Value warning</a></li>
+          <li><a href="#config_editor_step3_graph_parameters">Graph parameters</a></li>
+        </ul>
+        <li><a href="#config_editor_step4">Step 4</a></li>
+      </ul>
+      <li><a href="#update_webpage">Using the update webpage</a></li>
+      <ul>
+        <li><a href="#update_configuration">Configuration</a></li>
+        <li><a href="#update_boot_logo">Boot logo</a></li>
+        <li><a href="#update_update">Update</a></li>
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <h1 id="introduction">Introduction</h1>
+    <ul>
+      <li><span style="color:red">CANFIS</span> is a tool for displaying module parameters on the screen of the instrument cluster.</li>
+      <li>It communicates using the same protocol as a navigation unit.</li>
+      <li>It supports the KWP-CAN and UDS diagnostic protocols for reading data from control modules.</li>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <h1 id="features">Features</h1>
+    <ul>
+      <li><b>Boot logo</b> - display your own image when you start the car</li>
+      <center>
+        <figure>
+          <img src="media/features/boot_logo.png">
+        </figure>
+      </center>
+      
+      <li><b>Parking sensors visualization</b> - display the distances reported by the Optical Parking System</li>
+      <center>
+        <figure>
+          <img src="media/features/parking_front.png">
+          <img src="media/features/parking_rear.png">
+        </figure>
+      </center>
+      
+      <li><b>Configurable parameter display</b> - define up to 100 pages of custom sets of measurements from control modules</li>
+      <center>
+        <figure>
+          <img src="media/features/ecu_data.png">
+        </figure>
+      </center>
+      
+      <li><b>Graphs</b> - plot the value of a defined measurement</li>
+      <center>
+        <figure>
+          <img src="media/features/graph.png">
+        </figure>
+      </center>
+      
+      <li><b>Diagnostics</b> - connect to control modules to read measuring blocks (only KWP-CAN), fault codes, and information about the module</li>
+      <center>
+        <figure>
+          <img src="media/features/identification.png">
+          <figcaption>Identification</figcaption>
+        </figure>
+        <figure>
+          <img src="media/features/fault_codes.png">
+          <img src="media/features/fault_code_description.png">
+          <img src="media/features/clear_fault_codes.png">
+          <figcaption>Fault codes</figcaption>
+        </figure>
+        <figure>
+          <img src="media/features/meas_blocks.png">
+          <figcaption>Measuring blocks</figcaption>
+        </figure>
+      </center>
+      
+      <li><b>Acceleration timer</b> - measure how quickly the car accelerates between two configurable speed values</li>
+      <center>
+        <figure>
+          <img src="media/features/acceleration.png">
+        </figure>
+      </center>
+      
+      <li><b>Oil level checker</b> - get a visualization of the current oil level</li>
+      <center>
+        <figure>
+          <img src="media/features/oil_level.png">
+        </figure>
+      </center>
+      
+      <li><b>Wi-Fi updates</b> - simple interface used for configuring the device, boot logo and uploading firmware updates</li>
+      <center>
+        <figure>
+          <img src="media/features/wifi.png">
+        </figure>
+      </center>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <h1 id="notes">Notes</h1>
+    <ul>
+      <li>It can connect to modules which use the KWP-CAN or UDS protocol. Measuring blocks do not exist for UDS.</li>
+      <li>It cannot be used with a navigation unit that also needs to display on the screen.</li>
+      <ul>
+        <li>For the RNSE, there is <a href="https://rnse.pcbbc.co.uk">custom firmware</a> available, which allows parallel operation with the navigation.
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <h1 id="getting_started">Getting started</h1>
+    <ul>
+      <li>Read through the <a href="#operating_the_menu"><b>Operating the menu</b></a> chapter to learn how to use the menu.</li>
+      <li>Follow the instructions in the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter to create your configuration file.</li>
+      <li>Once you have your <i>config.bin</i> file, navigate to the <a class="white_link" href="#update"><b>Settings>Update</b></a> menu, connect to the Wi-Fi network and navigate to the webpage, as explained in the respective chapter.</li>
+      <li>Upload your configuration file (and boot logo, if desired), as explained in the <a href="#update_webpage"><b>Using the update webpage</b></a> chapter.</li>
+      <li>If desired, navigate to <a class="white_link" href="#start_menu"><b>Settings>Start menu</b></a> to change the settings as explained in the respective chapter.</li>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <h1 id="operating_the_menu">Operating the menu</h1>
+    <ul>
+      <li>The menu is operated using the buttons on the car's windshield wiper stalk.</li>
+      <li>The <b>Up/Down</b> buttons change the selection, and options are selected by holding the <b>Reset</b> button.</li>
+      <li>A short press of the <b>Reset</b> button switches the mode of the cluster's screen and cannot be disabled. After changing the mode, press the button repeatedly until you return to <span style="color:red">CANFIS</span>.</li>
+      <li>In menus without a visible <i>Back</i> button, exiting is done by holding <b>Reset</b> anywhere.</li>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <h1 id="using_each_menu">Using each menu</h1>
+    <hr>
+    <ul id="using_each_menu_ul">
+      <h2 id="main_menu">Main menu</h2>
+      <ul>
+        <center>
+          <figure>
+            <img src="media/menu/MAIN/ecu_data.png">
+            <img src="media/menu/MAIN/diagnostics.png">
+            <img src="media/menu/MAIN/tools.png">
+            <img src="media/menu/MAIN/settings.png">
+          </figure>
+          <figcaption><a href="#ecu_data"><b>ECU data</b></a> - view the configured sets of measurements</figcaption>
+          <figcaption><a href="#diagnostics"><b>Diagnostics</b></a> - connect to a control module for diagnosis</figcaption>
+          <figcaption><a href="#tools"><b>Tools</b></a> - access one of the included tools</figcaption>
+          <figcaption><a href="#settings"><b>Settings</b></a> - view or change settings</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="ecu_data">ECU data</h2>
+      <ul>
+        <li>Here, the custom sets of measurements will be displayed.</li>
+        <li>Before uploading a configuration, the following error will appear:</li>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/no_config.png">
+          </figure>
+        </center>
+        <li>To proceed, follow the <a href="#getting_started"><b>Getting started</b></a> chapter.</li>
+        <li id="ecu_data_parameters">After uploading a configuration file, the measurements will be accessible.</li>
+        <center>
+          <figure>
+            <img src="media/features/ecu_data.png">
+          </figure>
+        </center>
+        <li>If a connection error occurs while reading the parameters, the following warning will appear:</li>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/fault.png">
+          </figure>
+        </center>
+        <li id="ecu_data_additional">To bring up additional options, hold the <b>Reset</b> button on any page.</li>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/graph.png">
+            <img src="media/menu/ECU_DATA/style.png">
+            <img src="media/menu/ECU_DATA/main_menu.png">
+            <img src="media/menu/ECU_DATA/back.png">
+          </figure>
+          <figcaption><a href="#graph"><b>Graph</b></a> - create a graph with one of the parameters <u>from the current page</u></figcaption>
+          <figcaption><a href="#style"><b>Style</b></a> - change a few things about the measurement set display</figcaption>
+          <figcaption><a href="#main_menu"><b>Main menu</b></a> - return to the main menu</figcaption>
+          <figcaption><a href="#ecu_data_parameters"><b>Back</b></a>- return to the parameter measurements</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="graph">Graph</h2>
+      <ul>
+        <li>Create a graph from one of the parameters on the current page.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/draw.png">
+            <img src="media/menu/ECU_DATA/GRAPH/configure.png">
+            <img src="media/menu/ECU_DATA/GRAPH/back.png">
+          </figure>
+          <figcaption><a href="#draw_graph"><b>Draw</b></a> - start plotting the graph</figcaption>
+          <figcaption><a href="#configure_graph"><b>Configure</b></a> - configure how the graph is drawn</figcaption>
+          <figcaption><a href="#ecu_data_additional"><b>Back</b></a> - return to the additional ECU data options</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="configure_graph">Configure (Graph)</h2>
+      <ul>
+        <li>Configure how the graph is drawn.</li>
+        <li>Having every parameter's graph configuration already set in the configuration file makes this step optional, but the pre-set values can still be edited here. Check out the <a href="#getting_started"><b>Getting started</b></a> chapter for more information.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/parameter_1.png">
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/changing_parameter.png">
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/parameter_2.png">
+          </figure>
+          <figcaption><b>Parameter</b> - select which measurement <u>from the current page</u> to plot</figcaption>
+          
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/precision.png">
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/changing_precision.png">
+          </figure>
+          <figcaption><b>Precision</b> - select how finely to adjust the following options</figcaption>
+          
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/top.png">
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/changing_top.png">
+          </figure>
+          <figcaption><b>Top</b> - select the maximum value that the graph can represent</figcaption>
+          
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/bottom.png">
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/changing_bottom.png">
+          </figure>
+          <figcaption><b>Bottom</b> - select the minimum value that the graph can represent</figcaption>
+          
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/rate.png">
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/changing_rate.png">
+          </figure>
+          <figcaption><b>Rate</b> - select after how many milliseconds to create a new point on the graph</figcaption>
+          
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/CONFIGURE/back.png">
+          </figure>
+          <figcaption><a href="#graph"><b>Back</b></a> - return to the <b>Graph</b> menu</figcaption>
+        </center>
+        
+        <br>
+        <li>Setting <i>Top</i> lower than <i>Bottom</i> will invert the graph.</li>
+        <li>The <i>Rate</i> only controls how quickly a new point is plotted. The parameter is read from the module as quickly as possible.</li>
+        <br>
+        <li><b>(!)</b> After setting <i>Precision</i>, opening one of the other options will round the value to it. For example, if <i>Top</i> is set to 5 and is edited with a <i>Precision</i> of 10, it will become 10 when accessed.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="draw_graph">Draw (Graph)</h2>
+      <ul>
+        <li>Draw the graph how it was configured.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/GRAPH/DRAW/graph.png">
+          </figure>
+        </center>
+      </ul>
+    
+      <hr>
+      
+      <h2 id="style">Style (ECU data)</h2>
+      <ul>
+        <li>Change how the ECU data menu looks.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/STYLE/page_counter.png">
+            <img src="media/menu/ECU_DATA/STYLE/aligned_units.png">
+            <img src="media/menu/ECU_DATA/STYLE/connection_indicator.png">
+            <img src="media/menu/ECU_DATA/STYLE/bar_at_bottom.png">
+            <img src="media/menu/ECU_DATA/STYLE/back.png">
+          </figure>
+          <figcaption><b>Page count.</b> - display the page's number</figcaption>
+          <figcaption><b>Align units</b> - if enabled, all measurement units are aligned, so the values are aligned as well</figcaption>
+          <figcaption><b>Conn. indic.</b> - display the spinning bar in the top-right corner to indicate the connection to the module(s)</figcaption>
+          <figcaption><b>Bar-&gt;bottom</b> - show the bar containing the page title / page number / connection indicator at the bottom instead of the top</figcaption>
+          <figcaption><a href="#ecu_data_additional"><b>Back</b></a> - return to the additional ECU data options</figcaption>
+        </center>
+        <br>
+        <li>Selecting an option will enable or disable it.</li>
+        <li>If the page has a title, or the page counter is enabled, or the connection indicator is enabled, an additional bar will be created at the top/bottom with these elements. Otherwise, the bar will not appear.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="diagnostics">Diagnostics</h2>
+      <ul>
+        <li>Connect to a module to perform diagnostic operations.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/SELECT_MODULE/kwp_uds.png">
+            <img src="media/menu/DIAGNOSTICS/SELECT_MODULE/kwp.png">
+            <img src="media/menu/DIAGNOSTICS/SELECT_MODULE/uds.png">
+            <img src="media/menu/DIAGNOSTICS/SELECT_MODULE/back.png">
+          </figure>
+        </center>
+        <li>Some modules support the KWP-CAN protocol, some support UDS, and some support both. This is indicated by the bottom row on the module selector.</li>
+        <li>To return to the main menu without selecting a module, the <b>Back</b> option is located before module <b>01</b>.</li>
+        <br>
+        <li>If all connection attempts fail, the following error will appear:</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECT_FAIL/fail_kwp_uds.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECT_FAIL/fail_kwp.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECT_FAIL/fail_uds.png">
+          </figure>
+        </center>
+        <br>
+        <li id="diagnostics_connected">Otherwise, if the connection is successful, the following menu will appear:</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/identification.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/fault_codes.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/meas_blocks.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/back.png">
+          </figure>
+          <figcaption><i>Title</i> - module name (scrolling)</figcaption>
+          <figcaption><a href="#identification"><b>Identification</b></a> - get information about the module</figcaption>
+          <figcaption><a href="#fault_codes"><b>Fault codes</b></a> - read the module's fault codes</figcaption>
+          <figcaption><a href="#meas_blocks"><b>Measuring blocks</b></a> - read the module's measuring blocks (KWP-CAN only)</figcaption>
+          <figcaption><a href="#main_menu"><b>Back</b></a> - return to the main menu</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="identification">Identification (Diagnostics)</h2>
+      <ul>
+        <li>Read the connected module's identification information.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/IDENTIFICATION/kwp.png">
+          </figure>
+          <figcaption><i>Title</i> - hardware number</figcaption>
+          <figcaption><b>Imp.</b> - importer code</figcaption>
+          <figcaption><b>WSC</b> - workshop code</figcaption>
+          <figcaption><b>Ger&auml;t</b> - designator</figcaption>
+          <figcaption><b>Coding</b> - only for KWP-CAN</figcaption>
+          <figcaption><i>Last line</i> - software number</figcaption>
+        </center>
+        <br>
+        <li><a class="white_link" href="#diagnostics_connected">Hold the <b>Reset</b> button</a> to return to the <b>Diagnostics</b> menu.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="fault_codes">Fault codes (Diagnostics)</h2>
+      <ul>
+        <li>Read the connected module's stored fault codes.</li>
+        <br>
+        <li>If there are no fault codes stored, the following message will appear:</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/no_fault_codes.png">
+          </figure>
+        </center>
+        <li>Otherwise, a list of fault codes will appear.</li>
+        <li>The first option is to clear all stored fault codes.</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/clear_fault_codes.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/CLEAR_FAULTS/back.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/CLEAR_FAULTS/ok.png">
+          </figure>
+        </center>
+        <li id="faults_list">Navigating the list of fault codes, their code is on the left side and their position in the list is on the right side.</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/select_fault.png">
+          </figure>
+        </center>
+        <li>It is possible to access any of the fault codes to get more information.</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/kwp/description.png">
+          </figure>
+          <figcaption><i>KWP-CAN</i></figcaption>
+          <figcaption><b>Act</b> - active</figcaption>
+          <figcaption><b>Fin</b> - test finished</figcaption>
+          <figcaption><b>Sto</b> - fault stored</figcaption>
+          <figcaption><b>MIL</b> - &quot;Check Engine&quot; active</figcaption>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/uds/description.png">
+          </figure>
+          <figcaption><i>UDS</i></figcaption>
+        </center>
+        <li><a class="white_link" href="#faults_list">Hold the <b>Reset</b> button</a> to return to the <b>Fault codes</b> menu.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/back.png">
+          </figure>
+          <figcaption><a href="#diagnostics_connected"><b>Back</b></a> - return to the <b>Diagnostics</b> menu</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="meas_blocks">Measuring blocks (Diagnostics)</h2>
+      <ul>
+        <li>Read the connected module's measuring blocks (KWP-CAN only).</li>
+        <br>
+        <li>If the block can be read, its measurements will be displayed and updated in real time.</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/MEAS_BLOCKS/block.png">
+          </figure>
+        </center>
+        <li>If an error occurs while reading a block, the following error will be displayed:</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/MEAS_BLOCKS/error.png">
+          </figure>
+        </center>
+        <li>If the block doesn't exist in the module, the following message will be displayed:</li>
+        <center>
+          <figure>
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/MEAS_BLOCKS/doesnt_exist.png">
+          </figure>
+        </center>
+        <li><a class="white_link" href="#diagnostics_connected">Hold the <b>Reset</b> button</a> on any block to return to the <b>Diagnostics</b> menu.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="tools">Tools</h2>
+      <ul>
+        <li>Here are the included extra tools.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/acceleration.png">
+            <img src="media/menu/TOOLS/oil_level.png">
+            <img src="media/menu/TOOLS/back.png">
+          </figure>
+          <figcaption><a href="#acceleration_timer"><b>Acceleration</b></a> - measure how quickly the vehicle accelerates between two speeds</figcaption>
+          <figcaption><a href="#oil_level_checker"><b>Oil level</b></a> - read the current oil level</figcaption>
+          <figcaption><a href="#tools"><b>Back</b></a> - return to the <b>Tools</b> menu</figcaption>
+        </center>
+        <br>
+        <li>If there is no configuration, or the configuration doesn't include these tools, they will be inaccessible.</li>
+        <li>To enable them, follow the <a href="#getting_started"><b>Getting started</b></a> chapter.</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/acceleration_locked.png">
+            <img src="media/menu/TOOLS/oil_level_locked.png">
+          </figure>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="acceleration_timer">Acceleration (Tools)</h2>
+      <ul>
+        <li>This tool is used for measuring how long it takes to accelerate between two speeds.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/begin.png">
+            <img src="media/menu/TOOLS/ACCELERATION/configure.png">
+            <img src="media/menu/TOOLS/ACCELERATION/back.png">
+          </figure>
+          <figcaption><a href="#begin_acceleration"><b>Begin</b></a> - start the tool with the current settings</figcaption>
+          <figcaption><a href="#configure_acceleration"><b>Configure</b></a> - change the tool's settings</figcaption>
+          <figcaption><a href="#tools"><b>Back</b></a> - return to the <b>Tools</b> menu</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="configure_acceleration">Configure (Acceleration - Tools)</h2>
+      <ul>
+        <li>The default range for the <b>Acceleration</b> tool is <i>0-100km/h</i>.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/CONFIGURE/start.png">
+            <img src="media/menu/TOOLS/ACCELERATION/CONFIGURE/changing_start.png">
+          </figure>
+          <figcaption><b>Start</b> - select from which speed to start the timer</figcaption>
+          
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/CONFIGURE/target.png">
+            <img src="media/menu/TOOLS/ACCELERATION/CONFIGURE/changing_target.png">
+          </figure>
+          <figcaption><b>Target</b> - select at which speed to stop the timer</figcaption>
+          
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/CONFIGURE/back.png">
+          </figure>
+          <figcaption><a href="#acceleration_timer"><b>Back</b></a> - return to the <b>Acceleration</b> menu</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="begin_acceleration">Begin (Acceleration - Tools)</h2>
+      <ul>
+        <li>The speed range is shown in the title bar and the current speed is displayed in the bottom-right corner.</li>
+        <br>
+        <li>Starting the tool with a speed higher than the starting point will display the following message:</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/BEGIN/slow_down.png">
+          </figure>
+        </center>
+        <li>Starting the tool with a speed lower than (or equal to) the starting point will display the following message:</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/BEGIN/start.png">
+          </figure>
+        </center>
+        <li>Increasing the speed past the starting point will start the timer.</li>
+        <br>
+        <li>The timer is shown in a "seconds.milliseconds" format.</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/BEGIN/near_start.png">
+          </figure>
+        </center>
+        <li>If it takes more than one minute to reach the target, the timer is replaced by the following message:</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/BEGIN/max.png">
+          </figure>
+        </center>
+        <li>When the target is reached, the timer is stopped.</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/BEGIN/at_target.png">
+          </figure>
+        </center>
+        <li>The timer will start again only if the speed drops below the starting value and then increases above it.</li>
+        <li>So, the final time will not disappear if the speed goes below the range.</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/ACCELERATION/BEGIN/after_target.png">
+          </figure>
+        </center>
+        <li><a class="white_link" href="#acceleration_timer">Hold the <b>Reset</b> button</a> to return to the <b>Acceleration</b> menu.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="oil_level_checker">Oil level (Tools)</h2>
+      <ul>
+        <li>The current oil temperature and level are displayed in the bottom-right corner.</li>
+        <li>The left side of the screen shows a visualization of the current oil level.</li>
+        <li>The minimum and maximum oil levels must be set in the configuration file. Check out the <a href="#getting_started"><b>Getting started</b></a> chapter for more information.</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/OIL_LEVEL/oil_level.png">
+          </figure>
+        </center>
+        <li><a class="white_link" href="#tools">Hold the <b>Reset</b> button</a> to return to the <b>Tools</b> menu.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="settings">Settings</h2>
+      <ul>
+        <li>Here you can view and change some settings.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/start_menu.png">
+            <img src="media/menu/SETTINGS/factory_reset.png">
+            <img src="media/menu/SETTINGS/software_version.png">
+            <img src="media/menu/SETTINGS/update.png">
+            <img src="media/menu/SETTINGS/back.png">
+          </figure>
+          <figcaption><a href="#start_menu"><b>Start menu</b></a> - change on which page to start when the ignition is turned on</figcaption>
+          <figcaption><a href="#factory_reset"><b>Factory reset</b></a> - reset all settings to default</figcaption>
+          <figcaption><a href="#software_version"><b>Software ver.</b></a> - display the currently installed firmware version</figcaption>
+          <figcaption><a href="#update"><b>Update</b></a> - open the Wi-Fi network for uploading the configuration, boot logo or firmware update</figcaption>
+          <figcaption><a href="#main_menu"><b>Back</b></a> - return to the main menu</figcaption>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="start_menu">Start menu</h2>
+      <ul>
+        <li>Here you can change on which page to start when the ignition is turned on.</li>
+        <li>You can choose between either starting on the main menu or on <b>ECU data</b>.</li>
+        <li>If starting on <b>ECU data</b>, you can also choose on which of the configured pages to start.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/START_MENU/menu.png">
+            <img src="media/menu/SETTINGS/START_MENU/changing_menu.png">
+            <img src="media/menu/SETTINGS/START_MENU/changed_menu.png">
+          </figure>
+          <figcaption><b>Menu</b> - select on which menu to start</figcaption>
+          
+          <figure>
+            <img src="media/menu/SETTINGS/START_MENU/page.png">
+            <img src="media/menu/SETTINGS/START_MENU/changing_page.png">
+          </figure>
+          <figcaption><b>Page</b> - select on which page of <b>ECU data</b> to start</figcaption>
+          
+          <figure>
+            <img src="media/menu/SETTINGS/START_MENU/back.png">
+          </figure>
+          <figcaption><a href="#settings"><b>Back</b></a> - return to the <b>Settings</b> menu</figcaption>
+        </center>
+        <br>
+        <li>If the main menu is selected, or <b>ECU data</b> is selected but there is no configuration, the page cannot be changed.</li>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/START_MENU/page_locked_main_menu.png">
+            <img src="media/menu/SETTINGS/START_MENU/page_locked_ecu_data.png">
+          </figure>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="factory_reset">Factory reset</h2>
+      <ul>
+        <li>Here you can change reset all settings to default.</li>
+        <li>Doing so will also delete the configuration and boot logo.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/FACTORY_RESET/ok.png">
+            <img src="media/menu/SETTINGS/FACTORY_RESET/back.png">
+          </figure>
+          <figcaption><b>OK</b> - reset the settings</figcaption>
+          <figcaption><a href="#settings"><b>Back</b></a> - return to the <b>Settings</b> menu without resetting the settings</figcaption>
+        </center>
+        <br>
+        <li>After choosing to reset the settings, the following message will be displayed:</li>
+        <center>
+          <figure>
+            <img src="media/menu/MAIN/default_settings.png">
+          </figure>
+        </center>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="software_version">Software version</h2>
+      <ul>
+        <li>Here you can see what software version is currently installed.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/SOFTWARE_VERSION/software_version.png">
+          </figure>
+        </center>
+        <li><a class="white_link" href="#settings">Hold the <b>Reset</b> button</a> to return to the <b>Settings</b> menu.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="update">Update</h2>
+      <ul>
+        <li>Accessing this menu will create a private Wi-Fi network.</li>
+        <li>Connect to it using the password displayed on the screen, on a laptop or mobile phone.</li>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/UPDATE/update.png">
+          </figure>
+        </center>
+        <li>The network has no internet access, which might make some mobile phones complain.</li>
+        <li>Additionally, you should turn off mobile data to avoid disconnecting from Wi-Fi automatically.</li>
+        <br>
+        <li>After connecting to the Wi-Fi network, open a web browser and go to the address <b>192.168.1.1</b>.</li>
+        <li>The web interface should now load. Refer to the <a href="#getting_started"><b>Getting started</b></a> chapter for more information.</li>
+        <br>
+        <li><a class="white_link" href="#settings">Hold the <b>Reset</b> button</a> to return to the <b>Settings</b> menu and stop the Wi-Fi network.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="parking_sensors">Parking sensors</h2>
+      <ul>
+        <li>This menu will appear automatically when the OPS system is activated.</li>
+        <center>
+          <figure>
+            <img src="media/features/parking_front.png">
+            <img src="media/features/parking_rear.png">
+          </figure>
+        </center>
+        <li>The visualization will change sides automatically (front/rear) when changing the vehicle direction (forward/reverse).</li>
+        <li>You can also manually change the side with the <b>Up/Down</b> buttons.</li>
+        <br>
+        <li>The parking sensor visualization will appear even if the cluster is not in the "navigation mode" (if the <b>Reset</b> button was pressed shortly, as described in the <a href="#operating_the_menu"><b>Operating the menu</b></a> chapter).</li>
+        <br>
+        <li>Holding the <b>Reset</b> button or turning off the OPS system will return to whatever menu was active when the visualization was triggered.</li>
+      </ul>
+      <br>
+    </ul>
+    
+    <br>
+    <hr>
+      
+    <h1 id="config_editor">Using the configuration editor</h1>
+    <ul style="list-style:none">
+      <li>The configuration editor is used for generating the configuration file, needed for the <b>ECU data</b> and <b>Tools</b> menus.</li>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <ul>
+      <h2 id="config_editor_notes">Notes</h2>
+      <ul>
+        <li><span id="uds" style="color:red">(!)</span> If the source module for a parameter uses the <span style="color:red">UDS</span> protocol, contact us to help you with the configuration.</li>
+        <li>If the source module for a parameter uses the KWP-CAN protocol, the "Block" and "Index" match with the numbers found in diagnostic software.</li>
+        <li>Input fields for numbers with decimals only accept a point (<b>.</b>) and not a comma (<b>,</b>)!</li>
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <ul>
+      <h2 id="config_editor_optional_step">Optional step</h2>
+      <ul style="list-style:none">
+        <li>If you already have a configuration file that you would like to edit, press the <i>Edit a previous configuration</i> button at the top of the page and choose the file.</li>
+        <center>
+          <figure>
+            <img src="media/config_editor/edit_previous_config.png">
+          </figure>
+        </center>
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <ul>
+      <h2 id="config_editor_step1">Step 1: <i>Choose included tools</i></h2>
+      <ul>
+        <center>
+          <figure>
+            <img src="media/config_editor/choose_included_tools.png">
+          </figure>
+        </center>
+        <li>In the first section you will see a drop-down list of tools you can enable.</li>
+        <li>To enable a tool, select it and check the <b><i>Enabled</i></b> checkbox.</li>
+        <li>When a tool is enabled, you can configure it with the options under <b><i>Configure included tools</i></b>.</li>
+        <br>
+        <ol type=a>
+          <li><b><i>Acceleration timer</i></b> tool</li>
+          <center>
+            <figure>
+              <img src="media/config_editor/acceleration_timer_tool.png">
+            </figure>
+          </center>
+          <ul>
+            <li>
+              Choose from which module/location to get the current vehicle speed in <i>km/h</i>. <a href="#uds"style="color:red">(!)</a> 
+            </li>
+          </ul>
+          <br>
+          <li><b><i>Oil level checker</i></b> tool</li>
+          <center>
+            <figure>
+              <img src="media/config_editor/oil_level_checker_tool.png">
+            </figure>
+          </center>
+          <ul>
+            <li>Choose from which module to get the current oil level and oil temperature.</li>
+            <li>Choose from which location to get the current oil level in <i>mm</i>. <a href="#uds"style="color:red">(!)</a> </li>
+            <li>Choose from which location to get the current oil temperature in <i>°C</i>. <a href="#uds"style="color:red">(!)</a></li>
+            <li>Choose the oil level <i>Min/Max</i> values for your car, to display the level properly.</li>
+          </ul>
+        </ol>
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <ul>
+      <h2 id="config_editor_step2">Step 2: <i>Choose modules for ECU data</i></h2>
+      <center>
+        <figure>
+          <img src="media/config_editor/choose_modules_for_ecu_data.png">
+        </figure>
+      </center>
+      <ul>
+        <li>The <b>ECU Data</b> menu can show parameters from a maximum of 5 KWP and 5 UDS modules.</li>
+        <li>Here, you will choose from which modules you want to read parameters.</li>
+        <li>You have 5 "slots" for each protocol, and the module order doesn't matter.</li>
+        <br>
+        <li style="list-style-type:square"><u>For example</u>, if you want to get parameters from the Engine (KWP), AWD (KWP) and Transmission (UDS):</li>
+        <ul>
+          <li>In the <b>KWP</b> column select the number <b>1</b> and module <i>01 - Engine</i>.</li>
+          <li>In the <b>KWP</b> column select the number <b>2</b> and module <i>22 - AWD</i>.</li>
+          <li>In the <b>UDS</b> column select the number <b>1</b> and module <i>02 - Auto Trans</i>.</li>
+        </ul>
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <ul>
+      <h2 id="config_editor_step3">Step 3: <i>Configure ECU data</i></h2>
+      <center>
+        <figure>
+          <img src="media/config_editor/configure_ecu_data.png">
+        </figure>
+      </center>
+      <ul>
+        <li>Here, you will configure each page for the <b>ECU Data</b> menu.</li>
+        <li>On a fresh start (not editing a previous configuration), the first page and first parameter will be created.</li>
+        <li>Each page can have a title (optional) and between 1-5 parameters.</li>
+        <li>Each parameter can have a name (<u>example</u>: <i>Oil</i>) and measurement units (<u>example</u>: <i>mm</i>), but they are optional and can be left empty.</li>
+      </ul>
+    </ul>
+    
+    <br>
+    <ul>
+      <h2 id="config_editor_step3_pages"><i>Pages</i></h2>
+      <center>
+        <figure>
+          <img src="media/config_editor/ecu_data_pages.png">
+        </figure>
+      </center>
+      <ol type=a>
+        <li>To change the page's title, write something in the text box (or leave empty for no title).</li>
+        <li>To add a new page, press the <b>+</b> button.</li>
+        <ul>
+          <li>When you have more pages, pressing the button will "insert" a new one right after the currently selected page.</li>
+          <li>To add the page at the end, you have to first select the last page and then press <b>+</b>.</li>
+        </ul>
+        <li>To delete the currently selected page, press the <b>-</b> button.</li>
+        <ul>
+          <li>You cannot undo after deleting!</li>
+        </ul>
+        <li>To select another page (after adding more), press the box with the page number and select another one.</li>
+      </ol>
+    </ul>
+  
+    <br>
+    <ul>
+      <h2 id="config_editor_step3_parameters"><i>Parameters</i></h2>
+      <center>
+        <figure>
+          <img src="media/config_editor/ecu_data_parameters.png">
+        </figure>
+      </center>
+      <ol type=a>
+        <li>To change the parameter's name, write something in the text box (or leave empty for no name).</li>
+        <li>To change the parameter's measurement units, write something in the text box (or leave empty for no measurement units).</li>
+        <ul>
+          <li>To insert the special degree symbol (<b>°</b>) for the measurement units, write the letters "<b>deg</b>", they will be replaced.</li>
+          <li><u>Example</u>: for <b>°C</b>, write "<b>degC</b>" in the measurement units text box.</li>
+        </ul>
+        <li>To add a new parameter to the page, press the <b>+</b> button.</li>
+        <ul>
+          <li>When you have more parameters, pressing the button will "insert" a new one right after the currently selected parameter.</li>
+          <li>To add the parameter at the end, you have to first select the last parameter and then press <b>+</b>.</li>
+        </ul>
+        <li>To delete the currently selected parameter, press the <b>-</b> button.</li>
+        <ul>
+          <li>You cannot undo after deleting!</li>
+        </ul>
+        <li>To select another parameter (after adding more), press the box with the parameter  number and select another one.</li>
+      </ol>
+    </ul>
+  
+    <br>
+    <ul>
+      <h2 id="config_editor_step3_parameter_source"><i>Parameter source</i></h2>
+      <center>
+        <figure>
+          <img src="media/config_editor/ecu_data_parameter_source.png">
+        </figure>
+      </center>
+      <ul>
+        <li>Here, you will select from which module/location the current parameter is read. <a href="#uds"style="color:red">(!)</a></li>
+      </ul>
+    </ul>
+  
+    <br>
+    <ul>
+      <h2 id="config_editor_step3_value_display"><i>Value display</i></h2>
+      <ol type=I>
+        <li>Mode: <b><i>Exact value</i></b></li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_display_exact_value.png">
+          </figure>
+        </center>
+        <ul>
+          <li>The parameter will be displayed exactly like in diagnostic software.</li>
+          <li>For the KWP protocol, some parameters will be displayed as text instead of numbers.</li>
+          <ul>
+            <li>If you need these parameters to be shown as numbers instead of text, check the <b><i>Forced value</i></b> checkbox.</li>
+            <li>You will use this to find the value which corresponds to the text if you need the <b>Custom text</b> mode (explained below).</li>
+            <li>The <b><i>Forced value</i></b> checkbox will have no effect for UDS modules.</li>
+          </ul>
+          <li>The <b><i>Decimals</i></b> drop-down selects how many digits are shown after the decimal point (0 for no decimal point).</li>
+        </ul>
+        
+        <br>
+        
+        <li>Mode: <b><i>Mapped value</i></b></li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_display_mapped_value.png">
+          </figure>
+        </center>
+        <ul>
+          <li>The parameter's value will be mapped to a range.</li>
+          <li>To add a number from the value before mapping, enter this number in the <b><i>Offset</i></b> box (can be negative for subtraction).</li>
+          <li>The next section contains the map:</li>
+          <ul>
+            <li><b><i>In Min</i></b> will be transformed to <b><i>Out Min</i></b>.</li>
+            <li><b><i>In Max</i></b> will be transformed to <b><i>Out Max</i></b>.</li>
+            <li>Every value between <b><i>In Min</i></b> and <b><i>In Max</i></b> will be scaled between <b><i>Out Min</i></b> and <b><i>Out Max</i></b>.</li>
+            <li>To prevent the value from going lower than <b><i>Out Min</i></b>, check the <b><i>Limit</i></b> checkbox on the same row as <b><i>Min</i></b>.</li>
+            <li>To prevent the value from going higher than <b><i>Out Max</i></b>, check the <b><i>Limit</i></b> checkbox on the same row as <b><i>Max</i></b>.</li>
+          </ul>
+          <li>The <b><i>Decimals</i></b> drop-down selects how many digits are shown after the decimal point (0 for no decimal point).</li>
+          <br>
+          <li style="list-style-type:square">
+            <u>Example</u>: to display a "Boost" parameter, you should first subtract the atmospheric pressure (~1000 mbar) and then transform from mbar to bar.
+            <ol type=1>
+              <li>Write <b>-1000</b> in the <b><i>Offset</i></b> box to subtract the atmospheric pressure (or write another number closer to your pressure).</li>
+              <li>Write <b>0</b> for <b><i>In Min</i></b> and <b><i>Out Min</i></b>, <b>1000</b> for <b><i>In Max</i></b> and <b>1</b> for <b><i>Out Max</i></b>. Now it is converted from mbar to bar (division by 1000).</li>
+              <li>Check the <b><i>Limit</i></b> checkbox on the same row as <b><i>Min</i></b>. Now the value can not become negative if the input is less than atmospheric pressure, but it can become more than 1 if the input is more than 1000.</li>
+              <li>Select the number of decimals according to preference.</li>
+            </ol>
+            <center>
+              <figure>
+                <img src="media/config_editor/ecu_data_value_display_mapped_value_example.png">
+              </figure>
+            </center>
+          </li>
+        </ul>
+        
+        <br>
+        
+        <li>Mode: <b><i>Custom text</i></b></li>
+        <ul>
+          <li>Instead of showing a value, you can set your own custom text based on the parameter's value.</li>
+          <ul>
+            <li>All number inputs for the conditions only accept whole numbers, without decimals.</li>
+          </ul>
+        </ul>
+        
+        <br>
+        
+        <ol type=i>
+          <li>Condition: <b><i>If value / if not value</i></b></li>
+          <center>
+            <figure>
+              <img src="media/config_editor/ecu_data_value_display_custom_text1.png">
+            </figure>
+          </center>
+          <ul>
+            <li>If the parameter is equal to <b><i>Value</i></b>, it displays the first text (<b><i>If value</i></b>).</li>
+            <li>If the parameter is not equal to <b><i>Value</i></b>, it displays the second text (<b><i>If not value</i></b>).</li>
+          </ul>
+          
+          <br>
+          
+          <li>Condition: <b><i>If inside / outside range</i></b></li>
+          <center>
+            <figure>
+              <img src="media/config_editor/ecu_data_value_display_custom_text2.png">
+            </figure>
+          </center>
+          <ul>
+            <li>If the parameter is between <b><i>Min/Max</i></b>, it displays the first text (<b><i>Inside</i></b>).</li>
+            <li>If the parameter is lower than <b><i>Min</i></b> or higher than <b><i>Max</i></b>, it displays the second text (<b><i>Outside</i></b>).</li>
+          </ul>
+          
+          <br>
+          
+          <li>Condition: <b><i>If below / inside / above range</i></b></li>
+          <center>
+            <figure>
+              <img src="media/config_editor/ecu_data_value_display_custom_text3.png">
+            </figure>
+          </center>
+          <ul>
+            <li>If the parameter is lower than <b><i>Min</i></b>, it displays the first text (<b><i>&lt; min</i></b>).</li>
+            <li>If the parameter is between <b><i>Min/Max</i></b>, it displays the second text (<b><i>[min, max]</i></b>).</li>
+            <li>If the parameter is higher than <b><i>Max</i></b>, it displays the third text (<b><i>&gt; max</i></b>).</li>
+          </ul>
+        </ol>
+        
+        <br>
+        
+        <li style="list-style-type:square"><u>Example</u>: you get the oil pressure status from the Instrument Cluster (KWP), which appears as text ("Oil Pr. 2 &lt;min" / "Oil Pr. 2 OK"), but you want to convert it to just "&lt;min" / "OK".</li>
+        <center>
+          <figure>
+            <img src="media/configurator_examples/custom_text/oil_pressure_exact_value_ok.png">
+            <img src="media/configurator_examples/custom_text/oil_pressure_exact_value_min.png">
+          </figure>
+        </center>
+        <ol type=1>
+          <li>In <b><i>Value display</i></b>, select the <b><i>Exact value</i></b> mode and check the <b><i>Forced value</i></b> checkbox to transform the text into a number, then save this configuration and upload it.</li>
+          <center>
+            <figure>
+              <img src="media/config_editor/ecu_data_value_display_custom_text_example1.png">
+            </figure>
+          </center>
+          <li>You see that "Oil Pr. 2 OK" has become the number <b>31</b>.</li>
+          <center>
+            <figure>
+              <img src="media/configurator_examples/custom_text/oil_pressure_forced_value.png">
+            </figure>
+          </center>
+          <li>Edit the configuration and now in <b><i>Value display</i></b> select the <b><i>Custom text</i></b> mode, and the <b><i>If value / if not value</i></b> condition.</li>
+          <li>Write the number <b>31</b> for <b><i>Value</i></b> and the text "OK" in the first box and "&lt;min" in the second box.</li>
+          <center>
+            <figure>
+              <img src="media/config_editor/ecu_data_value_display_custom_text_example2.png">
+            </figure>
+          </center>
+          <li>Now the custom text is displayed.</li>
+          <center>
+            <figure>
+              <img src="media/configurator_examples/custom_text/oil_pressure_text_ok.png">
+              <img src="media/configurator_examples/custom_text/oil_pressure_min.png">
+            </figure>
+          </center>
+        </ol>
+      </ol>
+    </ul>
+  
+    <br>
+    <ul>
+      <h2 id="config_editor_step3_value_warning"><i>Value warning</i></h2>
+      <ul>
+        <li>Here, you can configure a warning mode, for example if a parameter's value is outside normal limits.</li>
+        <li>When a warning is triggered, the parameter's value (number/text) starts flashing until the error disappears.</li>
+        <ul>
+          <li>All number inputs only accept whole numbers, without decimals.</li>
+        </ul>
+      </ul>
+    
+      <br>
+      
+      <ol type=I>
+        <li>Mode: <b><i>Disabled</i></b></li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_warning_mode1.png">
+          </figure>
+        </center>
+        <ul>
+          <li>No warning for this parameter.</li>
+        </ul>
+        
+        <br>
+        
+        <li>Mode: <b><i>If exact value</i></b></li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_warning_mode2.png">
+          </figure>
+        </center>
+        <ul>
+          <li>The warning will be triggered if the parameter's value is the same as what you selected.</li>
+        </ul>
+        
+        <br>
+        
+        <li>Mode: <b><i>If not exact value</i></b></li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_warning_mode3.png">
+          </figure>
+        </center>
+        <ul>
+          <li>The warning will be triggered if the parameter's value is not the same as what you selected.</li>
+        </ul>
+        
+        <br>
+        
+        <li>Mode: <b><i>If inside range</i></b></li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_warning_mode4.png">
+          </figure>
+        </center>
+        <ul>
+          <li>The warning will be triggered if the parameter's value is between the <b><i>Min/Max</i></b> you selected.</li>
+        </ul>
+        
+        <br>
+        
+        <li>Mode: <b><i>If not inside range</i></b></li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_warning_mode5.png">
+          </figure>
+        </center>
+        <ul>
+          <li>The warning will be triggered if the parameter's value is not between the <b><i>Min/Max</i></b> you selected.</li>
+        </ul>
+      
+        <br>
+        
+        <li style="list-style-type:square">
+          <u>Example</u>: in the previous example with the oil pressure, if you want to get a warning then it becomes "&lt;min", you can set the mode to <b><i>If not exact value</i></b> and write the number <b>31</b> for <b><i>Value</i></b>.
+        </li>
+        <center>
+          <figure>
+            <img src="media/config_editor/ecu_data_value_warning_example.png">
+          </figure>
+          <figure>
+            <img src="media/configurator_examples/value_warning/warning.gif">
+          </figure>
+        </center>
+      </ol>
+    </ul>
+  
+    <br>
+    <ul>
+      <h2 id="config_editor_step3_graph_parameters"><i>Graph parameters</i></h2>
+      <ul>
+        <li>Here, you can configure the default values that are applied when you select a parameter to graph.</li>
+        <li>You can also modify these in the <i>Graph</i> menu, but setting them here will make it easier.</li>
+        <li>You can also input fractional values here, whereas you can only use whole numbers in the menu.</li>
+          <ul>
+            <li><u>Warning</u>: if you edit a fractional value in the menu, it will be changed to a whole number.</li>
+            <li>The fractional value will remain applied as long as you don't edit it.</li>
+          </ul>
+      </ul>
+      <center>
+        <figure>
+          <img src="media/config_editor/ecu_data_graph_parameters.png">
+        </figure>
+        <figcaption><b>Bottom</b> - the lowest value the graph can show</figcaption>
+        <figcaption><b>Top</b> - the highest value the graph can show</figcaption>
+        <figcaption><b>Rate</b> - how quickly to draw points (measured in milliseconds)</figcaption>
+      </center>
+      <ul>
+        <li>If <b>Bottom</b> has a higher value than <b>Top</b>, the graph will be inverted.</li>
+        <li>Parameters are read from the module as quickly as possible; <b>Rate</b> only changes how fast new points are drawn.</li>
+        <li style="list-style-type:square"><u>Example</u>: Setting <b>Bottom</b> to 0, <b>Top</b> to 1000 and <b>Rate</b> to 150 means the graph will show values between 0-1000 and a new point will be drawn every 150ms.</li>
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <ul style="list-style:none">
+      <h2 id="config_editor_step4">Step 4: Download</i></h2>
+      <li>After everything is configured, press the <i>Download the current configuration</i> button at the bottom of the page.</li>
+      <center>
+        <figure>
+          <img src="media/config_editor/download.png">
+        </figure>
+      </center>
+      <li>The <i>config.bin</i> file will download, please save it to your device.</li>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <h1 id="update_webpage">Using the update webpage</h2>
+    <ul style="list-style:none;">
+      <li>To access the webpage, follow the instructions of the <a class="white_link" href="#update"><b>Update</b></a> menu.</li>
+      <br>
+      <hr>
+      <h2 id="update_configuration">Configuration</h2>
+      <ul>
+        <center>
+          <figure>
+            <img src="media/update_webpage/configuration.png">
+          </figure>
+          <figcaption><b>Select .bin file</b> - choose the <i>config.bin</i> file from your device</figcaption>
+          <figcaption><b>Upload</b> - upload the selected configuration file</figcaption>
+          <figcaption><b>Download</b> - download the currently installed configuration file (for editing)</figcaption>
+        </center>
+        <br>
+        <li>Refer to the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter to create your configuration file.</li>
+      </ul>
+      
+      <br>
+      <hr>
+      
+      <br>
+      <h2 id="update_boot_logo">Boot logo</h2>
+      <ul>
+        <center>
+          <figure>
+            <img src="media/update_webpage/boot_logo_disabled.png">
+          </figure>
+        </center>
+        <li>By default, the boot logo is disabled.</li>
+        <li>Check the <i>Enable boot logo</i> checkbox to enable it.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/update_webpage/boot_logo_enabled.png">
+          </figure>
+          <figcaption><b>Select .bmp file</b> - choose a bitmap image from your device</figcaption>
+          <figcaption><b>X coordinate</b> - top-left corner horizontal position on the screen (0-63)</figcaption>
+          <figcaption><b>Y coordinate</b> - top-left corner vertical position on the screen (0-47)</figcaption>
+          <figcaption><b>Duration</b> - how many milliseconds the image stays on screen</figcaption>
+          <figcaption><b>Set</b> - upload the selected boot logo with its settings</figcaption>
+        </center>
+        <br>
+        <li>Only <b>.bmp</b> format images are accepted, and 1-bit monochrome is preferred.</li>
+        <li>Pressing the <b>Set</b> button will preview the boot logo on the screen.</li>
+        <li><b>(!)</b> Please avoid pressing the <b>Set</b> button while the a preview is on the screen!</li>
+        <li>It is possible to skip the boot logo before the duration runs out by pressing any button (<b>Up/Down/Reset</b>).</li>
+        <li>If there is a boot logo uploaded, it can be removed by unchecking the <i>Enable boot logo</i> checkbox and pressing <b>Delete</b>.</li>
+      </ul>
+      
+      <br>
+      <hr>
+      
+      <h2 id="update_update">Update</h2>
+      <ul>
+        <center>
+          <figure>
+            <img src="media/update_webpage/update.png">
+          </figure>
+          <figcaption><b>Select .bin file</b> - choose a firmware update file from your device</figcaption>
+          <figcaption><b>Update</b> - install the selected firmware update</figcaption>
+        </center>
+        <br>
+        <li>After selecting the file and pressing <b>Update</b>, the progress bar will start to fill up.</li>
+        <li>Please do not turn off the ignition or disconnect the Wi-Fi while the update is in progress.</li>
+        <li>Wait until you receive the message "Done." on the webpage.</li>
+        <br>
+        <li>If the update fails, you will see the regular main menu.</li>
+        <li>If the update is successful, the following message will be displayed:</li>
+        <center>
+          <figure>
+            <img src="media/menu/MAIN/default_settings.png">
+          </figure>
+        </center>
+        <br>
+        <li>If the progress bar has not been filled completely, but you see the message "Done." (and the screen shows the main menu), please try updating again, perhaps with a different file.</li>
+        <li>Because the settings have been reset, you will need to upload your configuration file and boot logo again.</li>
+      </ul>
+    </ul>
+  </body>
+</html>
