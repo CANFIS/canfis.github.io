@@ -620,7 +620,7 @@
       <td>
         <select id='select_tool' onchange='change_tool(this.selectedIndex)'>
           <option>Acceleration timer</option>
-          <option>Oil level checker</option>
+          <option>Oil level gauge</option>
         </select>
       </td>
       <td>
@@ -4276,7 +4276,7 @@
     file_buffer = file_buffer.concat(acceleration_timer_tool.enabled); //acceleration tool enable status
     if (acceleration_timer_tool.enabled) {
       if (!acceleration_timer_tool.module) {
-        alert("Error: the acceleration timer tool is enabled but has an invalid source module!");
+        alert("Error: The acceleration timer tool is enabled but has an invalid speed source module!");
         return;
       }
       
@@ -4303,7 +4303,7 @@
     file_buffer = file_buffer.concat(oil_level_checker_tool.enabled); //oil level tool enable status
     if (oil_level_checker_tool.enabled) {
       if (!oil_level_checker_tool.module) {
-        alert("Error: the oil level checker tool is enabled but has an invalid source module!");
+        alert("Error: The oil level gauge tool is enabled but has an invalid oil level source module!");
         return;
       }
       

@@ -619,8 +619,8 @@
     <tr>
       <td>
         <select id='select_tool' onchange='change_tool(this.selectedIndex)'>
-          <option>Timer przyspieszenia</option>
-          <option>Sprawdzacz poziomu oleju</option>
+          <option>Licznik przy&#347;pieszenia</option>
+          <option>Miernik poziomu oleju</option>
         </select>
       </td>
       <td>
@@ -4276,7 +4276,7 @@
     file_buffer = file_buffer.concat(acceleration_timer_tool.enabled); //acceleration tool enable status
     if (acceleration_timer_tool.enabled) {
       if (!acceleration_timer_tool.module) {
-        alert("B\u0142\u0105d: narz\u0119dzie timer przyspieszenia jest w\u0142\u0105czone, ale ma nieprawid\u0142owy modu\u0142 \u017Ar\u00F3d\u0142owy!");
+        alert("B\u0142\u0105d: Narz\u0119dzie licznika przy\u015Bpieszenia jest w\u0142\u0105czone, ale wybrany jest nieprawid\u0142owy modu\u0142 \u017Ar\u00F3d\u0142a pr\u0119dko\u015Bci!");
         return;
       }
       
@@ -4303,7 +4303,7 @@
     file_buffer = file_buffer.concat(oil_level_checker_tool.enabled); //oil level tool enable status
     if (oil_level_checker_tool.enabled) {
       if (!oil_level_checker_tool.module) {
-        alert("B\u0142\u0105d: narz\u0119dzie sprawdzacza poziomu oleju jest w\u0142\u0105czone, ale ma nieprawid\u0142owy modu\u0142 \u017Ar\u00F3d\u0142owy!");
+        alert("B\u0142\u0105d: Narz\u0119dzie miernika oleju jest w\u0142\u0105czone, ale wybrany jest nieprawid\u0142owy modu\u0142 \u017Ar\u00F3d\u0142a poziomu oleju!");
         return;
       }
       
