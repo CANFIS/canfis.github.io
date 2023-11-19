@@ -13,12 +13,16 @@
       background-image: url('media/background.jpeg');
     }
     
-    ul	{
-      list-style-position: inside;
+    ul, ol	{
+      list-style-position: outside;
     }
     
     li {
       margin-bottom: -1em;
+    }
+    
+    #installation_steps li {
+      margin-bottom: 0;
     }
     
     .contents li {
@@ -73,6 +77,7 @@
       <li><a href="#introduction">Wst&#281;p</a></li>
       <li><a href="#features">Funkcje</a></li>
       <li><a href="#notes">Notatki</a></li>
+      <li><a href="#installation">Instalacja</a></li>
       <li><a href="#getting_started">Pierwsze kroki</a></li>
       <li><a href="#operating_the_menu">Obs&#322;uga menu</a></li>
       <li><a href="#using_each_menu">Korzystanie z ka&#380;dego menu</a></li>
@@ -190,8 +195,6 @@
         </figure>
         <figure>
           <img src="media/features/fault_codes.png">
-          <img src="media/features/fault_code_description.png">
-          <img src="media/features/clear_fault_codes.png">
           <figcaption>Kody b&#322;&#281;d&#243;w</figcaption>
         </figure>
         <figure>
@@ -237,8 +240,34 @@
     <br>
     <hr>
     
+    <h1 id="installation">Instalacja</h1>
+    <ul style="list-style:none">
+      <li>Do montażu modułu <span style="color:red">CANFIS</span> potrzebujesz: śrubokręt z końcówką 8mm, końcówką Torx 25.</li>
+      <br>
+      <ol type=1 id="installation_steps">
+        <li>Zdemontuj zaślepkę bezpieczników po lewej stronie deski rozdzielczej.</li>
+        <li>Wykręć 3 śruby o łbie 8mm: pierwsza pod klapką bezpieczników, dwie od dołu po lewej i po prawej stronie dolnej osłony deski rozdzielczej (tej, w której znajduje się przełącznik świateł oraz lampka oświetlenia nóg [w zależności od wyposażenia]).</li>
+        <li>Zdemontuj osłonę deski rozdzielczej, montowana jest na klipsach. Dla swobody pracy możesz wypiąć wtyczkę gniazda diagnostycznego, przełącznika świateł oraz ewentualnie oświetlenia nóg, a całą osłonę odłożyć na bok.</li>
+        <li>Śrubokrętem z końcówką Torx 25 odkręć dyszę nawiewu na nogi (śruba znajduje się mniejwięcej na środku). Dyszę wyciągnij i odłóż.</li>
+        <li>Po prawej stronie, ku górze znajduje się moduł Gateway oraz idąca do niego czerwona wtyczka (2003-2008), lub czarna wtyczka (2008-2012). Ostrożnie, nie szarpiąc, odłącz wtyczkę z modułu Gateway w aucie i podepnij ją do modułu  <span style="color:red">CANFIS</span> module. Natomiast wtyczkę wychodzącą z modułu <span style="color:red">CANFIS</span> podłącz do modułu Gateway w aucie.</li>
+        <li>Moduł <span style="color:red">CANFIS</span> ułóż luźno tak, aby przewód nie był naprężony.</li>
+        <li>Złóż wszystko w odwrotnej kolejności.</li>
+      </ol>
+      <br>
+      <li>Upewnij się, że moduł <b>37 - Nawigacja</b> jest włączony na liście połączeń Gateway.</li>
+      <center>
+        <figure>
+          <img src="media/installation/gateway_installation_list.png">
+        </figure>
+      </center>
+    </ul>
+    
+    <br>
+    <hr>
+    
     <h1 id="getting_started">Pierwsze kroki</h1>
     <ul>
+      <li>Zainstaluj moduł, postępując zgodnie z instrukcjami w rozdziale <a href="#installation"><b>Instalacja</b></a>.</li>
       <li>Przeczytaj rozdzia&#322; <a href="#operating_the_menu"><b>Obs&#322;uga menu</b></a>, aby dowiedzie&#263; si&#281;, jak korzysta&#263; z menu.</li>
       <li>Post&#281;puj zgodnie z instrukcjami w rozdziale <a href="#config_editor"><b>U&#380;ywanie edytora konfiguracji</b></a>, aby utworzy&#263; plik konfiguracyjny.</li>
       <li>Gdy ju&#380; b&#281;dziesz mie&#263; plik <i>config.bin</i>, przejd&#378; do <a class="white_link" href="#update"><b>Ustawienia>Aktualizacja</b></a>, po&#322;&#261;cz si&#281; z sieci&#261; Wi-Fi i przejd&#378; do strony internetowej, tak jak wyja&#347;niono w odpowiednim rozdziale.</li>

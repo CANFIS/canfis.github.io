@@ -13,12 +13,16 @@
       background-image: url('media/background.jpeg');
     }
     
-    ul	{
-      list-style-position: inside;
+    ul, ol	{
+      list-style-position: outside;
     }
     
     li {
       margin-bottom: -1em;
+    }
+    
+    #installation_steps li {
+      margin-bottom: 0;
     }
     
     .contents li {
@@ -73,6 +77,7 @@
       <li><a href="#introduction">Introduction</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#notes">Notes</a></li>
+      <li><a href="#installation">Installation</a></li>
       <li><a href="#getting_started">Getting started</a></li>
       <li><a href="#operating_the_menu">Operating the menu</a></li>
       <li><a href="#using_each_menu">Using each menu</a></li>
@@ -190,8 +195,6 @@
         </figure>
         <figure>
           <img src="media/features/fault_codes.png">
-          <img src="media/features/fault_code_description.png">
-          <img src="media/features/clear_fault_codes.png">
           <figcaption>Fault codes</figcaption>
         </figure>
         <figure>
@@ -237,8 +240,34 @@
     <br>
     <hr>
     
+    <h1 id="installation">Installation</h1>
+    <ul style="list-style:none">
+      <li>To install the <span style="color:red">CANFIS</span> module, you will need an 8mm and Torx 25 screwdriver.</li>
+      <br>
+      <ol type=1 id="installation_steps">
+        <li>Remove the fuse cover on the left side of the dashboard.</li>
+        <li>Unscrew three 8mm bolts: one under the fuse cover, and two at the bottom, on the left and right sides of the lower dashboard cover (the one with the headlight switch and footwell lighting switch [depending on the equipment]).</li>
+        <li>Remove the dashboard cover, which is attached with clips. For ease of work, you can unplug the diagnostic socket, headlight switch, and optionally the footwell lighting plug, and set the cover aside.</li>
+        <li>Use the Torx 25 screwdriver to unscrew the footwell vent nozzle (the screw is located approximately in the middle). Remove and set the nozzle aside.</li>
+        <li>On the right side, towards the top, you will find the Gateway module and a red plug (2003-2008) or a black plug (2008-2012) leading to it. Carefully, without pulling forcefully, disconnect the plug from the Gateway module in the car and connect it to the <span style="color:red">CANFIS</span> module. Connect the plug coming from the <span style="color:red">CANFIS</span> module to the Gateway module in the car.</li>
+        <li>Position the <span style="color:red">CANFIS</span> module loosely so that the cable is not strained.</li>
+        <li>Assemble everything in the reverse order.</li>
+      </ol>
+      <br>
+      <li>Ensure that module <b>37 - Navigation</b> is enabled in the Gateway installation list.</li>
+      <center>
+        <figure>
+          <img src="media/installation/gateway_installation_list.png">
+        </figure>
+      </center>
+    </ul>
+    
+    <br>
+    <hr>
+    
     <h1 id="getting_started">Getting started</h1>
     <ul>
+      <li>Install the module by following the instructions in the <a href="#installation"><b>Installation</b></a> chapter.</li>
       <li>Read through the <a href="#operating_the_menu"><b>Operating the menu</b></a> chapter to learn how to use the menu.</li>
       <li>Follow the instructions in the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter to create your configuration file.</li>
       <li>Once you have your <i>config.bin</i> file, navigate to the <a class="white_link" href="#update"><b>Settings>Update</b></a> menu, connect to the Wi-Fi network and navigate to the webpage, as explained in the respective chapter.</li>
