@@ -107,6 +107,7 @@
               <li><a href="#begin_acceleration">Begin</a></li>
             </ul>
             <li><a href="#oil_level_gauge">Oil level</a></li>
+            <li><a href="#mileage">Mileage</a></li>
           </ul>
           <li><a href="#settings">Settings</a></li>
           <ul>
@@ -217,6 +218,16 @@
         </figure>
       </center>
       
+      <li><b>Engine mileage</b> - get a reading of the current engine mileage</li>
+      <ul>
+        <li>Useful in the event of an engine replacement, as the mileage on the odometer does not correspond anymore. Using this tool you can see the engine's actual mileage.</li>
+      </ul>
+      <center>
+        <figure>
+          <img src="media/features/engine_mileage.png">
+        </figure>
+      </center>
+      
       <li><b>Wi-Fi updates</b> - simple interface used for configuring the device, boot logo and uploading firmware updates</li>
       <center>
         <figure>
@@ -318,14 +329,21 @@
       <h2 id="ecu_data">ECU data</h2>
       <ul>
         <li>Here, the custom sets of measurements will be displayed.</li>
-        <li>Before uploading a configuration, the following error will appear:</li>
+        <li>Before uploading a configuration file, the following error will appear:</li>
         <center>
           <figure>
             <img src="media/menu/ECU_DATA/no_config.png">
           </figure>
         </center>
         <li>To proceed, follow the <a href="#getting_started"><b>Getting started</b></a> chapter.</li>
-        <li id="ecu_data_parameters">After uploading a configuration file, the measurements will be accessible.</li>
+        <li>If an incompatible configuration file is uploaded, the following error will appear:</li>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/update_config_version.png">
+          </figure>
+        </center>
+        <li>Updating the configuration file version is described in the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter.</li>
+        <li id="ecu_data_parameters">Access to the measurements will be possible after uploading a compatible configuration file.</li>
         <center>
           <figure>
             <img src="media/features/ecu_data.png">
@@ -620,21 +638,17 @@
           <figure>
             <img src="media/menu/TOOLS/acceleration.png">
             <img src="media/menu/TOOLS/oil_level.png">
+            <img src="media/menu/TOOLS/mileage.png">
             <img src="media/menu/TOOLS/back.png">
           </figure>
           <figcaption><a href="#acceleration_timer"><b>Acceleration</b></a> - measure how quickly the vehicle accelerates between two speeds</figcaption>
           <figcaption><a href="#oil_level_gauge"><b>Oil level</b></a> - read the current oil level</figcaption>
+          <figcaption><a href="#mileage"><b>Mileage</b></a> - read the current engine mileage</figcaption>
           <figcaption><a href="#tools"><b>Back</b></a> - return to the <b>Tools</b> menu</figcaption>
         </center>
         <br>
-        <li>If there is no configuration, or the configuration doesn't include these tools, they will be inaccessible.</li>
+        <li>If there is no configuration file, or the configuration doesn't include these tools, they will be inaccessible.</li>
         <li>To enable them, follow the <a href="#getting_started"><b>Getting started</b></a> chapter.</li>
-        <center>
-          <figure>
-            <img src="media/menu/TOOLS/acceleration_locked.png">
-            <img src="media/menu/TOOLS/oil_level_locked.png">
-          </figure>
-        </center>
       </ul>
     
       <br>
@@ -743,6 +757,20 @@
         <center>
           <figure>
             <img src="media/menu/TOOLS/OIL_LEVEL/oil_level.png">
+          </figure>
+        </center>
+        <li><a class="white_link" href="#tools">Hold the <b>Reset</b> button</a> to return to the <b>Tools</b> menu.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="mileage">Mileage (Tools)</h2>
+      <ul>
+        <li>The current engine mileage is displayed in the center of the screen.</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/MILEAGE/mileage.png">
           </figure>
         </center>
         <li><a class="white_link" href="#tools">Hold the <b>Reset</b> button</a> to return to the <b>Tools</b> menu.</li>
@@ -924,6 +952,23 @@
             <img src="media/config_editor/edit_previous_config.png">
           </figure>
         </center>
+        <li>If you see the message <i>The configuration must be updated to a newer version</i>, you will be redirected to another page where the configuration file will be updated.</li>
+        <br>
+        <li>Press the <i>Load the old configuration file</i> button and select the file.</li>
+        <center>
+          <figure>
+            <img src="media/config_updater/load_old_config.png">
+          </figure>
+        </center>
+        <li>Select your target version from the drop-down list.</li>
+        <br>
+        <li>Press the <i>Download the new configuration file</i> button and the updated file will be downloaded.</li>
+        <center>
+          <figure>
+            <img src="media/config_updater/download_new_config.png">
+          </figure>
+        </center>
+        <li>You can now go back and edit the file.</li>
       </ul>
     </ul>
     
@@ -950,11 +995,11 @@
             </figure>
           </center>
           <ul>
-            <li>
-              Choose from which module/location to get the current vehicle speed in <i>km/h</i>. <a href="#uds"style="color:red">(!)</a> 
-            </li>
+            <li>Choose from which module/location to get the current vehicle speed in <i>km/h</i>. <a href="#uds"style="color:red">(!)</a></li>
           </ul>
+
           <br>
+
           <li><b><i>Oil level gauge</i></b> tool</li>
           <center>
             <figure>
@@ -966,6 +1011,19 @@
             <li>Choose from which location to get the current oil level in <i>mm</i>. <a href="#uds"style="color:red">(!)</a> </li>
             <li>Choose from which location to get the current oil temperature in <i>°C</i>. <a href="#uds"style="color:red">(!)</a></li>
             <li>Choose the oil level <i>Min/Max</i> values for your car, to display the level properly.</li>
+          </ul>
+
+          <br>
+
+          <li><b><i>Engine mileage</i></b> tool</li>
+          <center>
+            <figure>
+              <img src="media/config_editor/engine_mileage_tool.png">
+            </figure>
+          </center>
+          <ul>
+            <li>Choose from which module/location to get the current mileage in <i>km</i>. <a href="#uds"style="color:red">(!)</a></li>
+            <li>Input a <i>Mileage offset</i> value that will be subtracted from the odometer mileage to obtain the engine mileage.</li>
           </ul>
         </ol>
       </ul>

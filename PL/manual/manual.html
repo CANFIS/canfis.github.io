@@ -107,6 +107,7 @@
               <li><a href="#begin_acceleration">Rozpocznij</a></li>
             </ul>
             <li><a href="#oil_level_gauge">Poziom oleju</a></li>
+            <li><a href="#mileage">Przebieg</a></li>
           </ul>
           <li><a href="#settings">Ustawienia</a></li>
           <ul>
@@ -214,6 +215,16 @@
       <center>
         <figure>
           <img src="media/features/oil_level.png">
+        </figure>
+      </center>
+      
+      <li><b>Przebieg silnika</b> - sprawdź przebieg silnika</li>
+      <ul>
+        <li>Przydatne w przypadku wymiany silnika, przebieg na liczniku zostanie stary. Za pomocą tego narzędzia możesz mieć podgląd na przebieg silnika.</li>
+      </ul>
+      <center>
+        <figure>
+          <img src="media/features/engine_mileage.png">
         </figure>
       </center>
       
@@ -325,7 +336,14 @@
           </figure>
         </center>
         <li>Aby kontynuowa&#263;, przejd&#378; do rozdzia&#322;u <a href="#getting_started"><b>Pierwsze kroki</b></a>.</li>
-        <li id="ecu_data_parameters">Po wgraniu pliku konfiguracyjnego, pomiary b&#281;d&#261; dost&#281;pne.</li>
+        <li>Jeśli zostanie wgrany zły plik konfiguracyjny, wyświetli się następujący komunikat:</li>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/update_config_version.png">
+          </figure>
+        </center>
+        <li>Aktualizowanie pliku konfiguracyjnego zostało opisane w zakładce <a href="#config_editor"><b>Używanie edytora konfiguracji</b></a>.</li>
+        <li id="ecu_data_parameters">Dostęp do pomiarów będzie możliwy po wgraniu kompatybilnego pliku konfiguracyjnego.</li>
         <center>
           <figure>
             <img src="media/features/ecu_data.png">
@@ -620,21 +638,17 @@
           <figure>
             <img src="media/menu/TOOLS/acceleration.png">
             <img src="media/menu/TOOLS/oil_level.png">
+            <img src="media/menu/TOOLS/mileage.png">
             <img src="media/menu/TOOLS/back.png">
           </figure>
           <figcaption><a href="#acceleration_timer"><b>Przy&#347;pieszenie</b></a> - zmierz przy&#347;pieszenie, mi&#281;dzy dwoma wybranymi pr&#281;dko&#347;ciami</figcaption>
           <figcaption><a href="#oil_level_gauge"><b>Poziom oleju</b></a> - odczytaj bie&#380;&#261;cy poziom oleju</figcaption>
+          <figcaption><a href="#mileage"><b>Przebieg</b></a> - odczyt przebiegu silnika</figcaption>
           <figcaption><a href="#tools"><b>Wstecz</b></a> - powr&#243;t do menu <b>Narz&#281;dzia</b></figcaption>
         </center>
         <br>
         <li>Je&#347;li nie ma konfiguracji lub konfiguracja nie zawiera tych narz&#281;dzi, b&#281;d&#261; niedost&#281;pne.</li>
         <li>Aby je w&#322;&#261;czy&#263;, post&#281;puj zgodnie z rozdzia&#322;em <a href="#getting_started"><b>Pierwsze kroki</b></a>.</li>
-        <center>
-          <figure>
-            <img src="media/menu/TOOLS/acceleration_locked.png">
-            <img src="media/menu/TOOLS/oil_level_locked.png">
-          </figure>
-        </center>
       </ul>
     
       <br>
@@ -743,6 +757,20 @@
         <center>
           <figure>
             <img src="media/menu/TOOLS/OIL_LEVEL/oil_level.png">
+          </figure>
+        </center>
+        <li><a class="white_link" href="#tools">Przytrzymaj przycisk <b>Reset</b></a>, aby wr&#243;ci&#263; do menu <b>Narz&#281;dzia</b>.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="mileage">Przebieg (Narz&#281;dzia)</h2>
+      <ul>
+        <li>Przebieg silnika zostanie wyświetlony na środku ekranu.</li>
+        <center>
+          <figure>
+            <img src="media/menu/TOOLS/MILEAGE/mileage.png">
           </figure>
         </center>
         <li><a class="white_link" href="#tools">Przytrzymaj przycisk <b>Reset</b></a>, aby wr&#243;ci&#263; do menu <b>Narz&#281;dzia</b>.</li>
@@ -924,6 +952,23 @@
             <img src="media/config_editor/edit_previous_config.png">
           </figure>
         </center>
+        <li>Jeśli widzisz komunikat <i>Plik konfiguracyjny musi zostać zaktualizowany do nowszej wersji</i>, zostanie przekierowany do strony, gdzie zaktualizujesz plik konfiguracyjny.</li>
+        <br>
+        <li>Wciśnij przycisk <i>Załaduj stary plik konfiguracyjny</i> i wybierz swój plik konfiguracyjny.</li>
+        <center>
+          <figure>
+            <img src="media/config_updater/load_old_config.png">
+          </figure>
+        </center>
+        <li>Wybierz wersję docelową z rozwijanej listy.</li>
+        <br>
+        <li>Wciśnij przycisk <i>Pobierz nowy plik konfiguracyjny</i>, aby pobrać nowy plik konfiguracyjny.</li>
+        <center>
+          <figure>
+            <img src="media/config_updater/download_new_config.png">
+          </figure>
+        </center>
+        <li>Możesz teraz cofnąć i edytować swój plik konfiguracyjny.</li>
       </ul>
     </ul>
     
@@ -950,11 +995,11 @@
             </figure>
           </center>
           <ul>
-            <li>
-              Wybierz, z kt&#243;rego modu&#322;u/lokalizacji pobra&#263; bie&#380;&#261;c&#261; pr&#281;dko&#347;&#263; pojazdu w <i>km/h</i>. <a href="#uds"style="color:red">(!)</a> 
-            </li>
+            <li>Wybierz moduł/lokalizację, z którego ma być pobrana bieżąca prędkość pojazdu w <i>km/h</i>. <a href="#uds"style="color:red">(!)</a></li>
           </ul>
+
           <br>
+
           <li>Narz&#281;dzie <b><i>Miernik poziomu oleju</i></b></li>
           <center>
             <figure>
@@ -962,10 +1007,23 @@
             </figure>
           </center>
           <ul>
-            <li>Wybierz, z kt&#243;rego modu&#322;u pobra&#263; bie&#380;&#261;cy poziom oleju oraz temperatur&#281; oleju.</li>
-            <li>Wybierz, z kt&#243;rej lokalizacji pobra&#263; bie&#380;&#261;cy poziom oleju w <i>mm</i>. <a href="#uds"style="color:red">(!)</a> </li>
-            <li>Wybierz, z kt&#243;rej lokalizacji pobra&#263; bie&#380;&#261;c&#261; temperatur&#281; oleju w <i>°C</i>. <a href="#uds"style="color:red">(!)</a></li>
+            <li>Wybierz moduł, z którego ma być pobrany aktualny poziom oleju oraz temperatura oleju.</li>
+            <li>Wybierz lokalizację, z której ma być pobrany aktualny poziom oleju w <i>mm</i>. <a href="#uds"style="color:red">(!)</a> </li>
+            <li>Wybierz lokalizację, z której ma być pobrana aktualna temperatura oleju w <i>°C</i>. <a href="#uds"style="color:red">(!)</a></li>
             <li>Wybierz <i>Min/Maks</i> warto&#347;ci poziomu oleju dla swojego samochodu, aby poprawnie wy&#347;wietli&#263; poziom.</li>
+          </ul>
+
+          <br>
+
+          <li>Narz&#281;dzie <b><i>Przebieg silnika</i></b></li>
+          <center>
+            <figure>
+              <img src="media/config_editor/engine_mileage_tool.png">
+            </figure>
+          </center>
+          <ul>
+            <li>Wybierz moduł/lokalizację, z którego ma być pobierany aktualny przebieg w <i>km</i>. <a href="#uds"style="color:red">(!)</a></li>
+            <li>Wpisz wartość w polu <i>Przesunięcie przebiegu</i>, o jaką ma zostać przesunięty przebieg silnika względem przebiegu na liczniku.</li>
           </ul>
         </ol>
       </ul>

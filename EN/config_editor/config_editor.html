@@ -4,6 +4,9 @@
 	<title>Configuration editor</title>
 </head>
 
+<script src="FileSaver.js"></script>
+<script src="iso_8859_2.js"></script>
+
 <style>
   body {
     font-family: sans-serif;
@@ -117,484 +120,9 @@
   }
 </style>
 
-<script>
-  /*
-  * FileSaver.js
-  * A saveAs() FileSaver implementation.
-  *
-  * By Eli Grey, http://eligrey.com
-  *
-  * License : https://github.com/eligrey/FileSaver.js/blob/master/LICENSE.md (MIT)
-  * source  : http://purl.eligrey.com/github/FileSaver.js
-  */
-  
-  // The one and only way of getting global scope in all environments
-  // https://stackoverflow.com/q/3277182/1008999
-  var _global = typeof window === 'object' && window.window === window
-    ? window : typeof self === 'object' && self.self === self
-    ? self : typeof global === 'object' && global.global === global
-    ? global
-    : this
-  
-  function bom (blob, opts) {
-    if (typeof opts === 'undefined') opts = { autoBom: false }
-    else if (typeof opts !== 'object') {
-      console.warn('Deprecated: Expected third argument to be a object')
-      opts = { autoBom: !opts }
-    }
-  
-    // prepend BOM for UTF-8 XML and text/* types (including HTML)
-    // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
-    if (opts.autoBom && /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(blob.type)) {
-      return new Blob([String.fromCharCode(0xFEFF), blob], { type: blob.type })
-    }
-    return blob
-  }
-  
-  function download (url, name, opts) {
-    var xhr = new XMLHttpRequest()
-    xhr.open('GET', url)
-    xhr.responseType = 'blob'
-    xhr.onload = function () {
-      saveAs(xhr.response, name, opts)
-    }
-    xhr.onerror = function () {
-      console.error('could not download file')
-    }
-    xhr.send()
-  }
-  
-  function corsEnabled (url) {
-    var xhr = new XMLHttpRequest()
-    // use sync to avoid popup blocker
-    xhr.open('HEAD', url, false)
-    try {
-      xhr.send()
-    } catch (e) {}
-    return xhr.status >= 200 && xhr.status <= 299
-  }
-  
-  // `a.click()` doesn't work for all browsers (#465)
-  function click (node) {
-    try {
-      node.dispatchEvent(new MouseEvent('click'))
-    } catch (e) {
-      var evt = document.createEvent('MouseEvents')
-      evt.initMouseEvent('click', true, true, window, 0, 0, 0, 80,
-                            20, false, false, false, false, 0, null)
-      node.dispatchEvent(evt)
-    }
-  }
-  
-  // Detect WebView inside a native macOS app by ruling out all browsers
-  // We just need to check for 'Safari' because all other browsers (besides Firefox) include that too
-  // https://www.whatismybrowser.com/guides/the-latest-user-agent/macos
-  var isMacOSWebView = _global.navigator && /Macintosh/.test(navigator.userAgent) && /AppleWebKit/.test(navigator.userAgent) && !/Safari/.test(navigator.userAgent)
-  
-  var saveAs = _global.saveAs || (
-    // probably in some web worker
-    (typeof window !== 'object' || window !== _global)
-      ? function saveAs () { /* noop */ }
-  
-    // Use download attribute first if possible (#193 Lumia mobile) unless this is a macOS WebView
-    : ('download' in HTMLAnchorElement.prototype && !isMacOSWebView)
-    ? function saveAs (blob, name, opts) {
-      var URL = _global.URL || _global.webkitURL
-      // Namespace is used to prevent conflict w/ Chrome Poper Blocker extension (Issue #561)
-      var a = document.createElementNS('http://www.w3.org/1999/xhtml', 'a')
-      name = name || blob.name || 'download'
-  
-      a.download = name
-      a.rel = 'noopener' // tabnabbing
-  
-      // TODO: detect chrome extensions & packaged apps
-      // a.target = '_blank'
-  
-      if (typeof blob === 'string') {
-        // Support regular links
-        a.href = blob
-        if (a.origin !== location.origin) {
-          corsEnabled(a.href)
-            ? download(blob, name, opts)
-            : click(a, a.target = '_blank')
-        } else {
-          click(a)
-        }
-      } else {
-        // Support blobs
-        a.href = URL.createObjectURL(blob)
-        setTimeout(function () { URL.revokeObjectURL(a.href) }, 4E4) // 40s
-        setTimeout(function () { click(a) }, 0)
-      }
-    }
-  
-    // Use msSaveOrOpenBlob as a second approach
-    : 'msSaveOrOpenBlob' in navigator
-    ? function saveAs (blob, name, opts) {
-      name = name || blob.name || 'download'
-  
-      if (typeof blob === 'string') {
-        if (corsEnabled(blob)) {
-          download(blob, name, opts)
-        } else {
-          var a = document.createElement('a')
-          a.href = blob
-          a.target = '_blank'
-          setTimeout(function () { click(a) })
-        }
-      } else {
-        navigator.msSaveOrOpenBlob(bom(blob, opts), name)
-      }
-    }
-  
-    // Fallback to using FileReader and a popup
-    : function saveAs (blob, name, opts, popup) {
-      // Open a popup immediately do go around popup blocker
-      // Mostly only available on user interaction and the fileReader is async so...
-      popup = popup || open('', '_blank')
-      if (popup) {
-        popup.document.title =
-        popup.document.body.innerText = 'downloading...'
-      }
-  
-      if (typeof blob === 'string') return download(blob, name, opts)
-  
-      var force = blob.type === 'application/octet-stream'
-      var isSafari = /constructor/i.test(_global.HTMLElement) || _global.safari
-      var isChromeIOS = /CriOS\/[\d]+/.test(navigator.userAgent)
-  
-      if ((isChromeIOS || (force && isSafari) || isMacOSWebView) && typeof FileReader !== 'undefined') {
-        // Safari doesn't allow downloading of blob URLs
-        var reader = new FileReader()
-        reader.onloadend = function () {
-          var url = reader.result
-          url = isChromeIOS ? url : url.replace(/^data:[^;]*;/, 'data:attachment/file;')
-          if (popup) popup.location.href = url
-          else location = url
-          popup = null // reverse-tabnabbing #460
-        }
-        reader.readAsDataURL(blob)
-      } else {
-        var URL = _global.URL || _global.webkitURL
-        var url = URL.createObjectURL(blob)
-        if (popup) popup.location = url
-        else location.href = url
-        popup = null // reverse-tabnabbing #460
-        setTimeout(function () { URL.revokeObjectURL(url) }, 4E4) // 40s
-      }
-    }
-  )
-  
-  _global.saveAs = saveAs.saveAs = saveAs
-  
-  if (typeof module !== 'undefined') {
-    module.exports = saveAs;
-  }
-</script>
-
-<script>
-  /*! https://mths.be/iso-8859-2 v3.0.4 by @mathias | MIT license */
-  
-  const stringFromCharCode = String.fromCharCode;
-  
-  const INDEX_BY_CODE_POINT = new Map([
-    [128, 0],
-    [129, 1],
-    [130, 2],
-    [131, 3],
-    [132, 4],
-    [133, 5],
-    [134, 6],
-    [135, 7],
-    [136, 8],
-    [137, 9],
-    [138, 10],
-    [139, 11],
-    [140, 12],
-    [141, 13],
-    [142, 14],
-    [143, 15],
-    [144, 16],
-    [145, 17],
-    [146, 18],
-    [147, 19],
-    [148, 20],
-    [149, 21],
-    [150, 22],
-    [151, 23],
-    [152, 24],
-    [153, 25],
-    [154, 26],
-    [155, 27],
-    [156, 28],
-    [157, 29],
-    [158, 30],
-    [159, 31],
-    [160, 32],
-    [164, 36],
-    [167, 39],
-    [168, 40],
-    [173, 45],
-    [176, 48],
-    [180, 52],
-    [184, 56],
-    [193, 65],
-    [194, 66],
-    [196, 68],
-    [199, 71],
-    [201, 73],
-    [203, 75],
-    [205, 77],
-    [206, 78],
-    [211, 83],
-    [212, 84],
-    [214, 86],
-    [215, 87],
-    [218, 90],
-    [220, 92],
-    [221, 93],
-    [223, 95],
-    [225, 97],
-    [226, 98],
-    [228, 100],
-    [231, 103],
-    [233, 105],
-    [235, 107],
-    [237, 109],
-    [238, 110],
-    [243, 115],
-    [244, 116],
-    [246, 118],
-    [247, 119],
-    [250, 122],
-    [252, 124],
-    [253, 125],
-    [258, 67],
-    [259, 99],
-    [260, 33],
-    [261, 49],
-    [262, 70],
-    [263, 102],
-    [268, 72],
-    [269, 104],
-    [270, 79],
-    [271, 111],
-    [272, 80],
-    [273, 112],
-    [280, 74],
-    [281, 106],
-    [282, 76],
-    [283, 108],
-    [313, 69],
-    [314, 101],
-    [317, 37],
-    [318, 53],
-    [321, 35],
-    [322, 51],
-    [323, 81],
-    [324, 113],
-    [327, 82],
-    [328, 114],
-    [336, 85],
-    [337, 117],
-    [340, 64],
-    [341, 96],
-    [344, 88],
-    [345, 120],
-    [346, 38],
-    [347, 54],
-    [350, 42],
-    [351, 58],
-    [352, 41],
-    [353, 57],
-    [354, 94],
-    [355, 126],
-    [356, 43],
-    [357, 59],
-    [366, 89],
-    [367, 121],
-    [368, 91],
-    [369, 123],
-    [377, 44],
-    [378, 60],
-    [379, 47],
-    [380, 63],
-    [381, 46],
-    [382, 62],
-    [711, 55],
-    [728, 34],
-    [729, 127],
-    [731, 50],
-    [733, 61]
-  ]);
-  const INDEX_BY_POINTER = new Map([
-    [0, '\x80'],
-    [1, '\x81'],
-    [2, '\x82'],
-    [3, '\x83'],
-    [4, '\x84'],
-    [5, '\x85'],
-    [6, '\x86'],
-    [7, '\x87'],
-    [8, '\x88'],
-    [9, '\x89'],
-    [10, '\x8A'],
-    [11, '\x8B'],
-    [12, '\x8C'],
-    [13, '\x8D'],
-    [14, '\x8E'],
-    [15, '\x8F'],
-    [16, '\x90'],
-    [17, '\x91'],
-    [18, '\x92'],
-    [19, '\x93'],
-    [20, '\x94'],
-    [21, '\x95'],
-    [22, '\x96'],
-    [23, '\x97'],
-    [24, '\x98'],
-    [25, '\x99'],
-    [26, '\x9A'],
-    [27, '\x9B'],
-    [28, '\x9C'],
-    [29, '\x9D'],
-    [30, '\x9E'],
-    [31, '\x9F'],
-    [32, '\xA0'],
-    [33, '\u0104'],
-    [34, '\u02D8'],
-    [35, '\u0141'],
-    [36, '\xA4'],
-    [37, '\u013D'],
-    [38, '\u015A'],
-    [39, '\xA7'],
-    [40, '\xA8'],
-    [41, '\u0160'],
-    [42, '\u015E'],
-    [43, '\u0164'],
-    [44, '\u0179'],
-    [45, '\xAD'],
-    [46, '\u017D'],
-    [47, '\u017B'],
-    [48, '\xB0'],
-    [49, '\u0105'],
-    [50, '\u02DB'],
-    [51, '\u0142'],
-    [52, '\xB4'],
-    [53, '\u013E'],
-    [54, '\u015B'],
-    [55, '\u02C7'],
-    [56, '\xB8'],
-    [57, '\u0161'],
-    [58, '\u015F'],
-    [59, '\u0165'],
-    [60, '\u017A'],
-    [61, '\u02DD'],
-    [62, '\u017E'],
-    [63, '\u017C'],
-    [64, '\u0154'],
-    [65, '\xC1'],
-    [66, '\xC2'],
-    [67, '\u0102'],
-    [68, '\xC4'],
-    [69, '\u0139'],
-    [70, '\u0106'],
-    [71, '\xC7'],
-    [72, '\u010C'],
-    [73, '\xC9'],
-    [74, '\u0118'],
-    [75, '\xCB'],
-    [76, '\u011A'],
-    [77, '\xCD'],
-    [78, '\xCE'],
-    [79, '\u010E'],
-    [80, '\u0110'],
-    [81, '\u0143'],
-    [82, '\u0147'],
-    [83, '\xD3'],
-    [84, '\xD4'],
-    [85, '\u0150'],
-    [86, '\xD6'],
-    [87, '\xD7'],
-    [88, '\u0158'],
-    [89, '\u016E'],
-    [90, '\xDA'],
-    [91, '\u0170'],
-    [92, '\xDC'],
-    [93, '\xDD'],
-    [94, '\u0162'],
-    [95, '\xDF'],
-    [96, '\u0155'],
-    [97, '\xE1'],
-    [98, '\xE2'],
-    [99, '\u0103'],
-    [100, '\xE4'],
-    [101, '\u013A'],
-    [102, '\u0107'],
-    [103, '\xE7'],
-    [104, '\u010D'],
-    [105, '\xE9'],
-    [106, '\u0119'],
-    [107, '\xEB'],
-    [108, '\u011B'],
-    [109, '\xED'],
-    [110, '\xEE'],
-    [111, '\u010F'],
-    [112, '\u0111'],
-    [113, '\u0144'],
-    [114, '\u0148'],
-    [115, '\xF3'],
-    [116, '\xF4'],
-    [117, '\u0151'],
-    [118, '\xF6'],
-    [119, '\xF7'],
-    [120, '\u0159'],
-    [121, '\u016F'],
-    [122, '\xFA'],
-    [123, '\u0171'],
-    [124, '\xFC'],
-    [125, '\xFD'],
-    [126, '\u0163'],
-    [127, '\u02D9']
-  ]);
-  
-  // https://encoding.spec.whatwg.org/#single-byte-encoder
-  function encode8859(input, options) {
-    let mode;
-    if (options && options.mode) {
-      mode = options.mode.toLowerCase();
-    }
-    // Support `fatal` (default) and `replacement` error modes.
-    if (mode !== 'fatal' && mode !== 'replacement') {
-      mode = 'fatal';
-    }
-    const length = input.length;
-    const result = new Uint16Array(length);
-    for (let index = 0; index < length; index++) {
-      const codePoint = input.charCodeAt(index);
-      // “If `code point` is an ASCII code point, return a byte whose
-      // value is `code point`.”
-      if (0x00 <= codePoint && codePoint <= 0x7F) {
-        result[index] = codePoint;
-        continue;
-      }
-      // “Let `pointer` be the index pointer for `code point` in index
-      // single-byte.”
-      if (INDEX_BY_CODE_POINT.has(codePoint)) {
-        const pointer = INDEX_BY_CODE_POINT.get(codePoint);
-        // “Return a byte whose value is `pointer + 0x80`.”
-        result[index] = pointer + 0x80;
-      }
-      else {
-        result[index] = "?".charCodeAt(0);
-      }
-    }
-    return result;
-  };
-</script>
-
 <body onload='populate_usable_devices(), add_page()'>
   <hr>
+  
   <h1>Optional step</h1>
   <table style='border:none;width:100%;font-size:50px;padding:10px'>
     <tr>
@@ -620,6 +148,7 @@
         <select id='select_tool' onchange='change_tool(this.selectedIndex)'>
           <option>Acceleration timer</option>
           <option>Oil level gauge</option>
+          <option>Engine mileage</option>
         </select>
       </td>
       <td>
@@ -809,6 +338,7 @@
   //Tool objects
   var acceleration_timer_tool = {};
   var oil_level_checker_tool = {};
+  var engine_mileage_tool = {};
   
   //Currently used modules
   var used_kwp_devices = [0, 0, 0, 0, 0];
@@ -871,6 +401,22 @@
           delete_tool_source_config_table();
         }
         break;
+      
+      case 2: //Engine mileage
+        //Set the checkbox' checked state based on the tool's enabled state
+        var enable_tool_checkbox = document.getElementById('enable_tool_checkbox');
+        enable_tool_checkbox.checked = engine_mileage_tool.enabled;
+        
+        //If checked, add the config table and update it
+        if (enable_tool_checkbox.checked) {
+          create_tool_source_config_table(tool);
+          show_engine_mileage_tool_source();
+        }
+        //Otherwise, delete the config table
+        else {
+          delete_tool_source_config_table();
+        }
+        break;
     }
   }
   
@@ -909,6 +455,19 @@
           '<tr><th colspan=100>Oil level values</th></tr>' +
           '<tr id="oil_level_checker_tool_range_header_row"></tr>' +
           '<tr id="oil_level_checker_tool_range_data_row"></tr>' +
+          '</table>';
+        break;
+      
+      case 2: //Engine mileage
+        tool_source_config_table_data.innerHTML =
+          '<table style="border:none">' +
+          '<tr><th colspan=100>Mileage source (km)</th></tr>' +
+          '<tr id="engine_mileage_tool_source_header_row"></tr>' +
+          '<tr id="engine_mileage_tool_source_data_row"></tr>' +
+          '</table>' +
+          '<table style="border:none">' +
+          '<tr><th>Mileage offset</th></tr>' +
+          '<tr><td><input type="number" id="input_mileage_offset" onchange="set_mileage_offset(this)"></td></tr>' +
           '</table>';
         break;
     }
@@ -955,6 +514,19 @@
         //Otherwise, disable the tool
         else {
           oil_level_checker_tool = {
+            enabled: 0
+          };
+        }
+        break;
+      
+      case 2:
+        //If the tool is enabled, update its config table
+        if (state) {
+          change_engine_mileage_tool_source_protocol(0);
+        }
+        //Otherwise, disable the tool
+        else {
+          engine_mileage_tool = {
             enabled: 0
           };
         }
@@ -1110,8 +682,8 @@
         if (module_to_search_for != 0) {
           //Search for the parameter's device in the list of KWP modules
           var found = false;
-          for(i = 0; i < KWP_control_units.length; i++) {
-            if (module_to_search_for === parseInt(KWP_control_units[i].substring(0, 2), 16)) {
+          for(i = 0; i < UDS_control_units.length; i++) {
+            if (module_to_search_for === parseInt(UDS_control_units[i].substring(0, 2), 16)) {
               //Select the currently stored module
               select_speed_device.selectedIndex = i;
               found = true;
@@ -1383,8 +955,8 @@
         if (module_to_search_for != 0) {
           //Search for the parameter's device in the list of KWP modules
           var found = false;
-          for(i = 0; i < KWP_control_units.length; i++) {
-            if (module_to_search_for === parseInt(KWP_control_units[i].substring(0, 2), 16)) {
+          for(i = 0; i < UDS_control_units.length; i++) {
+            if (module_to_search_for === parseInt(UDS_control_units[i].substring(0, 2), 16)) {
               //Select the currently stored module
               select_oil_level_device.selectedIndex = i;
               found = true;
@@ -1433,6 +1005,197 @@
         input_oil_temperature_uds_factor.value = oil_level_checker_tool.factor_temp;
         input_oil_temperature_uds_divisor.value = oil_level_checker_tool.divisor_temp;
         input_oil_temperature_uds_offset.value = oil_level_checker_tool.offset_temp;
+        break;
+    }
+  }
+  
+  function change_engine_mileage_tool_source_protocol(protocol) {
+    switch (protocol) {
+      case 0:
+        engine_mileage_tool = {
+          enabled: 1,
+          km_offset: 0,
+          protocol: 0,
+          module: 0,
+          block: 1,
+          index: 1
+        };
+        break;
+      
+      case 1:
+        engine_mileage_tool = {
+          enabled: 1,
+          km_offset: 0,
+          protocol: 1,
+          module: 0,
+          identifier: 0,
+          endianness: 0,
+          size: 1,
+          sign: 0,
+          factor: 1,
+          divisor: 1,
+          offset: 0
+        };
+        break;
+    }
+    
+    show_engine_mileage_tool_source();
+  }
+  
+  function show_engine_mileage_tool_source() {
+    var protocol = engine_mileage_tool.protocol;
+    
+    var input_mileage_offset = document.getElementById('input_mileage_offset');
+    input_mileage_offset.value = engine_mileage_tool.km_offset;
+    
+    var engine_mileage_tool_source_header_row = document.getElementById('engine_mileage_tool_source_header_row');
+    var engine_mileage_tool_source_data_row = document.getElementById('engine_mileage_tool_source_data_row');
+    
+    switch (protocol) {
+      case 0:
+        engine_mileage_tool_source_header_row.innerHTML =
+          '<th>Protocol</th>' + 
+          '<th>Device</th>'+
+          '<th>Block</th>' + 
+          '<th>Index</th>';
+        
+        engine_mileage_tool_source_data_row.innerHTML =
+          '<td>' + 
+          '<select id="select_mileage_protocol" onchange=change_engine_mileage_tool_source_protocol(this.selectedIndex)>' +
+          '<option selected>KWP</option>' +
+          '<option>UDS</option>' +
+          '</select>' +
+          '</td>' +
+          '<td>' + 
+          '<select id="select_mileage_device" onchange="change_mileage_device(this)">' +
+          '</select>' +
+          '</td>' +
+          '<td><select id="select_mileage_kwp_block" onchange="set_mileage_kwp_block(this)"></select></td>' +
+          '<td><select id="select_mileage_kwp_index" onchange="set_mileage_kwp_index(this)"></select></td>';
+        
+        //Populate the device drop-down
+        var select_mileage_device = document.getElementById('select_mileage_device');
+        for (i = 0; i < KWP_control_units.length; i++) {
+          select_mileage_device.options.add(new Option(KWP_control_units[i]));
+        }
+        
+        //Search for the currently stored module
+        var module_to_search_for = engine_mileage_tool.module;
+        if (module_to_search_for != 0) {
+          //Search for the parameter's device in the list of KWP modules
+          var found = false;
+          for(i = 0; i < KWP_control_units.length; i++) {
+            if (module_to_search_for === parseInt(KWP_control_units[i].substring(0, 2), 16)) {
+              //Select the currently stored module
+              select_mileage_device.selectedIndex = i;
+              found = true;
+              break;
+            }
+          }
+          
+          //If the module isn't found, set it to "not used"
+          if (!found) {
+            select_mileage_device.selectedIndex = 0;
+            engine_mileage_tool.module = 0;
+          }
+        }
+        else {
+          select_mileage_device.selectedIndex = 0;
+        }
+        
+        //Populate the block drop-down
+        var select_mileage_kwp_block = document.getElementById('select_mileage_kwp_block');
+        for (i = 1; i <= 254; i++) {
+          select_mileage_kwp_block.options.add(new Option(i));
+        }
+        
+        //Populate the index drop-down
+        var select_mileage_kwp_index = document.getElementById('select_mileage_kwp_index');
+        for (i = 1; i <= 4; i++) {
+          select_mileage_kwp_index.options.add(new Option(i));
+        }
+        
+        //Select the block and index according to what is stored
+        select_mileage_kwp_block.selectedIndex = engine_mileage_tool.block - 1;
+        select_mileage_kwp_index.selectedIndex = engine_mileage_tool.index - 1;
+        break;
+      
+      case 1:
+        engine_mileage_tool_source_header_row.innerHTML =
+          '<th>Protocol</th>' + 
+          '<th>Device</th>'+
+          '<th>ID</th>' + 
+          '<th>E</th>' +
+          '<th>SZ</th>' +
+          '<th>SG</th>' +
+          '<th>F</th>' +
+          '<th>D</th>' +
+          '<th>O</th>';
+        
+        engine_mileage_tool_source_data_row.innerHTML =
+          '<td>' + 
+          '<select id="select_mileage_protocol" onchange=change_engine_mileage_tool_source_protocol(this.selectedIndex)>' +
+          '<option>KWP</option>' +
+          '<option selected>UDS</option>' +
+          '</select>' +
+          '</td>' +
+          '<td>' + 
+          '<select id="select_mileage_device" onchange="change_mileage_device(this)">' +
+          '</select>' +
+          '</td>' +
+          '<td><input type="number" id="input_mileage_uds_identifier" onchange="set_mileage_uds_identifier(this)"></input></td>' +
+          '<td><select id="select_mileage_uds_endianness" onchange="set_mileage_uds_endianness(this)"><option>Little<option>Big</select></td>' +
+          '<td><select id="select_mileage_uds_data_size" onchange="set_mileage_uds_size(this)"><option>1<option>2<option>4</select></td>' +
+          '<td><select id="select_mileage_uds_data_sign" onchange="set_mileage_uds_sign(this)"><option>Unsigned<option>Signed</select></td>' +
+          '<td><input type="number" id="input_mileage_uds_factor" onchange="set_mileage_uds_factor(this)"></input></td>' +
+          '<td><input type="number" id="input_mileage_uds_divisor" onchange="set_mileage_uds_divisor(this)"></input></td>' +
+          '<td><input type="number" id="input_mileage_uds_offset" onchange="set_mileage_uds_offset(this)"></input></td>';
+        
+        //Populate the device drop-down
+        var select_mileage_device = document.getElementById('select_mileage_device');
+        for (i = 0; i < UDS_control_units.length; i++) {
+          select_mileage_device.options.add(new Option(UDS_control_units[i]));
+        }
+        
+        //Search for the currently stored module
+        var module_to_search_for = engine_mileage_tool.module;
+        if (module_to_search_for != 0) {
+          //Search for the parameter's device in the list of KWP modules
+          var found = false;
+          for(i = 0; i < UDS_control_units.length; i++) {
+            if (module_to_search_for === parseInt(UDS_control_units[i].substring(0, 2), 16)) {
+              //Select the currently stored module
+              select_mileage_device.selectedIndex = i;
+              found = true;
+              break;
+            }
+          }
+          
+          //If the module isn't found, set it to "not used"
+          if (!found) {
+            select_mileage_device.selectedIndex = 0;
+            engine_mileage_tool.module = 0;
+          }
+        }
+        else {
+          select_mileage_device.selectedIndex = 0;
+        }
+        
+        var input_mileage_uds_identifier = document.getElementById('input_mileage_uds_identifier');
+        var select_mileage_uds_endianness = document.getElementById('select_mileage_uds_endianness');
+        var select_mileage_uds_data_size = document.getElementById('select_mileage_uds_data_size');
+        var select_mileage_uds_data_sign = document.getElementById('select_mileage_uds_data_sign');
+        var input_mileage_uds_factor = document.getElementById('input_mileage_uds_factor');
+        var input_mileage_uds_divisor = document.getElementById('input_mileage_uds_divisor');
+        var input_mileage_uds_offset = document.getElementById('input_mileage_uds_offset');
+        
+        input_mileage_uds_identifier.value = engine_mileage_tool.identifier;
+        select_mileage_uds_endianness.selectedIndex = engine_mileage_tool.endianness;
+        select_mileage_uds_data_size.value = engine_mileage_tool.size;
+        select_mileage_uds_data_sign.selectedIndex = engine_mileage_tool.sign;
+        input_mileage_uds_factor.value = engine_mileage_tool.factor;
+        input_mileage_uds_divisor.value = engine_mileage_tool.divisor;
+        input_mileage_uds_offset.value = engine_mileage_tool.offset;
         break;
     }
   }
@@ -1908,6 +1671,10 @@
     oil_level_checker_tool.module = parseInt(obj.value.substring(0, 2), 16);
   }
   
+  function change_mileage_device(obj) {
+    engine_mileage_tool.module = parseInt(obj.value.substring(0, 2), 16);
+  }
+  
   function set_speed_kwp_block(obj) {
     acceleration_timer_tool.block = obj.selectedIndex + 1;
   }
@@ -1920,6 +1687,10 @@
     oil_level_checker_tool.block_temp = obj.selectedIndex + 1;
   }
   
+  function set_mileage_kwp_block(obj) {
+    engine_mileage_tool.block = obj.selectedIndex + 1;
+  }
+  
   function set_speed_kwp_index(obj) {
     acceleration_timer_tool.index = obj.selectedIndex + 1;
   }
@@ -1930,6 +1701,10 @@
   
   function set_oil_temperature_kwp_index(obj) {
     oil_level_checker_tool.index_temp = obj.selectedIndex + 1;
+  }
+  
+  function set_mileage_kwp_index(obj) {
+    engine_mileage_tool.index = obj.selectedIndex + 1;
   }
   
   function set_speed_uds_identifier(obj) {
@@ -2007,6 +1782,31 @@
     oil_level_checker_tool.identifier_temp = identifier;
   }
   
+  function set_mileage_uds_identifier(obj) {
+    var identifier = parseInt(obj.value);
+    
+    if (isNaN(identifier)) {
+      identifier = 0;
+      obj.value = 0;
+    }
+    else {
+      if (identifier < 0) {
+        identifier = 0;
+        obj.value = 0;
+      }
+      
+      if (identifier > 65535) {
+        identifier = 65535;
+        obj.value = 65535;
+      }
+      
+      identifier = Math.trunc(identifier);
+      obj.value = identifier;
+    }
+    
+    engine_mileage_tool.identifier = identifier;
+  }
+  
   function set_speed_uds_endianness(obj) {
     acceleration_timer_tool.endianness = obj.selectedIndex;
   }
@@ -2019,22 +1819,28 @@
     oil_level_checker_tool.endianness_temp = obj.selectedIndex;
   }
   
+  function set_mileage_uds_endianness(obj) {
+    engine_mileage_tool.endianness = obj.selectedIndex;
+  }
+  
   function set_speed_uds_size(obj) {
     var size = parseInt(obj.value);
-    
     acceleration_timer_tool.size = size;
   }
   
   function set_oil_level_uds_size(obj) {
     var size = parseInt(obj.value);
-    
     oil_level_checker_tool.size = size;
   }
   
   function set_oil_temperature_uds_size(obj) {
     var size = parseInt(obj.value);
-    
     oil_level_checker_tool.size_temp = size;
+  }
+  
+  function set_mileage_uds_size(obj) {
+    var size = parseInt(obj.value);
+    engine_mileage_tool.size = size;
   }
   
   function set_speed_uds_sign(obj) {
@@ -2047,6 +1853,10 @@
   
   function set_oil_temperature_uds_sign(obj) {
     oil_level_checker_tool.sign_temp = obj.selectedIndex;
+  }
+  
+  function set_mileage_uds_sign(obj) {
+    engine_mileage_tool.sign = obj.selectedIndex;
   }
   
   function set_speed_uds_factor(obj) {
@@ -2124,6 +1934,31 @@
     oil_level_checker_tool.factor_temp = factor;
   }
   
+  function set_mileage_uds_factor(obj) {
+    var factor = parseInt(obj.value);
+    
+    if (isNaN(factor)) {
+      factor = 0;
+      obj.value = 0;
+    }
+    else {
+      if (factor < 0) {
+        factor = 0;
+        obj.value = 0;
+      }
+      
+      if (factor > 65535) {
+        factor = 65535;
+        obj.value = 65535;
+      }
+      
+      factor = Math.trunc(factor);
+      obj.value = factor;
+    }
+    
+    engine_mileage_tool.factor = factor;
+  }
+  
   function set_speed_uds_divisor(obj) {
     var divisor = parseInt(obj.value);
     
@@ -2199,6 +2034,31 @@
     oil_level_checker_tool.divisor_temp = divisor;
   }
   
+  function set_mileage_uds_divisor(obj) {
+    var divisor = parseInt(obj.value);
+    
+    if (isNaN(divisor)) {
+      divisor = 0;
+      obj.value = 0;
+    }
+    else {
+      if (divisor < 0) {
+        divisor = 0;
+        obj.value = 0;
+      }
+      
+      if (divisor > 65535) {
+        divisor = 65535;
+        obj.value = 65535;
+      }
+      
+      divisor = Math.trunc(divisor);
+      obj.value = divisor;
+    }
+    
+    engine_mileage_tool.divisor = divisor;
+  }
+  
   function set_speed_uds_offset(obj) {
     var offset = parseFloat(obj.value);
     if (isNaN(offset)) {
@@ -2227,6 +2087,32 @@
     }
     
     oil_level_checker_tool.offset_temp = offset;
+  }
+  
+  function set_mileage_uds_offset(obj) {
+    var offset = parseFloat(obj.value);
+    if (isNaN(offset)) {
+      offset = 0;
+      obj.value = 0;
+    }
+    
+    engine_mileage_tool.offset = offset;
+  }
+  
+  function set_mileage_offset(obj) {
+    var km_offset = parseFloat(obj.value);
+    if (isNaN(km_offset)) {
+      km_offset = 0;
+      obj.value = 0;
+    }
+    else {
+      if (km_offset < 0) {
+        km_offset = 0;
+        obj.value = 0;
+      }
+    }
+    
+    engine_mileage_tool.km_offset = km_offset;
   }
   
   function set_oil_level_min(obj) {
@@ -3631,8 +3517,15 @@
       return;
     }
     
+    var config_version = (file_buffer[3] << 8) | file_buffer[2];
+    if (config_version < 512) {
+      alert("The configuration must be updated to a newer version.");
+      window.location.assign("config_updater.html");
+      return;
+    }
+    
     //Check if the acceleration timer tool is enabled
-    var acceleration_timer_tool_start = 2;
+    var acceleration_timer_tool_start = 4;
     acceleration_timer_tool.enabled = file_buffer[acceleration_timer_tool_start];
     
     var acceleration_timer_tool_end = acceleration_timer_tool_start + 1;
@@ -3824,10 +3717,82 @@
       }
     }
     
+    //Check if the engine mileage tool is enabled
+    var engine_mileage_tool_start = oil_level_checker_tool_end;
+    engine_mileage_tool.enabled = file_buffer[engine_mileage_tool_start];
+    
+    var engine_mileage_tool_end = engine_mileage_tool_start + 1;
+    if (engine_mileage_tool.enabled) {
+      var engine_mileage_tool_km_offset_array_start = engine_mileage_tool_end;
+      var engine_mileage_tool_km_offset_array_end = engine_mileage_tool_km_offset_array_start + 4;
+      var engine_mileage_tool_km_offset_array = file_buffer.slice(engine_mileage_tool_km_offset_array_start, engine_mileage_tool_km_offset_array_end);
+      var engine_mileage_tool_km_offset = (new Uint32Array(engine_mileage_tool_km_offset_array.buffer))[0];
+      engine_mileage_tool.km_offset = engine_mileage_tool_km_offset;
+      
+      var engine_mileage_tool_protocol_start = engine_mileage_tool_km_offset_array_end;
+      engine_mileage_tool.protocol = file_buffer[engine_mileage_tool_protocol_start];
+      
+      var engine_mileage_tool_module_start = engine_mileage_tool_protocol_start + 1;
+      engine_mileage_tool.module = file_buffer[engine_mileage_tool_module_start];
+      
+      switch (engine_mileage_tool.protocol) {
+        case 0:
+          var engine_mileage_tool_block_start = engine_mileage_tool_module_start + 1;
+          engine_mileage_tool.block = file_buffer[engine_mileage_tool_block_start];
+          
+          var engine_mileage_tool_index_start = engine_mileage_tool_block_start + 1;
+          engine_mileage_tool.index = file_buffer[engine_mileage_tool_index_start];
+          
+          engine_mileage_tool_end = engine_mileage_tool_index_start + 1;
+          break;
+        
+        case 1:
+          var engine_mileage_tool_identifier_array_start = engine_mileage_tool_module_start + 1;
+          var engine_mileage_tool_identifier_array_end = engine_mileage_tool_identifier_array_start + 2;
+          var engine_mileage_tool_identifier_array = file_buffer.slice(engine_mileage_tool_identifier_array_start, engine_mileage_tool_identifier_array_end);
+          var engine_mileage_tool_identifier = (new Uint16Array(engine_mileage_tool_identifier_array.buffer))[0];
+          engine_mileage_tool.identifier = engine_mileage_tool_identifier;
+                      
+          var engine_mileage_tool_endianness_start = engine_mileage_tool_identifier_array_end;
+          var engine_mileage_tool_endianness = file_buffer[engine_mileage_tool_endianness_start];
+          engine_mileage_tool.endianness = engine_mileage_tool_endianness;
+          
+          var engine_mileage_tool_size_start = engine_mileage_tool_endianness_start + 1;
+          var engine_mileage_tool_size = file_buffer[engine_mileage_tool_size_start];
+          engine_mileage_tool.size = engine_mileage_tool_size;
+          
+          var engine_mileage_tool_sign_start = engine_mileage_tool_size_start + 1;
+          var engine_mileage_tool_sign = file_buffer[engine_mileage_tool_sign_start];
+          engine_mileage_tool.sign = engine_mileage_tool_sign;
+          
+          var engine_mileage_tool_factor_array_start = engine_mileage_tool_sign_start + 1;
+          var engine_mileage_tool_factor_array_end = engine_mileage_tool_factor_array_start + 2;
+          var engine_mileage_tool_factor_array = file_buffer.slice(engine_mileage_tool_factor_array_start, engine_mileage_tool_factor_array_end);
+          var engine_mileage_tool_factor = (new Uint16Array(engine_mileage_tool_factor_array.buffer))[0];
+          engine_mileage_tool.factor = engine_mileage_tool_factor;
+          
+          var engine_mileage_tool_divisor_array_start = engine_mileage_tool_factor_array_end;
+          var engine_mileage_tool_divisor_array_end = engine_mileage_tool_divisor_array_start + 2;
+          var engine_mileage_tool_divisor_array = file_buffer.slice(engine_mileage_tool_divisor_array_start, engine_mileage_tool_divisor_array_end);
+          var engine_mileage_tool_divisor = (new Uint16Array(engine_mileage_tool_divisor_array.buffer))[0];
+          engine_mileage_tool.divisor = engine_mileage_tool_divisor;
+          
+          var engine_mileage_tool_offset_array_start = engine_mileage_tool_divisor_array_end;
+          var engine_mileage_tool_offset_array_end = engine_mileage_tool_offset_array_start + 4;
+          var engine_mileage_tool_offset_array = file_buffer.slice(engine_mileage_tool_offset_array_start, engine_mileage_tool_offset_array_end);
+          var engine_mileage_tool_offset = (new Float32Array(engine_mileage_tool_offset_array.buffer))[0];
+          engine_mileage_tool_offset = engine_mileage_tool_offset.toFixed(2);
+          engine_mileage_tool.offset = engine_mileage_tool_offset;
+          
+          engine_mileage_tool_end = engine_mileage_tool_offset_array_end;
+          break;
+      }
+    }
+    
     change_tool(0);
     
     //Load the used KWP modules
-    var used_kwp_devices_start = oil_level_checker_tool_end;
+    var used_kwp_devices_start = engine_mileage_tool_end;
     for (i = 0; i < used_kwp_devices.length; i++) {
       used_kwp_devices[i] = file_buffer[used_kwp_devices_start + i];
     }
@@ -4270,7 +4235,7 @@
   }
   
   function download_file() {
-    var file_buffer = [0x55, 0xAA];
+    var file_buffer = [0x55, 0xAA, 0x00, 0x02];
     
     file_buffer = file_buffer.concat(acceleration_timer_tool.enabled); //acceleration tool enable status
     if (acceleration_timer_tool.enabled) {
@@ -4341,6 +4306,35 @@
           file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint16Array([oil_level_checker_tool.factor_temp])).buffer))); //oil temp factor
           file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint16Array([oil_level_checker_tool.divisor_temp])).buffer))); //oil temp divisor
           file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Float32Array([oil_level_checker_tool.offset_temp])).buffer))); //oil temp offset
+          break;
+      }
+    }
+    
+    file_buffer = file_buffer.concat(engine_mileage_tool.enabled); //engine mileage tool enable status
+    if (engine_mileage_tool.enabled) {
+      if (!engine_mileage_tool.module) {
+        alert("Error: The engine mileage tool is enabled but has an invalid mileage source module!");
+        return;
+      }
+      
+      file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint32Array([engine_mileage_tool.km_offset])).buffer))); //mileage km offset
+      
+      file_buffer = file_buffer.concat(engine_mileage_tool.protocol); //mileage protocol
+      file_buffer = file_buffer.concat(engine_mileage_tool.module); //mileage module
+      switch (engine_mileage_tool.protocol) {
+        case 0:
+          file_buffer = file_buffer.concat(engine_mileage_tool.block); //mileage block
+          file_buffer = file_buffer.concat(engine_mileage_tool.index); //mileage block index
+          break;
+        
+        case 1:
+          file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint16Array([engine_mileage_tool.identifier])).buffer))); //mileage identifier
+          file_buffer = file_buffer.concat(engine_mileage_tool.endianness); //mileage endianness
+          file_buffer = file_buffer.concat(engine_mileage_tool.size); //mileage byte size
+          file_buffer = file_buffer.concat(engine_mileage_tool.sign); //mileage sign
+          file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint16Array([engine_mileage_tool.factor])).buffer))); //mileage factor
+          file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint16Array([engine_mileage_tool.divisor])).buffer))); //mileage divisor
+          file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Float32Array([engine_mileage_tool.offset])).buffer))); //mileage offset
           break;
       }
     }
