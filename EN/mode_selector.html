@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scaleable=no">
     <title>CANFIS</title>
     <link rel="icon" type="image/x-icon" href="media/favicon.ico">
   </head>
@@ -12,6 +12,9 @@
       font-size: 20px;
       color: white;
       background-image: url('media/background.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
       background-size: cover;
     }
     
@@ -24,6 +27,7 @@
       border: 2px solid white;
       border-radius: 10px;
       padding-bottom: 1em;
+      width: 50vmin;
     }
     
     a:link, a:visited, a:active {
@@ -32,7 +36,7 @@
     }
     
     img {
-      width: 100px;
+      width: 100%;
     }
   </style>
   
@@ -46,7 +50,7 @@
               <figure>
                 <img src="media/configure_ecu_data.png">
               </figure>
-              <figcaption>Configuration editor</figcaption>
+              <figcaption>Config editor</figcaption>
             </center>
             </a>
           </td>
