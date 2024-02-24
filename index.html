@@ -26,16 +26,11 @@
     td {
       border: 2px solid white;
       border-radius: 10px;
-      padding-bottom: 1em;
     }
     
     a:link, a:visited, a:active {
       text-decoration: none;
       color: white;
-    }
-    
-    figcaption {
-      text-align: center;
     }
     
     img {
@@ -44,6 +39,18 @@
     
     td, #logo {
       width: 50vmin;
+      text-align: center;
+    }
+
+    .wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .wrap span {
+      width: 100%;
+      align-self: flex-end;
     }
   </style>
   
@@ -55,29 +62,23 @@
       
       <table>
         <tr>
-          <td>
-            <a href="DE/mode_selector.html" style="display:block;">
-            <figure>
-              <img src="media/flag_de.png">
-            </figure>
-            <figcaption>Deutsch</figcaption>
-            </a>
+          <td onclick="location.href='DE/mode_selector.html'">
+            <img src="media/flag_de.png">
+            <div class="wrap">
+              <span>DE</span>
+            </div>
           </td>
-          <td>
-            <a href="EN/mode_selector.html" style="display:block;">
-            <figure>
-              <img src="media/flag_us.png">
-            </figure>
-            <figcaption>English</figcaption>
-            </a>
+          <td onclick="location.href='EN/mode_selector.html'">
+            <img src="media/flag_us.png">
+            <div class="wrap">
+              <span>EN</span>
+            </div>
           </td>
-          <td>
-            <a href="PL/mode_selector.html" style="display:block;">
-            <figure>
-              <img src="media/flag_pl.png">
-            </figure>
-            <figcaption>Polski</figcaption>
-            </a>
+          <td onclick="location.href='PL/mode_selector.html'">
+            <img src="media/flag_pl.png">
+            <div class="wrap">
+              <span>PL</span>
+            </div>
           </td>
         </tr>
       </table>
