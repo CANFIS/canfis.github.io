@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
-	<title>Configuration editor</title>
 </head>
 
 <script src="FileSaver.js"></script>
 <script src="iso_8859_2.js"></script>
+<script src="config_editor_strings_EN.js"></script>
 
 <style>
   body {
@@ -120,16 +120,15 @@
   }
 </style>
 
-<body onload='populate_usable_devices(), add_page()'>
+<body onload='load_strings(), populate_usable_devices(), add_page()'>
   <hr>
   
-  <h1>Optional step</h1>
+  <h1 id='S_optional_step'></h1>
   <table style='border:none;width:100%;font-size:50px;padding:10px'>
     <tr>
       <td style='border:none'>
-        <label class='custom-file-upload'>
+        <label id='S_edit_prev_config' class='custom-file-upload'>
           <input type='file' onchange='load_file(event)'/>
-          Edit a previous configuration
         </label>
       </td>
     </tr>
@@ -137,25 +136,43 @@
   
   <hr>
   
-  <h1>Step 1</h1>
+  <h1 id='S_step_1'></h1>
   <table>
     <tr>
-      <th>Choose included tools</th>
-      <th>Configure included tools</th>
+      <th id='S_settings' colspan=2></th>
+    </tr>
+    <tr>
+      <td id='S_controls'></td>
+      <td>
+        <select id='select_control_scheme' onchange='change_setting_control_scheme(this.selectedIndex)'>
+          <option id='S_select_up_down'></option>
+          <option id='S_select_reset'></option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  
+  <hr>
+  
+  <h1 id='S_step_2'></h1>
+  <table>
+    <tr>
+      <th id='S_choose_tools'></th>
+      <th id='S_configure_tools'></th>
     </tr>
     <tr>
       <td>
         <select id='select_tool' onchange='change_tool(this.selectedIndex)'>
-          <option>Acceleration timer</option>
-          <option>Oil level gauge</option>
-          <option>Engine mileage</option>
+          <option id='S_acceleration_timer'></option>
+          <option id='S_oil_level_gauge'></option>
+          <option id='S_engine_mileage'></option>
         </select>
       </td>
       <td>
         <table style='border:none'>
           <tr>
-            <td>
-              <input type="checkbox" id='enable_tool_checkbox' onchange='enable_tool(this.checked)'>Enabled
+            <td id='S_enabled'>
+              <input type="checkbox" id='enable_tool_checkbox' onchange='enable_tool(this.checked)'>
             </td>
             <td style='border:none' id='tool_source_config_table_data'></td>
           </tr>
@@ -167,10 +184,10 @@
   <br>
   <hr>
   
-  <h1>Step 2</h1>
+  <h1 id='S_step_3'></h1>
   <table>
     <tr>
-      <th colspan=2>Choose modules for ECU data</th>
+      <th id='S_choose_modules' colspan=2></th>
     </tr>
     <tr>
       <td>KWP</td>
@@ -205,20 +222,20 @@
   <br>
   <hr>
   
-  <h1>Step 3</h1>
+  <h1 id='S_step_4'></h1>
   <table id='main_table'>
     <tr>
-      <th colspan=2>Configure ECU data</th>
+      <th id='S_configure_ecu_data' colspan=2></th>
     </tr>
     <tr>
       <td>
         <table>
           <tr>
-            <th colspan=2>Pages</th>
+            <th id='S_pages' colspan=2></th>
           </tr>
           <tr>
-            <td>Number</td>
-            <td>Title</td>
+            <td id='S_number'></td>
+            <td id='S_title'></td>
           </tr>
           <tr>
             <td>
@@ -227,7 +244,7 @@
               <button type='button' id='add_page_button' onclick=add_page()>+</button>
               <button type='button' id='remove_page_button' onclick=remove_page()>-</button>
             </td>
-            <td><input type='text' id='input_page_title' placeholder='Page title' onchange='set_page_title(this)'></input></td>
+            <td><input type='text' id='input_page_title' onchange='set_page_title(this)'></input></td>
           </tr>
         </table>
       </td>
@@ -237,7 +254,7 @@
         
         <table>
           <tr>
-            <th colspan=100>Parameter source</th>
+            <th id='S_parameter_source' colspan=100></th>
           </tr>
           <tr id='protocol_header_row'></tr>
           <tr id='protocol_data_row'></tr>
@@ -247,7 +264,7 @@
         
         <table>
           <tr>
-            <th colspan=100>Value display</th>
+            <th id='S_value_display' colspan=100></th>
           </tr>
           <tr id='display_header_row'></tr>
           <tr id='display_data_row'></tr>
@@ -257,7 +274,7 @@
         
         <table>
           <tr>
-            <th colspan=100>Value warning</th>
+            <th id='S_value_warning' colspan=100></th>
           </tr>
           <tr id='warning_header_row'></tr>
           <tr id='warning_data_row'></tr>
@@ -267,12 +284,12 @@
         
         <table>
           <tr>
-            <th colspan=100>Graph parameters</th>
+            <th id='S_graph_parameters' colspan=100></th>
           </tr>
           <tr>
-            <th>Bottom</th>
-            <th>Top</th>
-            <th>Rate</th>
+            <th id='S_bottom'></th>
+            <th id='S_top'></th>
+            <th id='S_rate'></th>
           </tr>
           <tr>
             <td><input type='number' id='input_graph_bottom' onchange='set_graph_bottom(this)'></td>
@@ -289,12 +306,12 @@
       <td>
         <table>
           <tr>
-            <th colspan=3>Parameters</th>
+            <th id='S_parameters' colspan=3></th>
           </tr>
           <tr>
-            <td>Number</td>
-            <td>Name</td>
-            <td>Units</td>
+            <td id='S_number'></td>
+            <td id='S_name'></td>
+            <td id='S_units'></td>
           </tr>
           <tr>
             <td>
@@ -303,8 +320,8 @@
               <button type='button' id='add_parameter_button' onclick=add_parameter()>+</button>
               <button type='button' id='remove_parameter_button' onclick=remove_parameter()>-</button>
             </td>
-            <td><input type="text" id='input_parameter_name' placeholder='Parameter name' onchange='set_parameter_name(this)'></input></td>
-            <td><input type="text" id='input_parameter_units' placeholder='Measurement units' onchange='set_parameter_units(this)'></input></td>
+            <td><input type="text" id='input_parameter_name' onchange='set_parameter_name(this)'></input></td>
+            <td><input type="text" id='input_parameter_units' onchange='set_parameter_units(this)'></input></td>
           </tr>
         </table>
       </td>
@@ -314,13 +331,12 @@
   <br>
   <hr>
   
-  <h1>Step 4</h1>
+  <h1 id='S_step_5'></h1>
   <table style='border:none;width:100%;font-size:50px;padding:10px'>
     <tr>
       <td style='border:none'>
-        <label class='custom-file-upload'>
+        <label id='S_download_config' class='custom-file-upload'>
           <input type='button' onclick='download_file()'/>
-          Download the current configuration
         </label>
       </td>
     </tr>
@@ -332,8 +348,10 @@
 <script>
   //Prevent leaving the page accidentally
   window.onbeforeunload = function() {
-    return "Data will be lost if you leave the page.";
+    return S_data_will_be_lost;
   };
+  
+  var setting_control_scheme = 0;
   
   //Tool objects
   var acceleration_timer_tool = {};
@@ -345,11 +363,26 @@
   var used_uds_devices = [0, 0, 0, 0, 0];
   
   //Available modules
-  var KWP_control_units = ["00 - Not used", "01 - Engine", "02 - Auto Trans", "04 - Steering Angle", "05 - Access/Start Authentication", "06 - Seat Memory Passenger", "07 - Control Head", "08 - Auto HVAC", "09 - Central Electrics", "0D - Slide Door, Left", "0E - Media Player 1", "0F - Digital Radio", "10 - Parking/Steering Assist", "11 - Engine II", "13 - Automatic Distance Regulation", "14 - Suspension Electrics", "15 - Airbags", "16 - Steering Wheel", "17 - Instruments", "18 - Auxiliary Heating", "19 - CAN Gateway", "1B - Active steering", "1C - Position Sensing", "1D - Driver Identification", "1E - Media Player 2", "1F - Satellite Tuner", "20 - High Beam Assist", "21 - Engine III / Battery 2", "22 - AWD", "23 - Brake Booster", "25 - Immobilizer", "26 - Auto Roof", "27 - Control Head, Rear", "28 - HVAC, Rear", "29 - Left Light", "2D - Intercom", "2E - Media Player 3", "2F - Digital TV", "30 - Special Function II", "32 - Differential Locks", "34 - Level Control", "36 - Seat Memory, Driver", "37 - Navigation", "38 - Roof Electrics", "39 - Right Light", "3C - Lane Change", "3D - Special Function", "3E - Media Player 4", "42 - Door Electrics, Driver", "44 - Steering Assist", "46 - Central Convenience", "47 - Sound System", "48 - Seat, Rear, Driver Side", "4B - Multifunction Module", "4C - Tire Pressure II", "4E - Control Head Right Rear", "4F - Central Electrics II", "52 - Door Electrics, Passenger", "53 - Parking Brake", "55 - Headlight Range", "56 - Radio", "57 - TV Tuner", "59 - Tow Protection", "5B - Seat, Rear, Passenger Side", "5C - Lane Maintaining", "5D - Operations", "5E - Control Head Left Rear", "5F - Infotainment Electrics", "61 - Battery Regulation", "62 - Door, Rear Left", "63 - Entry Assist, Driver", "65 - Tire Pressure", "66 - Seat, Rear", "67 - Voice Control", "68 - Wiper Electrics", "69 - Trailer", "6B - Aerodynamics", "6C - Back-up Camera", "6D - Trunk Electrics", "6E - Control Head Roof", "6F - Central Convenience II", "71 - Battery Charger", "72 - Door, Rear Right", "73 - Entry Assist, Passenger", "74 - Chassis Control", "75 - Telematics", "76 - Parking Assist", "77 - Telephone", "78 - Slide Door, Right", "7D - Auxiliary Heating", "7E - Control Head Dash", "7F - Infotainment Electrics II"];    
-  var UDS_control_units = ["00 - Not used", "01 - Engine", "02 - Auto Trans", "04 - Steering Angle", "05 - Access/Start Authentication", "06 - Seat Memory Passenger", "08 - Auto HVAC", "09 - Central Electrics", "0C - Rear Axle Steering 2", "0E - Media Player 1", "10 - Parking/Steering Assist", "11 - Engine II", "13 - Automatic Distance Regulation", "14 - Suspension Electrics", "15 - Airbags", "16 - Steering Wheel", "17 - Instruments", "18 - Auxiliary Heating", "19 - CAN Gateway", "1B - Active steering", "20 - High Beam Assist", "21 - Engine III / Battery 2", "22 - AWD", "23 - Brake Booster", "25 - Immobilizer", "26 - Auto Roof", "28 - HVAC, Rear", "2B - Steering Column Lock", "30 - Special Function II", "32 - Differential Locks", "34 - Level Control", "36 - Seat Memory, Driver", "37 - Navigation", "3A - Special Vehicle Assist", "3B - Sensor Electrics", "3C - Lane Change", "3D - Special Function", "40 - AC Compressor", "42 - Door Electrics, Driver", "44 - Steering Assist", "47 - Sound System", "51 - Electric Drive", "52 - Door Electrics, Passenger", "53 - Parking Brake", "55 - Headlight Range", "57 - TV Tuner", "5F - Infotainment Electrics", "60 - Trip Recorder", "65 - Tire Pressure", "69 - Trailer", "6B - Aerodynamics", "6C - Back-up Camera", "6D - Trunk Electrics", "6F - Central Convenience II", "71 - Battery Charger", "75 - Telematics", "76 - Parking Assist", "77 - Telephone", "7F - Infotainment Electrics II"];
+  var KWP_control_units = ["00 - " + S_not_used, "01 - Engine", "02 - Auto Trans", "04 - Steering Angle", "05 - Access/Start Authentication", "06 - Seat Memory Passenger", "07 - Control Head", "08 - Auto HVAC", "09 - Central Electrics", "0D - Slide Door, Left", "0E - Media Player 1", "0F - Digital Radio", "10 - Parking/Steering Assist", "11 - Engine II", "13 - Automatic Distance Regulation", "14 - Suspension Electrics", "15 - Airbags", "16 - Steering Wheel", "17 - Instruments", "18 - Auxiliary Heating", "19 - CAN Gateway", "1B - Active steering", "1C - Position Sensing", "1D - Driver Identification", "1E - Media Player 2", "1F - Satellite Tuner", "20 - High Beam Assist", "21 - Engine III / Battery 2", "22 - AWD", "23 - Brake Booster", "25 - Immobilizer", "26 - Auto Roof", "27 - Control Head, Rear", "28 - HVAC, Rear", "29 - Left Light", "2D - Intercom", "2E - Media Player 3", "2F - Digital TV", "30 - Special Function II", "32 - Differential Locks", "34 - Level Control", "36 - Seat Memory, Driver", "37 - Navigation", "38 - Roof Electrics", "39 - Right Light", "3C - Lane Change", "3D - Special Function", "3E - Media Player 4", "42 - Door Electrics, Driver", "44 - Steering Assist", "46 - Central Convenience", "47 - Sound System", "48 - Seat, Rear, Driver Side", "4B - Multifunction Module", "4C - Tire Pressure II", "4E - Control Head Right Rear", "4F - Central Electrics II", "52 - Door Electrics, Passenger", "53 - Parking Brake", "55 - Headlight Range", "56 - Radio", "57 - TV Tuner", "59 - Tow Protection", "5B - Seat, Rear, Passenger Side", "5C - Lane Maintaining", "5D - Operations", "5E - Control Head Left Rear", "5F - Infotainment Electrics", "61 - Battery Regulation", "62 - Door, Rear Left", "63 - Entry Assist, Driver", "65 - Tire Pressure", "66 - Seat, Rear", "67 - Voice Control", "68 - Wiper Electrics", "69 - Trailer", "6B - Aerodynamics", "6C - Back-up Camera", "6D - Trunk Electrics", "6E - Control Head Roof", "6F - Central Convenience II", "71 - Battery Charger", "72 - Door, Rear Right", "73 - Entry Assist, Passenger", "74 - Chassis Control", "75 - Telematics", "76 - Parking Assist", "77 - Telephone", "78 - Slide Door, Right", "7D - Auxiliary Heating", "7E - Control Head Dash", "7F - Infotainment Electrics II"];    
+  var UDS_control_units = ["00 - " + S_not_used, "01 - Engine", "02 - Auto Trans", "04 - Steering Angle", "05 - Access/Start Authentication", "06 - Seat Memory Passenger", "08 - Auto HVAC", "09 - Central Electrics", "0C - Rear Axle Steering 2", "0E - Media Player 1", "10 - Parking/Steering Assist", "11 - Engine II", "13 - Automatic Distance Regulation", "14 - Suspension Electrics", "15 - Airbags", "16 - Steering Wheel", "17 - Instruments", "18 - Auxiliary Heating", "19 - CAN Gateway", "1B - Active steering", "20 - High Beam Assist", "21 - Engine III / Battery 2", "22 - AWD", "23 - Brake Booster", "25 - Immobilizer", "26 - Auto Roof", "28 - HVAC, Rear", "2B - Steering Column Lock", "30 - Special Function II", "32 - Differential Locks", "34 - Level Control", "36 - Seat Memory, Driver", "37 - Navigation", "3A - Special Vehicle Assist", "3B - Sensor Electrics", "3C - Lane Change", "3D - Special Function", "40 - AC Compressor", "42 - Door Electrics, Driver", "44 - Steering Assist", "47 - Sound System", "51 - Electric Drive", "52 - Door Electrics, Passenger", "53 - Parking Brake", "55 - Headlight Range", "57 - TV Tuner", "5F - Infotainment Electrics", "60 - Trip Recorder", "65 - Tire Pressure", "69 - Trailer", "6B - Aerodynamics", "6C - Back-up Camera", "6D - Trunk Electrics", "6F - Central Convenience II", "71 - Battery Charger", "75 - Telematics", "76 - Parking Assist", "77 - Telephone", "7F - Infotainment Electrics II"];
   
   //Array containing pages' configurations
   var page_array = [];
+  
+  function load_strings() {
+    document.title = S_page_title;
+    
+    for (const str in HTML_strings) {
+      var elms = document.querySelectorAll("#" + str);
+      for(var i = 0; i < elms.length; i++) {
+        elms[i].insertAdjacentHTML("beforeend", HTML_strings[str]);
+      }
+    }
+    
+    document.getElementById('input_page_title').placeholder = S_page_title_placeholder;
+    document.getElementById('input_parameter_name').placeholder = S_parameter_name_placeholder;
+    document.getElementById('input_parameter_units').placeholder = S_measurement_units_placeholder;
+  }
   
   //Called at body onload to fill the used modules drop-downs
   function populate_usable_devices() {
@@ -360,6 +393,15 @@
     //Populate the devices for both protocols
     populate_usable_kwp_devices();
     populate_usable_uds_devices();
+  }
+  
+  function change_setting_control_scheme(scheme) {
+    setting_control_scheme = scheme;
+  }
+  
+  function change_global_settings() {
+    var select_control_scheme = document.getElementById('select_control_scheme');
+    select_control_scheme.selectedIndex = setting_control_scheme & 1;
   }
   
   //Update the tool configuration part when selecting a tool from the drop-down
@@ -428,7 +470,7 @@
       case 0: //Acceleration timer
         tool_source_config_table_data.innerHTML =
           '<table style="border:none">' +
-          '<tr><th colspan=100>Speed source (km/h)</th></tr>' +
+          '<tr><th colspan=100>' + S_speed_source + ' (km/h)</th></tr>' +
           '<tr id="acceleration_tool_source_header_row"></tr>' +
           '<tr id="acceleration_tool_source_data_row"></tr>' +
           '</table>';
@@ -437,22 +479,22 @@
       case 1: //Oil level checker
         tool_source_config_table_data.innerHTML =
           '<table style="border:none">' +
-          '<tr><th colspan=100>Oil level/temperature source</th></tr>' +
+          '<tr><th colspan=100>' + S_oil_level_temperature_source + '</th></tr>' +
           '<tr id="oil_level_checker_tool_source_header_row"></tr>' +
           '<tr id="oil_level_checker_tool_source_data_row"></tr>' +
           '</table>' +
           '<table style="border:none">' +
-          '<tr><th colspan=100>Oil level (mm)</th></tr>' +
+          '<tr><th colspan=100>' + S_oil_level + ' (mm)</th></tr>' +
           '<tr id="oil_level_source_header_row"></tr>' +
           '<tr id="oil_level_source_data_row"></tr>' +
           '</table>' +
           '<table style="border:none">' +
-          '<tr><th colspan=100>Oil temperature (°C)</th></tr>' +
+          '<tr><th colspan=100>' + S_oil_temperature + ' (°C)</th></tr>' +
           '<tr id="oil_temperature_source_header_row"></tr>' +
           '<tr id="oil_temperature_source_data_row"></tr>' +
           '</table>' +
           '<table style="border:none">' +
-          '<tr><th colspan=100>Oil level values</th></tr>' +
+          '<tr><th colspan=100>' + S_oil_level_values + '</th></tr>' +
           '<tr id="oil_level_checker_tool_range_header_row"></tr>' +
           '<tr id="oil_level_checker_tool_range_data_row"></tr>' +
           '</table>';
@@ -461,12 +503,12 @@
       case 2: //Engine mileage
         tool_source_config_table_data.innerHTML =
           '<table style="border:none">' +
-          '<tr><th colspan=100>Mileage source (km)</th></tr>' +
+          '<tr><th colspan=100>' + S_mileage_source + ' (km)</th></tr>' +
           '<tr id="engine_mileage_tool_source_header_row"></tr>' +
           '<tr id="engine_mileage_tool_source_data_row"></tr>' +
           '</table>' +
           '<table style="border:none">' +
-          '<tr><th>Mileage offset</th></tr>' +
+          '<tr><th>' + S_mileage_offset + '</th></tr>' +
           '<tr><td><input type="number" id="input_mileage_offset" onchange="set_mileage_offset(this)"></td></tr>' +
           '</table>';
         break;
@@ -574,10 +616,10 @@
     switch (protocol) {
       case 0:
         acceleration_tool_source_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>'+
-          '<th>Block</th>' + 
-          '<th>Index</th>';
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>'+
+          '<th>' + S_block + '</th>' + 
+          '<th>' + S_index + '</th>';
         
         acceleration_tool_source_data_row.innerHTML =
           '<td>' + 
@@ -642,8 +684,8 @@
       
       case 1:
         acceleration_tool_source_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>'+
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>'+
           '<th>ID</th>' + 
           '<th>E</th>' +
           '<th>SZ</th>' +
@@ -771,8 +813,8 @@
     var oil_level_checker_tool_range_data_row = document.getElementById('oil_level_checker_tool_range_data_row');
     
     oil_level_checker_tool_range_header_row.innerHTML =
-      '<th>Min</th>' +
-      '<th>Max</th>';
+      '<th>' + S_min + '</th>' +
+      '<th>' + S_max + '</th>';
     
     oil_level_checker_tool_range_data_row.innerHTML =
       '<td>' + 
@@ -799,8 +841,8 @@
     switch (protocol) {
       case 0:
         oil_level_checker_tool_source_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>';
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>';
         
         oil_level_checker_tool_source_data_row.innerHTML =
           '<td>' + 
@@ -815,16 +857,16 @@
           '</td>';
         
         oil_level_source_header_row.innerHTML =
-          '<th>Block</th>' + 
-          '<th>Index</th>';
+          '<th>' + S_block + '</th>' + 
+          '<th>' + S_index + '</th>';
         
         oil_level_source_data_row.innerHTML =
           '<td><select id="select_oil_level_kwp_block" onchange="set_oil_level_kwp_block(this)"></select></td>' +
           '<td><select id="select_oil_level_kwp_index" onchange="set_oil_level_kwp_index(this)"></select></td>';
         
         oil_temperature_source_header_row.innerHTML =
-          '<th>Block</th>' + 
-          '<th>Index</th>';
+          '<th>' + S_block + '</th>' + 
+          '<th>' + S_index + '</th>';
         
         oil_temperature_source_data_row.innerHTML =
           '<td><select id="select_oil_temperature_kwp_block" onchange="set_oil_temperature_kwp_block(this)"></select></td>' +
@@ -893,8 +935,8 @@
       
       case 1:
         oil_level_checker_tool_source_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>';
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>';
         
         oil_level_checker_tool_source_data_row.innerHTML =
           '<td>' + 
@@ -1054,10 +1096,10 @@
     switch (protocol) {
       case 0:
         engine_mileage_tool_source_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>'+
-          '<th>Block</th>' + 
-          '<th>Index</th>';
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>'+
+          '<th>' + S_block + '</th>' + 
+          '<th>' + S_index + '</th>';
         
         engine_mileage_tool_source_data_row.innerHTML =
           '<td>' + 
@@ -1122,8 +1164,8 @@
       
       case 1:
         engine_mileage_tool_source_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>'+
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>'+
           '<th>ID</th>' + 
           '<th>E</th>' +
           '<th>SZ</th>' +
@@ -1480,7 +1522,7 @@
     
     //If there is only one page, it can't be removed
     if (select_page.options.length > 1) {
-      if (!confirm('Are you sure you want to delete page ' + (page_index_to_remove + 1) + "? This cannot be undone!")) {
+      if (!confirm(S_are_you_sure_you_want_to_delete_page + (page_index_to_remove + 1) + S_question + S_this_cannot_be_undone)) {
         return;
       }
       
@@ -1583,7 +1625,7 @@
     
     //If there is only one parameter, it can't be removed
     if (select_parameter.options.length > 1) {
-      if (!confirm('Are you sure you want to delete parameter ' + (parameter_index_to_remove + 1) + "? This cannot be undone!")) {
+      if (!confirm(S_are_you_sure_you_want_to_delete_parameter + (parameter_index_to_remove + 1) + S_question + S_this_cannot_be_undone)) {
         return;
       }
     
@@ -2231,10 +2273,10 @@
     switch (protocol) {
       case 0:
         protocol_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>'+
-          '<th>Block</th>' + 
-          '<th>Index</th>';
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>'+
+          '<th>' + S_block + '</th>' + 
+          '<th>' + S_index + '</th>';
         
         protocol_data_row.innerHTML =
           '<td>' + 
@@ -2308,8 +2350,8 @@
       
       case 1:
         protocol_header_row.innerHTML =
-          '<th>Protocol</th>' + 
-          '<th>Device</th>'+
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>'+
           '<th>ID</th>' + 
           '<th>E</th>' +
           '<th>SZ</th>' +
@@ -2449,16 +2491,16 @@
     switch (mode) {
       case 0:
         display_header_row.innerHTML =
-          '<th>Mode</th>' +
-          '<th>Forced value</th>' +
-          '<th>Decimals</th>';
+          '<th>' + S_mode + '</th>' +
+          '<th>' + S_forced_value + '</th>' +
+          '<th>' + S_decimals + '</th>';
         
         display_data_row.innerHTML =
           '<td>' +
           '<select id="select_display_mode" onchange="change_display_mode(this.selectedIndex)">' +
-          '<option selected>Exact value' +
-          '<option>Mapped value' +
-          '<option>Custom text' +
+          '<option selected>' + S_exact_value +
+          '<option>' + S_mapped_value +
+          '<option>' + S_custom_text +
           '</select>' +
           '</td>' +
           '<td>' +
@@ -2481,25 +2523,25 @@
       
       case 1:
         display_header_row.innerHTML =
-          '<th>Mode</th>' +
-          '<th>Offset</th>' +
+          '<th>' + S_mode + '</th>' +
+          '<th>' + S_offset + '</th>' +
           '<th rowspan=2>' +
           '<table style="border-style:none;">' +
           '<tbody>' +
           '<tr>' +
           '<th></th>' +
-          '<th>In</th>' +
-          '<th>Out</th>' +
-          '<th>Limit</th>' +
+          '<th>' + S_in + '</th>' +
+          '<th>' + S_out + '</th>' +
+          '<th>' + S_limit + '</th>' +
           '</tr>' +
           '<tr>' +
-          '<td>Min</td>' +
+          '<td>' + S_min + '</td>' +
           '<td><input type="number" id="input_map_in_min" onchange="set_parameter_display_map_in_min(this)"></td>' +
           '<td><input type="number" id="input_map_out_min" onchange="set_parameter_display_map_out_min(this)"></td>' +
           '<td><input type="checkbox" id="map_checkbox_limit_min" onchange="set_parameter_display_map_limit_min(this)"></td>' +
           '</tr>' +
           '<tr>' +
-          '<td>Max</td>' +
+          '<td>' + S_max + '</td>' +
           '<td><input type="number" id="input_map_in_max" onchange="set_parameter_display_map_in_max(this)"></td>' +
           '<td><input type="number" id="input_map_out_max" onchange="set_parameter_display_map_out_max(this)"></td>' +
           '<td><input type="checkbox" id="map_checkbox_limit_max" onchange="set_parameter_display_map_limit_max(this)"></td>' +
@@ -2507,14 +2549,14 @@
           '</tbody>' +
           '</table>' +
           '</th>' +
-          '<th>Decimals</th>';
+          '<th>' + S_decimals + '</th>';
         
         display_data_row.innerHTML =
           '<td>' +
           '<select id="select_display_mode" onchange="change_display_mode(this.selectedIndex)">' +
-          '<option>Exact value' +
-          '<option selected>Mapped value' +
-          '<option>Custom text' +
+          '<option>' + S_exact_value +
+          '<option selected>' + S_mapped_value +
+          '<option>' + S_custom_text +
           '</select>' +
           '</td>' +
           '<td><input type="number" id="input_map_offset" onchange="set_parameter_display_map_offset(this)"></input></td>' +
@@ -2546,23 +2588,23 @@
       
       case 2:
         display_header_row.innerHTML =
-          '<th>Mode</th>' +
-          '<th>Condition</th>' +
+          '<th>' + S_mode + '</th>' +
+          '<th>' + S_condition + '</th>' +
           '<td rowspan=2 id="display_condition_data_row"></td>';
         
         display_data_row.innerHTML =
           '<td>' +
           '<select id="select_display_mode" onchange="change_display_mode(this.selectedIndex)">' +
-          '<option>Exact value' +
-          '<option>Mapped value' +
-          '<option selected>Custom text' +
+          '<option>' + S_exact_value +
+          '<option>' + S_mapped_value +
+          '<option selected>' + S_custom_text +
           '</select>' +
           '</td>' +
           '<td>' +
           '<select id="select_custom_text_condition" onchange="change_display_custom_text_condition(this.selectedIndex)">' +
-          '<option>If value / if not value' +
-          '<option>If inside / outside range' +
-          '<option>If below / inside / above range' +
+          '<option>' + S_if_value_if_not_value +
+          '<option>' + S_if_inside_outside_range +
+          '<option>' + S_if_below_inside_above_range +
           '</select>' +
           '</td>';
         
@@ -2628,14 +2670,14 @@
         display_condition_data_row.innerHTML =
           '<table style="border-style:none;">' +
           '<tr>' +
-          '<th>Value</th>' +
-          '<th>If value</th>' +
-          '<th>If not value</th>' +
+          '<th>' + S_value + '</th>' +
+          '<th>' + S_if_value + '</th>' +
+          '<th>' + S_if_not_value + '</th>' +
           '</tr>' +
           '<tr>' +
           '<td><input type="number" id="input_condition_value" onchange="set_display_custom_text_cond0_value(this)"></input></td>' +
-          '<td><input type="text" id="input_condition_if_value_text" placeholder="Equals value" onchange="set_display_custom_text_cond0_if_value_text(this)"></input></td>' +
-          '<td><input type="text" id="input_condition_if_not_value_text" placeholder="Doesn\'t equal value" onchange="set_display_custom_text_cond0_if_not_value_text(this)"></input></td>' +
+          '<td><input type="text" id="input_condition_if_value_text" placeholder="' + S_equals_value + '" onchange="set_display_custom_text_cond0_if_value_text(this)"></input></td>' +
+          '<td><input type="text" id="input_condition_if_not_value_text" placeholder="' + S_doesnt_equal_value + '" onchange="set_display_custom_text_cond0_if_not_value_text(this)"></input></td>' +
           '</tr>' +
           '</table>';
         
@@ -2653,17 +2695,17 @@
           '<table style="border-style:none;">' +
           '<tr>' +
           '<th colspan=2>Range</th>' +
-          '<th>Inside</th>' +
-          '<th>Outside</th>' +
+          '<th>' + S_inside + '</th>' +
+          '<th>' + S_outside + '</th>' +
           '</tr>' +
           '<tr>' +
-          '<td>Min</td>' +
+          '<td>' + S_min + '</td>' +
           '<td><input type="number" id="input_condition_range_min" onchange="set_display_custom_text_condition_range_min(this)"></input></td>' +
-          '<td rowspan=2><input type="text" id="input_condition_inside_range_text" placeholder="Between [Min, Max]" onchange="set_display_custom_text_cond1_inside_range_text(this)"></input></td>' +
-          '<td rowspan=2><input type="text" id="input_condition_outside_range_text" placeholder="Outside [Min, Max]" onchange="set_display_custom_text_cond1_outside_range_text(this)"></input></td>' +
+          '<td rowspan=2><input type="text" id="input_condition_inside_range_text" placeholder="' + S_between_min_max + '" onchange="set_display_custom_text_cond1_inside_range_text(this)"></input></td>' +
+          '<td rowspan=2><input type="text" id="input_condition_outside_range_text" placeholder="' + S_outside_min_max + '" onchange="set_display_custom_text_cond1_outside_range_text(this)"></input></td>' +
           '</tr>' +
           '<tr>' +
-          '<td>Max</td>' +
+          '<td>' + S_max + '</td>' +
           '<td><input type="number" id="input_condition_range_max" onchange="set_display_custom_text_condition_range_max(this)"></input></td>' +
           '</tr>' +
           '</table>';
@@ -2683,31 +2725,31 @@
         display_condition_data_row.innerHTML =
           '<table style="border-style:none;">' +
           '<tr>' +
-          '<th colspan=2>Range</th>' +
-          '<th>Text</th>' +
+          '<th colspan=2>' + S_range + '</th>' +
+          '<th>' + S_text + '</th>' +
           '</tr>' +
           '<tr>' +
-          '<td>Min</td>' +
+          '<td>' + S_min + '</td>' +
           '<td><input type="number" id="input_condition_range_min" onchange="set_display_custom_text_condition_range_min(this)"></input></td>' +
           '<td rowspan=2>' +
           '<table style="border-style:none;">' +
           '<tr>' +
-          '<td>&lt; min</td>' +
-          '<td><input type="text" id="input_condition_below_range_text" placeholder="Below range" onchange="set_display_custom_text_cond2_below_range_text(this)"></input></td>' +
+          '<td>' + S_less_min + '</td>' +
+          '<td><input type="text" id="input_condition_below_range_text" placeholder="' + S_below_range + '" onchange="set_display_custom_text_cond2_below_range_text(this)"></input></td>' +
           '</tr>' +
           '<tr>' +
-          '<td>[min, max]</td>' +
-          '<td><input type="text" id="input_condition_inside_range_text" placeholder="Inside range" onchange="set_display_custom_text_cond2_inside_range_text(this)"></input></td>' +
+          '<td>' + S_min_max + '</td>' +
+          '<td><input type="text" id="input_condition_inside_range_text" placeholder="' + S_inside_range + '" onchange="set_display_custom_text_cond2_inside_range_text(this)"></input></td>' +
           '</tr>' +
           '<tr>' +
-          '<td>&gt; max</td>' +
-          '<td><input type="text" id="input_condition_above_range_text" placeholder="Above range" onchange="set_display_custom_text_cond2_above_range_text(this)"></input></td>' +
+          '<td>' + S_greater_max + '</td>' +
+          '<td><input type="text" id="input_condition_above_range_text" placeholder="' + S_above_range + '" onchange="set_display_custom_text_cond2_above_range_text(this)"></input></td>' +
           '</tr>' +
           '</table>' +
           '</td>' +
           '</tr>' +
           '<tr>' +
-          '<td>Max</td>' +
+          '<td>' + S_max + '</td>' +
           '<td><input type="number" id="input_condition_range_max" onchange="set_display_custom_text_condition_range_max(this)"></input></td>' +
           '</tr>' +
           '</table>';
@@ -2788,11 +2830,11 @@
         warning_data_row.innerHTML =
           '<td>' +
           '<select id="select_warning_mode" onchange="change_warning_mode(this.selectedIndex)">' +
-          '<option selected>Disabled' +
-          '<option>If exact value' +
-          '<option>If not exact value' +
-          '<option>If inside range' +
-          '<option>If outside range' +
+          '<option selected>' + S_disabled +
+          '<option>' + S_if_exact_value +
+          '<option>' + S_if_not_exact_value +
+          '<option>' + S_if_inside_range +
+          '<option>' + S_if_outside_range +
           '</select>' +
           '</td>';
         
@@ -2800,21 +2842,21 @@
       
       case 1:
       case 2:
-        var selected1 = (mode === 1) ? '<option selected>If exact value' : '<option>If exact value'
-        var selected2 = (mode === 2) ? '<option selected>If not exact value' : '<option>If not exact value'
+        var selected1 = (mode === 1) ? ('<option selected>' + S_if_exact_value) : ('<option>' + S_if_exact_value)
+        var selected2 = (mode === 2) ? ('<option selected>' + S_if_not_exact_value) : ('<option>' + S_if_not_exact_value)
         
         warning_header_row.innerHTML =
-          '<th>Mode</th>' +
-          '<th>Value</th>';
+          '<th>' + S_mode + '</th>' +
+          '<th>' + S_value + '</th>';
         
         warning_data_row.innerHTML =
           '<td>' +
           '<select id="select_warning_mode" onchange="change_warning_mode(this.selectedIndex)">' +
-          '<option>Disabled' +
+          '<option>' + S_disabled +
           selected1 +
           selected2 +
-          '<option>If inside range' +
-          '<option>If outside range' +
+          '<option>' + S_if_inside_range +
+          '<option>' + S_if_outside_range +
           '</select>' +
           '</td>' +
           '<td>' +
@@ -2828,22 +2870,22 @@
       
       case 3:
       case 4:
-        var selected3 = (mode === 3) ? '<option selected>If inside range' : '<option>If inside range'
-        var selected4 = (mode === 4) ? '<option selected>If outside range' : '<option>If outside range'
+        var selected3 = (mode === 3) ? ('<option selected>' + S_if_inside_range) : ('<option>' + S_if_inside_range)
+        var selected4 = (mode === 4) ? ('<option selected>' + S_if_outside_range) : ('<option>' + S_if_outside_range)
         
         warning_header_row.innerHTML =
-          '<th>Mode</th>' +
+          '<th>' + S_mode + '</th>' +
           '<th rowspan=2>' +
           '<table style="border-style:none;">' +
           '<tr>' +
-          '<th colspan=2>Range</th>' +
+          '<th colspan=2>' + S_range + '</th>' +
           '</tr>' +
           '<tr>' +
-          '<td>Min</td>' +
+          '<td>' + S_min + '</td>' +
           '<td><input type="number" id="input_warning_range_min" onchange="set_warning_range_min(this)"></input></td>' +
           '</tr>' +
           '<tr>' +
-          '<td>Max</td>' +
+          '<td>' + S_max + '</td>' +
           '<td><input type="number" id="input_warning_range_max" onchange="set_warning_range_max(this)"></input></td>' +
           '</tr>' +
           '</table>' +
@@ -2852,9 +2894,9 @@
         warning_data_row.innerHTML =
           '<td>' +
           '<select id="select_warning_mode" onchange="change_warning_mode(this.selectedIndex)">' +
-          '<option>Disabled' +
-          '<option>If exact value' +
-          '<option>If not exact value' +
+          '<option>' + S_disabled +
+          '<option>' + S_if_exact_value +
+          '<option>' + S_if_not_exact_value +
           selected3 +
           selected4 +
           '</select>' +
@@ -3513,19 +3555,32 @@
     var signature2 = (file_buffer[bytes_read - 2] << 8) | file_buffer[bytes_read - 1];
     
     if (!(signature1 === 0x55AA && signature2 === 0x55AA)) {
-      alert("Error: invalid file format!");
+      alert(S_invalid_format);
       return;
     }
     
     var config_version = (file_buffer[3] << 8) | file_buffer[2];
-    if (config_version < 512) {
-      alert("The configuration must be updated to a newer version.");
+    if (config_version != 0x0300) {
+      alert(S_update_newer_version);
       window.location.assign("config_updater.html");
       return;
     }
     
+    var global_settings_start = 4;
+    var global_settings_end = global_settings_start + 4;
+    var global_settings_array = file_buffer.slice(global_settings_start, global_settings_end);
+    var global_settings = (new Uint32Array(global_settings_array.buffer))[0];
+    setting_control_scheme = global_settings & 1;
+    
+    change_global_settings();
+    
+    var wifi_pass_start = global_settings_end;
+    var wifi_pass_length = get_string_length(file_buffer, wifi_pass_start, 63);
+    var wifi_pass_end = wifi_pass_start + wifi_pass_length;
+    wifi_pass = decoder.decode(file_buffer.slice(wifi_pass_start, wifi_pass_end));
+        
     //Check if the acceleration timer tool is enabled
-    var acceleration_timer_tool_start = 4;
+    var acceleration_timer_tool_start = wifi_pass_end + 1;
     acceleration_timer_tool.enabled = file_buffer[acceleration_timer_tool_start];
     
     var acceleration_timer_tool_end = acceleration_timer_tool_start + 1;
@@ -3832,9 +3887,12 @@
       //Add a page selection option
       select_page.options.add(new Option(pg + 1));
       
+      var page_settings_start = page_offsets[pg];
+      var page_settings = file_buffer[page_settings_start]; //unused
+      
       //Get the page title
-      var title_length = get_string_length(file_buffer, page_offsets[pg], 15);
-      var title_start = page_offsets[pg];
+      var title_start = page_settings_start + 1;
+      var title_length = get_string_length(file_buffer, title_start, 15);
       var title_end = title_start + title_length;
       var title = decoder.decode(file_buffer.slice(title_start, title_end));
       
@@ -3858,8 +3916,11 @@
       var parameter_offsets = new Uint32Array(parameter_offsets_buffer.buffer);
       
       for (var par = 0; par < number_of_parameters; par++) {
+        var parameter_settings_start = parameter_offsets[par];
+        var parameter_settings = file_buffer[parameter_settings_start]; //unused
+        
         //Get the parameter name
-        var name_start = parameter_offsets[par];
+        var name_start = parameter_settings_start + 1;
         var name_length = get_string_length(file_buffer, name_start, 15);
         var name_end = name_start + name_length;
         var name = decoder.decode(file_buffer.slice(name_start, name_end));
@@ -4216,7 +4277,7 @@
     change_to_page(0);
     change_to_parameter(0);
     
-    alert("The configuration has been read successfully.")
+    alert(S_config_read_success)
   }
   
   function get_string_length(file_buffer, starting_offset, max_length) {
@@ -4235,12 +4296,18 @@
   }
   
   function download_file() {
-    var file_buffer = [0x55, 0xAA, 0x00, 0x02];
+    var file_buffer = [0x55, 0xAA, 0x00, 0x03];
+    
+    var global_settings = (setting_control_scheme & 1);
+    file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint32Array([global_settings])).buffer)));
+        
+    var wifi_pass = "";
+    file_buffer = file_buffer.concat(Array.from(encode8859(wifi_pass)), 0);
     
     file_buffer = file_buffer.concat(acceleration_timer_tool.enabled); //acceleration tool enable status
     if (acceleration_timer_tool.enabled) {
       if (!acceleration_timer_tool.module) {
-        alert("Error: The acceleration timer tool is enabled but has an invalid speed source module!");
+        alert(S_acceleration_tool_error);
         return;
       }
       
@@ -4267,7 +4334,7 @@
     file_buffer = file_buffer.concat(oil_level_checker_tool.enabled); //oil level tool enable status
     if (oil_level_checker_tool.enabled) {
       if (!oil_level_checker_tool.module) {
-        alert("Error: The oil level gauge tool is enabled but has an invalid oil level source module!");
+        alert(S_oil_level_tool_error);
         return;
       }
       
@@ -4313,7 +4380,7 @@
     file_buffer = file_buffer.concat(engine_mileage_tool.enabled); //engine mileage tool enable status
     if (engine_mileage_tool.enabled) {
       if (!engine_mileage_tool.module) {
-        alert("Error: The engine mileage tool is enabled but has an invalid mileage source module!");
+        alert(S_mileage_tool_error);
         return;
       }
       
@@ -4352,17 +4419,23 @@
       
       var page_buffer = [];
       
+      var page_settings = 0;
+      page_buffer = page_buffer.concat(Array.from(new Uint8Array([page_settings])));
+      
       page_buffer = page_buffer.concat(Array.from(encode8859(page.title)), 0); //page title; null-terminated      
       page_buffer = page_buffer.concat(page.parameters.length); //number of parameters
       
       var array_of_parameters = [];
       var parameter_start_pointers = new Uint32Array(page.parameters.length);
-      parameter_start_pointers[0] = page_start_pointers[pg] + page.title.length + 2 + 4 * page.parameters.length;
+      parameter_start_pointers[0] = page_start_pointers[pg] + page.title.length + 3 + 4 * page.parameters.length;
       
       for (var par = 0; par < page.parameters.length; par++) {
         parameter = page.parameters[par];
         
         var parameter_buffer = [];
+        
+        var parameter_settings = 0;
+        parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array([parameter_settings])));
         
         parameter_buffer = parameter_buffer.concat(Array.from(encode8859(parameter.name)), 0); //parameter name; null-terminated
         parameter_buffer = parameter_buffer.concat(Array.from(encode8859(parameter.units)), 0); //parameter units; null-terminated
@@ -4380,7 +4453,7 @@
             }
             
             if (!found || !parameter.source.module) {
-              alert("Error: parameter " + (par + 1) + " on page " + (pg + 1) + " has an invalid KWP source module!");
+              alert(S_error_parameter + (par + 1) + S_on_page + (pg + 1) + S_has_invalid_KWP_source);
               return;
             }
             
@@ -4397,7 +4470,7 @@
             }
             
             if (!found || !parameter.source.module) {
-              alert("Error: parameter " + (par + 1) + " on page " + (pg + 1) + " has an invalid UDS source module!");
+              alert(S_error_parameter + (par + 1) + S_on_page + (pg + 1) + S_has_invalid_UDS_source);
               return;
             }
             
