@@ -25,6 +25,9 @@ const S_configure_ecu_data = "Configure ECU data";
 const S_pages = "Pages";
 const S_number = "Number";
 const S_title = "Title";
+const S_options = "Options";
+const S_aligned_units = "Aligned units";
+const S_bar_at_bottom = "Bar at bottom";
 const S_parameter_source = "Parameter source";
 const S_value_display = "Value display";
 const S_value_warning = "Value warning";
@@ -69,6 +72,9 @@ const HTML_strings = {
   "S_pages":S_pages,
   "S_number":S_number,
   "S_title":S_title,
+  "S_options":S_options,
+  "S_aligned_units":S_aligned_units,
+  "S_bar_at_bottom":S_bar_at_bottom,
   "S_parameter_source":S_parameter_source,
   "S_value_display":S_value_display,
   "S_value_warning":S_value_warning,

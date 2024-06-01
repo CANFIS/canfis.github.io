@@ -231,11 +231,12 @@
       <td>
         <table>
           <tr>
-            <th id='S_pages' colspan=2></th>
+            <th id='S_pages' colspan=3></th>
           </tr>
           <tr>
             <td id='S_number'></td>
             <td id='S_title'></td>
+            <td id='S_options'></td>
           </tr>
           <tr>
             <td>
@@ -244,7 +245,16 @@
               <button type='button' id='add_page_button' onclick=add_page()>+</button>
               <button type='button' id='remove_page_button' onclick=remove_page()>-</button>
             </td>
-            <td><input type='text' id='input_page_title' onchange='set_page_title(this)'></input></td>
+            <td>
+              <input type='text' id='input_page_title' onchange='set_page_title(this)'></input>
+            </td>
+            <td>
+              <input type="checkbox" id='aligned_units_checkbox' onchange='enable_aligned_units(this.checked)'></input>
+              <label for="aligned_units_checkbox" id='S_aligned_units'></label>
+              <br>
+              <input type="checkbox" id='bar_at_bottom_checkbox' onchange='enable_bar_at_bottom(this.checked)'></input>
+              <label for="bar_at_bottom_checkbox" id='S_bar_at_bottom'></label>
+            </td>
           </tr>
         </table>
       </td>
@@ -1495,6 +1505,7 @@
     
     //Empty page entry
     const page = {
+      settings: 0,
       index: 0,
       title: '',
       parameters: []
@@ -1550,6 +1561,12 @@
     var select_page = document.getElementById('select_page');
     select_page.selectedIndex = page_to_change_to;
     
+    var aligned_units_checkbox = document.getElementById('aligned_units_checkbox');
+    aligned_units_checkbox.checked = page_array[page_to_change_to].settings & (1 << 0);
+    
+    var bar_at_bottom_checkbox = document.getElementById('bar_at_bottom_checkbox');
+    bar_at_bottom_checkbox.checked = page_array[page_to_change_to].settings & (1 << 1);
+    
     //Fill in the page's title
     var input_page_title = document.getElementById('input_page_title');
     input_page_title.value = page_array[page_to_change_to].title;
@@ -1589,6 +1606,7 @@
     
     //Empty parameter entry
     const parameter = {
+      settings: 0,
       index: 0,
       name: '',
       units: '',
@@ -1687,6 +1705,7 @@
           module: 0,
           identifier: 0,
           endianness: 0,
+          index: 0,
           size: 1,
           sign: 0,
           factor: 1,
@@ -2354,6 +2373,7 @@
           '<th>' + S_device + '</th>'+
           '<th>ID</th>' + 
           '<th>E</th>' +
+          '<th>I</th>' +
           '<th>SZ</th>' +
           '<th>SG</th>' +
           '<th>F</th>' +
@@ -2373,7 +2393,8 @@
           '</td>' +
           '<td><input type="number" id="input_identifier" onchange="set_parameter_uds_identifier(this)"></input></td>' +
           '<td><select id="select_endianness" onchange="set_parameter_uds_endianness(this)"><option>Little<option>Big</select></td>' +
-          '<td><select id="select_data_size" onchange="set_parameter_uds_size(this)"><option>1<option>2<option>4</select></td>' +
+          '<td><input type="number" id="input_index" onchange="set_parameter_uds_index(this)"></input></td>' +
+          '<td><select id="select_data_size" onchange="set_parameter_uds_size(this)"><option>1<option>2<option>4<option>8</select></td>' +
           '<td><select id="select_data_sign" onchange="set_parameter_uds_sign(this)"><option>Unsigned<option>Signed</select></td>' +
           '<td><input type="number" id="input_factor" onchange="set_parameter_uds_factor(this)"></input></td>' +
           '<td><input type="number" id="input_divisor" onchange="set_parameter_uds_divisor(this)"></input></td>' +
@@ -2418,6 +2439,7 @@
         
         var input_identifier = document.getElementById('input_identifier');
         var select_endianness = document.getElementById('select_endianness');
+        var input_index = document.getElementById('input_index');
         var select_data_size = document.getElementById('select_data_size');
         var select_data_sign = document.getElementById('select_data_sign');
         var input_factor = document.getElementById('input_factor');
@@ -2426,6 +2448,7 @@
         
         input_identifier.value = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.identifier;
         select_endianness.selectedIndex = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.endianness;
+        input_index.value = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.index;
         select_data_size.value = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.size;
         select_data_sign.selectedIndex = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.sign;
         input_factor.value = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.factor;
@@ -2940,6 +2963,28 @@
     page_array[select_page.selectedIndex].title = title;
   }
   
+  function enable_aligned_units(state) {
+    var select_page = document.getElementById('select_page');
+    
+    if (state) {
+      page_array[select_page.selectedIndex].settings |= (1 << 0);
+    }
+    else {
+      page_array[select_page.selectedIndex].settings &= ~(1 << 0);
+    }
+  }
+  
+  function enable_bar_at_bottom(state) {
+    var select_page = document.getElementById('select_page');
+    
+    if (state) {
+      page_array[select_page.selectedIndex].settings |= (1 << 1);
+    }
+    else {
+      page_array[select_page.selectedIndex].settings &= ~(1 << 1);
+    }
+  }
+  
   //Save the parameter's name from the input box
   function set_parameter_name(obj) {
     var input_parameter_name = document.getElementById('input_parameter_name');
@@ -3019,6 +3064,34 @@
     var select_parameter = document.getElementById('select_parameter');
     
     page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.endianness = obj.selectedIndex;
+  }
+  
+  function set_parameter_uds_index(obj) {
+    var select_page = document.getElementById('select_page');
+    var select_parameter = document.getElementById('select_parameter');
+        
+    var index = parseInt(obj.value);
+    
+    if (isNaN(index)) {
+      index = 0;
+      obj.value = 0;
+    }
+    else {
+      if (index < 0) {
+        index = 0;
+        obj.value = 0;
+      }
+      
+      if (index > 65535) {
+        index = 65535;
+        obj.value = 65535;
+      }
+      
+      index = Math.trunc(index);
+      obj.value = index;
+    }
+    
+    page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.index = index;
   }
   
   function set_parameter_uds_size(obj) {
@@ -3560,7 +3633,7 @@
     }
     
     var config_version = (file_buffer[3] << 8) | file_buffer[2];
-    if (config_version != 0x0300) {
+    if (config_version != 0x0301) {
       alert(S_update_newer_version);
       window.location.assign("config_updater.html");
       return;
@@ -3888,7 +3961,7 @@
       select_page.options.add(new Option(pg + 1));
       
       var page_settings_start = page_offsets[pg];
-      var page_settings = file_buffer[page_settings_start]; //unused
+      var page_settings = file_buffer[page_settings_start];
       
       //Get the page title
       var title_start = page_settings_start + 1;
@@ -3898,6 +3971,7 @@
       
       //Page entry
       var page = {
+        settings: page_settings,
         index: pg,
         title: title,
         parameters: []
@@ -3917,7 +3991,7 @@
       
       for (var par = 0; par < number_of_parameters; par++) {
         var parameter_settings_start = parameter_offsets[par];
-        var parameter_settings = file_buffer[parameter_settings_start]; //unused
+        var parameter_settings = file_buffer[parameter_settings_start];
         
         //Get the parameter name
         var name_start = parameter_settings_start + 1;
@@ -3933,6 +4007,7 @@
                 
         //Parameter entry
         const parameter = {
+          settings: parameter_settings,
           index: par,
           name: name,
           units: units,
@@ -3979,7 +4054,12 @@
             var endianness_start = identifier_array_end;
             var endianness = file_buffer[endianness_start];
             
-            var size_start = endianness_start + 1;
+            var index_array_start = endianness_start + 1;
+            var index_array_end = index_array_start + 2;
+            var index_array = file_buffer.slice(index_array_start, index_array_end);
+            var index = (new Uint16Array(index_array.buffer))[0];
+            
+            var size_start = index_array_end;
             var size = file_buffer[size_start];
             
             var sign_start = size_start + 1;
@@ -4006,6 +4086,7 @@
               module: module,
               identifier: identifier,
               endianness: endianness,
+              index: index,
               size: size,
               sign: sign,
               factor: factor,
@@ -4296,7 +4377,7 @@
   }
   
   function download_file() {
-    var file_buffer = [0x55, 0xAA, 0x00, 0x03];
+    var file_buffer = [0x55, 0xAA, 0x01, 0x03];
     
     var global_settings = (setting_control_scheme & 1);
     file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint32Array([global_settings])).buffer)));
@@ -4419,7 +4500,7 @@
       
       var page_buffer = [];
       
-      var page_settings = 0;
+      var page_settings = page.settings;
       page_buffer = page_buffer.concat(Array.from(new Uint8Array([page_settings])));
       
       page_buffer = page_buffer.concat(Array.from(encode8859(page.title)), 0); //page title; null-terminated      
@@ -4434,7 +4515,7 @@
         
         var parameter_buffer = [];
         
-        var parameter_settings = 0;
+        var parameter_settings = parameter.settings;
         parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array([parameter_settings])));
         
         parameter_buffer = parameter_buffer.concat(Array.from(encode8859(parameter.name)), 0); //parameter name; null-terminated
@@ -4476,6 +4557,7 @@
             
             parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array((new Uint16Array([parameter.source.identifier])).buffer))); //identifier
             parameter_buffer = parameter_buffer.concat(parameter.source.endianness); //endianness
+            parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array((new Uint16Array([parameter.source.index])).buffer)));
             parameter_buffer = parameter_buffer.concat(parameter.source.size); //byte size
             parameter_buffer = parameter_buffer.concat(parameter.source.sign); //sign
             parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array((new Uint16Array([parameter.source.factor])).buffer))); //factor

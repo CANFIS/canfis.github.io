@@ -25,6 +25,9 @@ const S_configure_ecu_data = "Skonfiguruj dane ECU";
 const S_pages = "Strony";
 const S_number = "Numer";
 const S_title = "Tytu\u0142";
+const S_options = "Opcje";
+const S_aligned_units = "Wyr\u00F3wnanie jednostki";
+const S_bar_at_bottom = "Pasek na dole";
 const S_parameter_source = "\u0179r\u00F3d\u0142o parametru";
 const S_value_display = "Wy\u015Bwietlanie warto\u015Bci";
 const S_value_warning = "Ostrze\u017Cenie o warto\u015Bci";
@@ -69,6 +72,9 @@ const HTML_strings = {
   "S_pages":S_pages,
   "S_number":S_number,
   "S_title":S_title,
+  "S_options":S_options,
+  "S_aligned_units":S_aligned_units,
+  "S_bar_at_bottom":S_bar_at_bottom,
   "S_parameter_source":S_parameter_source,
   "S_value_display":S_value_display,
   "S_value_warning":S_value_warning,
