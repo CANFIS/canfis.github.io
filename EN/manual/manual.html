@@ -69,10 +69,13 @@
   </style>
   
   <body>
+    <center>
+      <h1>3.0.1</h1>
+    </center>
     <h1>Contents</h1>
     <ul class="contents">
       <li><a href="#introduction">Introduction</a></li>
-      <li><a href="#features">Features</a></li>
+      <li><a href="#showcase">Features</a></li>
       <li><a href="#notes">Notes</a></li>
       <li><a href="#installation">Installation</a></li>
       <li><a href="#getting_started">Getting started</a></li>
@@ -109,6 +112,8 @@
           <li><a href="#settings">Settings</a></li>
           <ul>
             <li><a href="#start_menu">Start menu</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#files">Files</a></li>
             <li><a href="#factory_reset">Factory reset</a></li>
             <li><a href="#software_version">Software version</a></li>
             <li><a href="#update">Update</a></li>
@@ -116,6 +121,7 @@
         </ul>
         <li><a href="#parking_sensors">Parking sensors</a></li>
       </ul>
+      <li><a href="#fault_code_descriptions">Fault code descriptions</a></li>
       <li><a href="#config_editor">Using the configuration editor</a></li>
       <ul>
         <li><a href="#config_editor_notes">Notes</a></li>
@@ -123,21 +129,23 @@
         <li><a href="#config_editor_step1">Step 1</a></li>
         <li><a href="#config_editor_step2">Step 2</a></li>
         <li><a href="#config_editor_step3">Step 3</a></li>
-        <ul>
-          <li><a href="#config_editor_step3_pages">Pages</a></li>
-          <li><a href="#config_editor_step3_parameters">Parameters</a></li>
-          <li><a href="#config_editor_step3_parameter_source">Parameter source</a></li>
-          <li><a href="#config_editor_step3_value_display">Value display</a></li>
-          <li><a href="#config_editor_step3_value_warning">Value warning</a></li>
-          <li><a href="#config_editor_step3_graph_parameters">Graph parameters</a></li>
-        </ul>
         <li><a href="#config_editor_step4">Step 4</a></li>
+        <ul>
+          <li><a href="#config_editor_step4_pages">Pages</a></li>
+          <li><a href="#config_editor_step4_parameters">Parameters</a></li>
+          <li><a href="#config_editor_step4_parameter_source">Parameter source</a></li>
+          <li><a href="#config_editor_step4_value_display">Value display</a></li>
+          <li><a href="#config_editor_step4_value_warning">Value warning</a></li>
+          <li><a href="#config_editor_step4_graph_parameters">Graph parameters</a></li>
+        </ul>
+        <li><a href="#config_editor_step5">Step 5</a></li>
       </ul>
       <li><a href="#update_webpage">Using the update webpage</a></li>
       <ul>
         <li><a href="#update_configuration">Configuration</a></li>
         <li><a href="#update_boot_logo">Boot logo</a></li>
         <li><a href="#update_update">Update</a></li>
+        <li><a href="#other_files">Other files</a></li>
       </ul>
     </ul>
     
@@ -154,7 +162,7 @@
     <br>
     <hr>
     
-    <h1 id="features">Features</h1>
+    <h1 id="showcase">Features</h1>
     <ul>
       <li><b>Boot logo</b> - display your own image when you start the car</li>
       <center>
@@ -193,7 +201,8 @@
         </figure>
         <figure>
           <img src="media/features/fault_codes.png">
-          <figcaption>Fault codes</figcaption>
+          <img src="media/features/fault_code_description.png">
+          <figcaption>Fault codes, with descriptions for KWP-CAN and UDS</figcaption>
         </figure>
         <figure>
           <img src="media/features/meas_blocks.png">
@@ -238,7 +247,7 @@
     
     <h1 id="notes">Notes</h1>
     <ul>
-      <li>It can connect to modules which use the KWP-CAN or UDS protocol. Measuring blocks do not exist for UDS.</li>
+      <li>It can connect to modules which use the KWP-CAN or UDS protocol. Measuring blocks do not exist for UDS yet, but will be added soon.</li>
       <li>It cannot be used with a navigation unit that also needs to display on the screen.</li>
       <ul>
         <li>For the RNSE, there is <a href="https://rnse.pcbbc.co.uk">custom firmware</a> available, which allows parallel operation with the navigation.</li>
@@ -292,10 +301,16 @@
     
     <h1 id="operating_the_menu">Operating the menu</h1>
     <ul>
-      <li>The menu is operated using the buttons on the car's windshield wiper stalk.</li>
-      <li>The <b>Up/Down</b> buttons change the selection, and options are selected by holding the <b>Reset</b> button.</li>
-      <li>A short press of the <b>Reset</b> button switches the mode of the cluster's screen and cannot be disabled. After changing the mode, press the button repeatedly until you return to <span style="color:red">CANFIS</span>.</li>
-      <li>In menus without a visible <i>Back</i> button, exiting is done by holding <b>Reset</b> anywhere.</li>
+      <li>The menu is operated using the buttons on the windshield wiper stalk.</li>
+      <li>A short press on the <b>Up/Down</b> buttons changes the selection.</li>
+      <li>It is possible to choose between two modes of selecting an option, as explained in the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter.</li>
+      <ul>
+        <li>By default, a long press on the <b>Up/Down</b> buttons selects an option.</li>
+        <li>Through the configuration file, you can choose to select an option with a long press on the <b>Reset</b> button, if holding <b>Up/Down</b> opens another menu on your cluster.</li>
+      </ul>
+      <li>From now, the "<b>Select</b>" button will refer to holding <b>Up/Down</b> or holding <b>Reset</b>, depending on the configuration.</li>
+      <li>A short press of the <b>Reset</b> button always switches the mode of the cluster's screen, this cannot be disabled. After changing the mode, press the button repeatedly until you return to <span style="color:red">CANFIS</span>.</li>
+      <li>In menus where you can't see a <b>Back</b> button, select any option to exit.</li>
     </ul>
     
     <br>
@@ -308,10 +323,7 @@
       <ul>
         <center>
           <figure>
-            <img src="media/menu/MAIN/ecu_data.png">
-            <img src="media/menu/MAIN/diagnostics.png">
-            <img src="media/menu/MAIN/tools.png">
-            <img src="media/menu/MAIN/settings.png">
+            <img src="media/menu/MAIN/main_menu.png">
           </figure>
           <figcaption><a href="#ecu_data"><b>ECU data</b></a> - view the configured sets of measurements</figcaption>
           <figcaption><a href="#diagnostics"><b>Diagnostics</b></a> - connect to a control module for diagnosis</figcaption>
@@ -333,6 +345,7 @@
           </figure>
         </center>
         <li>To proceed, follow the <a href="#getting_started"><b>Getting started</b></a> chapter.</li>
+        <br>
         <li>If an incompatible configuration file is uploaded, the following error will appear:</li>
         <center>
           <figure>
@@ -340,6 +353,15 @@
           </figure>
         </center>
         <li>Updating the configuration file version is described in the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter.</li>
+        <br>
+        <li>If the configuration file needs a newer software version, the following error will appear:</li>
+        <center>
+          <figure>
+            <img src="media/menu/ECU_DATA/update_software_version.png">
+          </figure>
+        </center>
+        <li>Updating the software version is described in the <a href="#update_webpage"><b>Using the update webpage</b></a> chapter.</li>
+        <br>
         <li id="ecu_data_parameters">Access to the measurements will be possible after uploading a compatible configuration file.</li>
         <center>
           <figure>
@@ -352,13 +374,10 @@
             <img src="media/menu/ECU_DATA/fault.png">
           </figure>
         </center>
-        <li id="ecu_data_additional">To bring up additional options, hold the <b>Reset</b> button on any page.</li>
+        <li id="ecu_data_additional">To bring up additional options, use the <b>Select</b> button on any page.</li>
         <center>
           <figure>
-            <img src="media/menu/ECU_DATA/graph.png">
-            <img src="media/menu/ECU_DATA/style.png">
-            <img src="media/menu/ECU_DATA/main_menu.png">
-            <img src="media/menu/ECU_DATA/back.png">
+            <img src="media/menu/ECU_DATA/ecu_data.png">
           </figure>
           <figcaption><a href="#graph"><b>Graph</b></a> - create a graph with one of the parameters <u>from the current page</u></figcaption>
           <figcaption><a href="#style"><b>Style</b></a> - change a few things about the measurement set display</figcaption>
@@ -376,9 +395,7 @@
         <br>
         <center>
           <figure>
-            <img src="media/menu/ECU_DATA/GRAPH/draw.png">
-            <img src="media/menu/ECU_DATA/GRAPH/configure.png">
-            <img src="media/menu/ECU_DATA/GRAPH/back.png">
+            <img src="media/menu/ECU_DATA/GRAPH/graph.png">
           </figure>
           <figcaption><a href="#draw_graph"><b>Draw</b></a> - start plotting the graph</figcaption>
           <figcaption><a href="#configure_graph"><b>Configure</b></a> - configure how the graph is drawn</figcaption>
@@ -461,21 +478,18 @@
         <br>
         <center>
           <figure>
-            <img src="media/menu/ECU_DATA/STYLE/page_counter.png">
-            <img src="media/menu/ECU_DATA/STYLE/aligned_units.png">
-            <img src="media/menu/ECU_DATA/STYLE/connection_indicator.png">
-            <img src="media/menu/ECU_DATA/STYLE/bar_at_bottom.png">
-            <img src="media/menu/ECU_DATA/STYLE/back.png">
+            <img src="media/menu/ECU_DATA/STYLE/style_menu.png">
           </figure>
           <figcaption><b>Page count.</b> - display the page's number</figcaption>
-          <figcaption><b>Align units</b> - if enabled, all measurement units are aligned, so the values are aligned as well</figcaption>
           <figcaption><b>Conn. indic.</b> - display the spinning bar in the top-right corner to indicate the connection to the module(s)</figcaption>
-          <figcaption><b>Bar-&gt;bottom</b> - show the bar containing the page title / page number / connection indicator at the bottom instead of the top</figcaption>
           <figcaption><a href="#ecu_data_additional"><b>Back</b></a> - return to the additional ECU data options</figcaption>
         </center>
         <br>
         <li>Selecting an option will enable or disable it.</li>
         <li>If the page has a title, or the page counter is enabled, or the connection indicator is enabled, an additional bar will be created at the top/bottom with these elements. Otherwise, the bar will not appear.</li>
+        <br>
+        <li><b>(!)</b> In previous versions, this menu was used for aligning measurement units or moving the additional bar for all pages.</li>
+        <li>Those options are now set in the configuration file, for every page individually.</li>
       </ul>
     
       <br>
@@ -495,6 +509,7 @@
         </center>
         <li>Some modules support the KWP-CAN protocol, some support UDS, and some support both. This is indicated by the bottom row on the module selector.</li>
         <li>To return to the main menu without selecting a module, the <b>Back</b> option is located before module <b>01</b>.</li>
+        <li>To get to the <b>Back</b> option quickly, press the <b>Reset</b> button repeatedly, to exit and return to <span style="color:red">CANFIS</span>.</li>
         <br>
         <li>If all connection attempts fail, the following error will appear:</li>
         <center>
@@ -509,14 +524,11 @@
         <center>
           <figure>
             <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/identification.png">
-            <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/fault_codes.png">
-            <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/meas_blocks.png">
-            <img src="media/menu/DIAGNOSTICS/CONNECTED/kwp/back.png">
           </figure>
           <figcaption><i>Title</i> - module name (scrolling)</figcaption>
           <figcaption><a href="#identification"><b>Identification</b></a> - get information about the module</figcaption>
           <figcaption><a href="#fault_codes"><b>Fault codes</b></a> - read the module's fault codes</figcaption>
-          <figcaption><a href="#meas_blocks"><b>Measuring blocks</b></a> - read the module's measuring blocks (KWP-CAN only)</figcaption>
+          <figcaption><a href="#meas_blocks"><b>Measuring blocks</b></a> - read the module's measuring blocks (KWP-CAN only, for now)</figcaption>
           <figcaption><a href="#main_menu"><b>Back</b></a> - return to the main menu</figcaption>
         </center>
       </ul>
@@ -540,7 +552,7 @@
           <figcaption><i>Last line</i> - software number</figcaption>
         </center>
         <br>
-        <li><a class="white_link" href="#diagnostics_connected">Hold the <b>Reset</b> button</a> to return to the <b>Diagnostics</b> menu.</li>
+        <li><a class="white_link" href="#diagnostics_connected">Use the <b>Select</b> button</a> to return to the <b>Diagnostics</b> menu.</li>
       </ul>
     
       <br>
@@ -574,7 +586,8 @@
         <li>It is possible to access any of the fault codes to get more information.</li>
         <center>
           <figure>
-            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/kwp/description.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/kwp/description_1.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/kwp/description_2.png">
           </figure>
           <figcaption><i>KWP-CAN</i></figcaption>
           <figcaption><b>Act</b> - active</figcaption>
@@ -582,11 +595,13 @@
           <figcaption><b>Sto</b> - fault stored</figcaption>
           <figcaption><b>MIL</b> - &quot;Check Engine&quot; active</figcaption>
           <figure>
-            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/uds/description.png">
+            <img src="media/menu/DIAGNOSTICS/CONNECTED/FAULT_CODES/uds/description_1.png">
           </figure>
           <figcaption><i>UDS</i></figcaption>
         </center>
-        <li><a class="white_link" href="#faults_list">Hold the <b>Reset</b> button</a> to return to the <b>Fault codes</b> menu.</li>
+        <li>(<span style="color:red">!!!</span>) To get descriptions for fault codes, follow the <a href="#fault_code_descriptions"><b>Fault code descriptions</b></a> chapter.</li>
+        <br>
+        <li><a class="white_link" href="#faults_list">Use the <b>Select</b> button</a> to return to the <b>Fault codes</b> menu.</li>
         <br>
         <center>
           <figure>
@@ -621,7 +636,7 @@
             <img src="media/menu/DIAGNOSTICS/CONNECTED/MEAS_BLOCKS/doesnt_exist.png">
           </figure>
         </center>
-        <li><a class="white_link" href="#diagnostics_connected">Hold the <b>Reset</b> button</a> on any block to return to the <b>Diagnostics</b> menu.</li>
+        <li><a class="white_link" href="#diagnostics_connected">Use the <b>Select</b> button</a> on any block to return to the <b>Diagnostics</b> menu.</li>
       </ul>
     
       <br>
@@ -633,10 +648,7 @@
         <br>
         <center>
           <figure>
-            <img src="media/menu/TOOLS/acceleration.png">
-            <img src="media/menu/TOOLS/oil_level.png">
-            <img src="media/menu/TOOLS/mileage.png">
-            <img src="media/menu/TOOLS/back.png">
+            <img src="media/menu/TOOLS/tools.png">
           </figure>
           <figcaption><a href="#acceleration_timer"><b>Acceleration</b></a> - measure how quickly the vehicle accelerates between two speeds</figcaption>
           <figcaption><a href="#oil_level_gauge"><b>Oil level</b></a> - read the current oil level</figcaption>
@@ -645,7 +657,7 @@
         </center>
         <br>
         <li>If there is no configuration file, or the configuration doesn't include these tools, they will be inaccessible.</li>
-        <li>To enable them, follow the <a href="#getting_started"><b>Getting started</b></a> chapter.</li>
+        <li>To enable them, follow the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter.</li>
       </ul>
     
       <br>
@@ -657,9 +669,7 @@
         <br>
         <center>
           <figure>
-            <img src="media/menu/TOOLS/ACCELERATION/begin.png">
-            <img src="media/menu/TOOLS/ACCELERATION/configure.png">
-            <img src="media/menu/TOOLS/ACCELERATION/back.png">
+            <img src="media/menu/TOOLS/ACCELERATION/acceleration.png">
           </figure>
           <figcaption><a href="#begin_acceleration"><b>Begin</b></a> - start the tool with the current settings</figcaption>
           <figcaption><a href="#configure_acceleration"><b>Configure</b></a> - change the tool's settings</figcaption>
@@ -740,7 +750,7 @@
             <img src="media/menu/TOOLS/ACCELERATION/BEGIN/after_target.png">
           </figure>
         </center>
-        <li><a class="white_link" href="#acceleration_timer">Hold the <b>Reset</b> button</a> to return to the <b>Acceleration</b> menu.</li>
+        <li><a class="white_link" href="#acceleration_timer">Use the <b>Select</b> button</a> to return to the <b>Acceleration</b> menu.</li>
       </ul>
     
       <br>
@@ -750,13 +760,14 @@
       <ul>
         <li>The current oil temperature and level are displayed in the bottom-right corner.</li>
         <li>The left side of the screen shows a visualization of the current oil level.</li>
-        <li>The minimum and maximum oil levels must be set in the configuration file. Check out the <a href="#getting_started"><b>Getting started</b></a> chapter for more information.</li>
+        <li>The minimum and maximum oil levels must be set in the configuration file.</li>
+        <li>Follow the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter for more information.</li>
         <center>
           <figure>
             <img src="media/menu/TOOLS/OIL_LEVEL/oil_level.png">
           </figure>
         </center>
-        <li><a class="white_link" href="#tools">Hold the <b>Reset</b> button</a> to return to the <b>Tools</b> menu.</li>
+        <li><a class="white_link" href="#tools">Use the <b>Select</b> button</a> to return to the <b>Tools</b> menu.</li>
       </ul>
     
       <br>
@@ -770,7 +781,7 @@
             <img src="media/menu/TOOLS/MILEAGE/mileage.png">
           </figure>
         </center>
-        <li><a class="white_link" href="#tools">Hold the <b>Reset</b> button</a> to return to the <b>Tools</b> menu.</li>
+        <li><a class="white_link" href="#tools">Use the <b>Select</b> button</a> to return to the <b>Tools</b> menu.</li>
       </ul>
     
       <br>
@@ -782,13 +793,12 @@
         <br>
         <center>
           <figure>
-            <img src="media/menu/SETTINGS/start_menu.png">
-            <img src="media/menu/SETTINGS/factory_reset.png">
-            <img src="media/menu/SETTINGS/software_version.png">
-            <img src="media/menu/SETTINGS/update.png">
-            <img src="media/menu/SETTINGS/back.png">
+            <img src="media/menu/SETTINGS/settings_1.png">
+            <img src="media/menu/SETTINGS/settings_2.png">
           </figure>
           <figcaption><a href="#start_menu"><b>Start menu</b></a> - change on which page to start when the ignition is turned on</figcaption>
+          <figcaption><a href="#features"><b>Features</b></a> - enable or disable extra features</figcaption>
+          <figcaption><a href="#files"><b>Files</b></a> - manage uploaded files</figcaption>
           <figcaption><a href="#factory_reset"><b>Factory reset</b></a> - reset all settings to default</figcaption>
           <figcaption><a href="#software_version"><b>Software ver.</b></a> - display the currently installed firmware version</figcaption>
           <figcaption><a href="#update"><b>Update</b></a> - open the Wi-Fi network for uploading the configuration, boot logo or firmware update</figcaption>
@@ -837,21 +847,71 @@
       <br>
       <hr>
       
-      <h2 id="factory_reset">Factory reset</h2>
+      <h2 id="features">Features</h2>
       <ul>
-        <li>Here you can change reset all settings to default.</li>
-        <li>Doing so will also delete the configuration and boot logo.</li>
+        <li>Here you can enable or disable extra features.</li>
         <br>
         <center>
           <figure>
-            <img src="media/menu/SETTINGS/FACTORY_RESET/ok.png">
-            <img src="media/menu/SETTINGS/FACTORY_RESET/back.png">
+            <img src="media/menu/SETTINGS/FEATURES/features.png">
+          </figure>
+          <figcaption><span style="color:red"><b>TV input</b> - unlock RNSE video input</span></figcaption>
+          <figcaption><b>OPS</b> - enable parking sensor visualization</figcaption>
+          <figcaption><a href="#settings"><b>Back</b></a> - return to the <b>Settings</b> menu</figcaption>
+        </center>
+        <br>
+        <li><span style="color:red">WARNING</span>: The <b>TV input</b> option is not recommended! Enable it at your own risk and use responsibly.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="files">Files</h2>
+      <ul>
+        <li>Here you can manage files that you have uploaded.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/FILES/files.png">
+          </figure>
+          <figcaption><i>Title</i> - available storage space</figcaption>
+          <figcaption><i>Files</i> - uploaded files</figcaption>
+          <figcaption><a href="#settings"><b>Back</b></a> - return to the <b>Settings</b> menu</figcaption>
+        </center>
+        <br>
+        <li>Selecting one of the files will show more details.</li>
+        <li>You can see what the file contains and how much space it takes.</li>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/FILES/details.png">
+          </figure>
+          <figcaption><i>Title</i> - file name (scrolling)</figcaption>
+          <figcaption><b>Delete</b> - delete the file</figcaption>
+          <figcaption><a href="#files"><b>Back</b></a> - return to the <b>Files</b> menu</figcaption>
+        </center>
+        <br>
+        <li>(<span style="color:red">!</span>) Pressing <b>Delete</b> will immediately delete the file, without asking.</li>
+        <br>
+        <li>For more information about what files you can upload, check out the <a href="#other_files"><b>Using the update webpage</b></a> chapter.</li>
+      </ul>
+    
+      <br>
+      <hr>
+      
+      <h2 id="factory_reset">Factory reset</h2>
+      <ul>
+        <li>Here you can change reset all settings to default.</li>
+        <li>Doing so will also delete the configuration, boot logo and any other files that were uploaded.</li>
+        <br>
+        <center>
+          <figure>
+            <img src="media/menu/SETTINGS/FACTORY_RESET/factory_reset.png">
           </figure>
           <figcaption><b>OK</b> - reset the settings</figcaption>
           <figcaption><a href="#settings"><b>Back</b></a> - return to the <b>Settings</b> menu without resetting the settings</figcaption>
         </center>
         <br>
-        <li>After choosing to reset the settings, the following message will be displayed:</li>
+        <li>After choosing to reset the settings, the system will restart and the following message will be displayed:</li>
         <center>
           <figure>
             <img src="media/menu/MAIN/default_settings.png">
@@ -871,7 +931,7 @@
             <img src="media/menu/SETTINGS/SOFTWARE_VERSION/software_version.png">
           </figure>
         </center>
-        <li><a class="white_link" href="#settings">Hold the <b>Reset</b> button</a> to return to the <b>Settings</b> menu.</li>
+        <li><a class="white_link" href="#settings">Use the <b>Select</b> button</a> to return to the <b>Settings</b> menu.</li>
       </ul>
     
       <br>
@@ -890,9 +950,9 @@
         <li>Additionally, you should turn off mobile data to avoid disconnecting from Wi-Fi automatically.</li>
         <br>
         <li>After connecting to the Wi-Fi network, open a web browser and go to the address <b>192.168.1.1</b>.</li>
-        <li>The web interface should now load. Refer to the <a href="#getting_started"><b>Getting started</b></a> chapter for more information.</li>
+        <li>The web interface should now load. Refer to the <a href="#update_webpage"><b>Using the update webpage</b></a> chapter for more information.</li>
         <br>
-        <li><a class="white_link" href="#settings">Hold the <b>Reset</b> button</a> to return to the <b>Settings</b> menu and stop the Wi-Fi network.</li>
+        <li><a class="white_link" href="#settings">Use the <b>Select</b> button</a> to return to the <b>Settings</b> menu and stop the Wi-Fi network.</li>
       </ul>
     
       <br>
@@ -900,21 +960,78 @@
       
       <h2 id="parking_sensors">Parking sensors</h2>
       <ul>
-        <li>This menu will appear automatically when the OPS system is activated.</li>
+        <li>This menu will appear automatically when the OPS system is activated, and <b>OPS</b> is enabled in the <a href="#features"><b>Features</b></a> menu.</li>
         <center>
           <figure>
             <img src="media/features/parking_front.png">
             <img src="media/features/parking_rear.png">
           </figure>
         </center>
-        <li>The visualization will change sides automatically (front/rear) when changing the vehicle direction (forward/reverse).</li>
+        <li>The visualization will change sides automatically (front/rear) when changing the vehicle gear (forward/reverse).</li>
         <li>You can also manually change the side with the <b>Up/Down</b> buttons.</li>
         <br>
         <li>The parking sensor visualization will appear even if the cluster is not in the "navigation mode" (if the <b>Reset</b> button was pressed shortly, as described in the <a href="#operating_the_menu"><b>Operating the menu</b></a> chapter).</li>
         <br>
-        <li>Holding the <b>Reset</b> button or turning off the OPS system will return to whatever menu was active when the visualization was triggered.</li>
+        <li>Using the <b>Select</b> button or turning off the OPS system will return to whatever menu was active when the visualization was triggered.</li>
       </ul>
       <br>
+    </ul>
+    
+    <br>
+    <hr>
+      
+    <h1 id="fault_code_descriptions">Fault code descriptions</h1>
+    <ul style="list-style:none">
+      <li>In order to decode the meaning of fault codes, special files must be uploaded to <span style="color:red">CANFIS</span>.</li>
+      <li>It is possible to decode the fault codes from modules using the KWP-CAN protocol. Support for UDS modules is coming soon.</li>
+      <br>
+      <li>To upload files, follow the <a href="#update_webpage"><b>Using the update webpage</b></a> chapter.</li>
+      <br>
+    </ul>
+    <ul>
+      <h2>KWP</h2>
+      <ul>
+        <li>If no description file has been uploaded, accessing a fault code will only show one page ("1/1" in the top-right corner):</li>
+        <center>
+          <figure>
+            <img src="media/fault_code_descriptions/kwp_no_desc.png">
+          </figure>
+        </center>
+        <li>To see descriptions, upload the file <b>KWP_EN.FLT</b> (found on the website, on the <i>Other files</i> page):</li>
+        <center>
+          <figure>
+            <img src="media/fault_code_descriptions/kwp_desc_1.png">
+            <img src="media/fault_code_descriptions/kwp_desc_2.png">
+          </figure>
+        </center>
+        <li>It is also possible for a KWP module to send OBD-style fault codes, as indicated by the fault code in the top-left corner:</li>
+        <center>
+          <figure>
+            <img src="media/fault_code_descriptions/obd_no_desc.png">
+          </figure>
+        </center>
+        <li>To see descriptions, upload the file <b>OBD_EN.FLT</b> (found on the website, on the <i>Other files</i> page):</li>
+        <center>
+          <figure>
+            <img src="media/fault_code_descriptions/obd_desc_1.png">
+            <img src="media/fault_code_descriptions/obd_desc_2.png">
+          </figure>
+        </center>
+      </ul>
+    </ul>
+    <br>
+    <ul>
+      <h2>UDS</h2>
+      <ul>
+        <li>Fault code descriptions for UDS are not supported yet.</li>
+        <center>
+          <figure>
+            <img src="media/fault_code_descriptions/uds_no_desc.png">
+          </figure>
+        </center>
+        <li>Unfortunately, the code written at the top of the screen is not useful. To decode it, a module-specific file is also needed. But support is coming soon.</li>
+        <li>For most UDS fault codes, the file <b>OBD_EN.FLT</b> will be used. For some of them, <b>UDS_EN.FLT</b> will also be needed.</li>
+      </ul>
     </ul>
     
     <br>
@@ -924,10 +1041,7 @@
     <ul style="list-style:none">
       <li>The configuration editor is used for generating the configuration file, needed for the <b>ECU data</b> and <b>Tools</b> menus.</li>
     </ul>
-    
     <br>
-    <hr>
-    
     <ul>
       <h2 id="config_editor_notes">Notes</h2>
       <ul>
@@ -973,7 +1087,29 @@
     <hr>
     
     <ul>
-      <h2 id="config_editor_step1">Step 1: <i>Choose included tools</i></h2>
+      <h2 id="config_editor_step1">Step 1: <i>Change settings</i></h2>
+      <ul>
+        <center>
+          <figure>
+            <img src="media/config_editor/change_settings.png">
+          </figure>
+        </center>
+        <li>In the first section you will see a drop-down list of options for changing the way to select something in a menu.</li>
+        <ul>
+          <li><i><b>Select = hold Reset</b></i> - to select an option in a menu, hold the <b>Reset</b> button.</li>
+          <li><i><b>Select = hold Up/Down</b></i> - to select an option in a menu, hold the <b>Up</b> or <b>Down</b> button.</li>
+          <ul>
+            <li>In this mode, it is possible to navigate quickly by holding <b>Reset</b> and <b>Up/Down</b> at the same time.</li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+    
+    <br>
+    <hr>
+    
+    <ul>
+      <h2 id="config_editor_step2">Step 2: <i>Choose included tools</i></h2>
       <ul>
         <center>
           <figure>
@@ -1030,7 +1166,7 @@
     <hr>
     
     <ul>
-      <h2 id="config_editor_step2">Step 2: <i>Choose modules for ECU data</i></h2>
+      <h2 id="config_editor_step3">Step 3: <i>Choose modules for ECU data</i></h2>
       <center>
         <figure>
           <img src="media/config_editor/choose_modules_for_ecu_data.png">
@@ -1054,7 +1190,7 @@
     <hr>
     
     <ul>
-      <h2 id="config_editor_step3">Step 3: <i>Configure ECU data</i></h2>
+      <h2 id="config_editor_step4">Step 4: <i>Configure ECU data</i></h2>
       <center>
         <figure>
           <img src="media/config_editor/configure_ecu_data.png">
@@ -1070,7 +1206,7 @@
     
     <br>
     <ul>
-      <h2 id="config_editor_step3_pages"><i>Pages</i></h2>
+      <h2 id="config_editor_step4_pages"><i>Pages</i></h2>
       <center>
         <figure>
           <img src="media/config_editor/ecu_data_pages.png">
@@ -1088,12 +1224,17 @@
           <li>You cannot undo after deleting!</li>
         </ul>
         <li>To select another page (after adding more), press the box with the page number and select another one.</li>
+        <li>To change some settings for the page, use the checkboxes.</li>
+        <ul>
+          <li><i><b>Aligned units</b></i> - enabling this will align all values and units to each other, instead of aligning them to the right edge of the screen</li>
+          <li><i><b>Bar at bottom</b></i> - enabling this will move the additional bar (title/page counter/connection indicator) from the top to the bottom</li>
+        </ul>
       </ol>
     </ul>
   
     <br>
     <ul>
-      <h2 id="config_editor_step3_parameters"><i>Parameters</i></h2>
+      <h2 id="config_editor_step4_parameters"><i>Parameters</i></h2>
       <center>
         <figure>
           <img src="media/config_editor/ecu_data_parameters.png">
@@ -1121,7 +1262,7 @@
   
     <br>
     <ul>
-      <h2 id="config_editor_step3_parameter_source"><i>Parameter source</i></h2>
+      <h2 id="config_editor_step4_parameter_source"><i>Parameter source</i></h2>
       <center>
         <figure>
           <img src="media/config_editor/ecu_data_parameter_source.png">
@@ -1134,7 +1275,7 @@
   
     <br>
     <ul>
-      <h2 id="config_editor_step3_value_display"><i>Value display</i></h2>
+      <h2 id="config_editor_step4_value_display"><i>Value display</i></h2>
       <ol type=I>
         <li>Mode: <b><i>Exact value</i></b></li>
         <center>
@@ -1284,7 +1425,7 @@
   
     <br>
     <ul>
-      <h2 id="config_editor_step3_value_warning"><i>Value warning</i></h2>
+      <h2 id="config_editor_step4_value_warning"><i>Value warning</i></h2>
       <ul>
         <li>Here, you can configure a warning mode, for example if a parameter's value is outside normal limits.</li>
         <li>When a warning is triggered, the parameter's value (number/text) starts flashing until the error disappears.</li>
@@ -1372,7 +1513,7 @@
   
     <br>
     <ul>
-      <h2 id="config_editor_step3_graph_parameters"><i>Graph parameters</i></h2>
+      <h2 id="config_editor_step4_graph_parameters"><i>Graph parameters</i></h2>
       <ul>
         <li>Here, you can configure the default values that are applied when you select a parameter to graph.</li>
         <li>You can also modify these in the <i>Graph</i> menu, but setting them here will make it easier.</li>
@@ -1401,14 +1542,14 @@
     <hr>
     
     <ul style="list-style:none">
-      <h2 id="config_editor_step4">Step 4: Download</i></h2>
+      <h2 id="config_editor_step5">Step 5: Download</i></h2>
       <li>After everything is configured, press the <i>Download the current configuration</i> button at the bottom of the page.</li>
       <center>
         <figure>
           <img src="media/config_editor/download.png">
         </figure>
       </center>
-      <li>The <i>config.bin</i> file will download, please save it to your device.</li>
+      <li>The <i>config.bin</i> file will be downloaded, please save it to your device.</li>
     </ul>
     
     <br>
@@ -1431,6 +1572,8 @@
         </center>
         <br>
         <li>Refer to the <a href="#config_editor"><b>Using the configuration editor</b></a> chapter to create your configuration file.</li>
+        <li>After selecting the file and pressing <b>Upload</b>, the progress bar will start to fill up.</li>
+        <li>Please wait until receiving the message "Done.". Any other message means there was a problem.</li>
       </ul>
       
       <br>
@@ -1461,7 +1604,7 @@
         <li>Only <b>.bmp</b> format images are accepted, and 1-bit monochrome is preferred.</li>
         <li>Pressing the <b>Set</b> button will preview the boot logo on the screen.</li>
         <li><b>(!)</b> Please avoid pressing the <b>Set</b> button while the a preview is on the screen!</li>
-        <li>It is possible to skip the boot logo before the duration runs out by pressing any button (<b>Up/Down/Reset</b>).</li>
+        <li>It is possible to skip the boot logo before the duration runs out by pressing any button (<b>Up/Down/Select</b>).</li>
         <li>If there is a boot logo uploaded, it can be removed by unchecking the <i>Enable boot logo</i> checkbox and pressing <b>Delete</b>.</li>
       </ul>
       
@@ -1480,18 +1623,42 @@
         <br>
         <li>After selecting the file and pressing <b>Update</b>, the progress bar will start to fill up.</li>
         <li>Please do not turn off the ignition or disconnect the Wi-Fi while the update is in progress.</li>
-        <li>Wait until you receive the message "Done." on the webpage.</li>
+        <li>Please wait until receiving the message "Done.". Any other message means there was a problem.</li>
         <br>
         <li>If the update fails, you will see the regular main menu.</li>
         <li>If the update is successful, the following message will be displayed:</li>
         <center>
           <figure>
-            <img src="media/menu/MAIN/default_settings.png">
+            <img src="media/menu/MAIN/update_installed.png">
           </figure>
         </center>
+        <li>If you don't see that message, check that you are installing the correct version for your module.</li>
+        <ul>
+          <li>There are two hardware versions available: <b>HW2</b> and <b>HW3</b>.</li>
+          <li>From software version 3.0.1, the hardware version is shown in the <a class="white_link" href="#software_version"><b>Software version</b></a> menu.</li>
+          <li>The hardware version is also written on the label of the device.</li>
+          <li>You can try using both files, nothing bad will happen. Updating will only succeed if you use the correct file.</li>
+        </ul>
+        <li>The configuration file, settings, boot logo and other files will not be deleted after the update.</li>
+      </ul>
+      
+      <br>
+      <hr>
+      
+      <h2 id="other_files">Other files</h2>
+      <ul>
+        <center>
+          <figure>
+            <img src="media/update_webpage/other_files.png">
+          </figure>
+          <figcaption><b>Please select a file.</b> - choose a file from your device</figcaption>
+          <figcaption><b>Upload</b> - send the selected file</figcaption>
+        </center>
         <br>
-        <li>If the progress bar has not been filled completely, but you see the message "Done." (and the screen shows the main menu), please try updating again, perhaps with a different file.</li>
-        <li>Because the settings have been reset, you will need to upload your configuration file and boot logo again.</li>
+        <li>For now, the only accepted files are fault code descriptions. Check out the <a href="#fault_code_descriptions"><b>Fault code descriptions</b></a> chapter for more details.</li>
+        <li>After selecting the file and pressing <b>Upload</b>, the progress bar will start to fill up.</li>
+        <li>Please wait until receiving the message "Done.". Any other message means there was a problem.</li>
+        <li>Afterwards, you can find every file that uploaded successfully in the <a class="white_link" href="#files"><b>Files</b></a> menu.</li>
       </ul>
     </ul>
   </body>
