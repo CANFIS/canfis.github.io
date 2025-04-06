@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scaleable=no">
-    <title>CANFIS - Hub</title>
+    <title>MQB2PQ</title>
     <link rel="icon" type="image/x-icon" href="media/favicon.ico">
   </head>
   
@@ -15,7 +15,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-attachment: fixed;
-      background-size: cover; 
+      background-size: cover;
     }
     
     table {
@@ -26,7 +26,8 @@
     td {
       border: 2px solid white;
       border-radius: 10px;
-      padding: 10px;
+      padding-bottom: 1em;
+      width: 50vmin;
     }
     
     a:link, a:visited, a:active {
@@ -35,40 +36,33 @@
     }
     
     img {
-      width: 100%;
-    }
-    
-    td, #logo {
-      width: 50vmin;
-      text-align: center;
-    }
-
-    .wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .wrap span {
-      width: 100%;
-      align-self: flex-end;
-    }
+      width: 100%;}
   </style>
   
   <body>
     <center>
       <table>
         <tr>
-          <td onclick="location.href='canfis/index.html'">
-            <img src="media/logo_canfis.png">
+          <td>
+            <a href="config_editor/config_editor.html" style="display:block;">
+            <center>
+              <figure>
+                <img style="width:80%" src="media/config_editor.png">
+              </figure>
+              <figcaption>Config editor</figcaption>
+            </center>
+            </a>
           </td>
-          <td onclick="location.href='openhaldex/index.html'">
-            <img src="media/logo_openhaldex.png">
+          <td>
+            <a href="updates/updates.html" style="display:block;">
+            <center>
+              <figure>
+                <img src="media/updates.png">
+              </figure>
+              <figcaption>Updates</figcaption>
+            </center>
+            </a>
           </td>
-          <td onclick="location.href='mqb2pq/index.html'">
-            <img src="media/logo_mqb2pq.png">
-          </td>
-        </tr>
       </table>
     </center>
   </body>
