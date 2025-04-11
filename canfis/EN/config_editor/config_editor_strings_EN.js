@@ -15,6 +15,7 @@ const S_configure_tools = "Configure included tools";
 const S_acceleration_timer = "Acceleration timer";
 const S_oil_level_gauge = "Oil level gauge";
 const S_engine_mileage = "Engine mileage";
+const S_openhaldex = "OpenHaldex";
 const S_enabled = "Enabled";
 
 const S_step_3 = "Step 3";
@@ -62,6 +63,7 @@ const HTML_strings = {
   "S_acceleration_timer":S_acceleration_timer,
   "S_oil_level_gauge":S_oil_level_gauge,
   "S_engine_mileage":S_engine_mileage,
+  "S_openhaldex":S_openhaldex,
   "S_enabled":S_enabled,
   
   "S_step_3":S_step_3,
@@ -103,6 +105,7 @@ const S_protocol = "Protocol";
 const S_device = "Device";
 const S_block = "Block";
 const S_index = "Index";
+const S_measurement = "Measurement";
 const S_min = "Min";
 const S_max = "Max";
 const S_are_you_sure_you_want_to_delete_page = "Are you sure you want to delete page ";

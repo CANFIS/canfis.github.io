@@ -166,6 +166,7 @@
           <option id='S_acceleration_timer'></option>
           <option id='S_oil_level_gauge'></option>
           <option id='S_engine_mileage'></option>
+          <option id='S_openhaldex'></option>
         </select>
       </td>
       <td>
@@ -374,6 +375,7 @@
   var acceleration_timer_tool = {};
   var oil_level_checker_tool = {};
   var engine_mileage_tool = {};
+  var openhaldex_tool = {};
   
   //Currently used modules
   var used_kwp_devices = [0, 0, 0, 0, 0];
@@ -475,6 +477,14 @@
         else {
           delete_tool_source_config_table();
         }
+        break;
+      
+      case 3: //OpenHaldex
+        //Set the checkbox' checked state based on the tool's enabled state
+        var enable_tool_checkbox = document.getElementById('enable_tool_checkbox');
+        enable_tool_checkbox.checked = openhaldex_tool.enabled;
+        
+        delete_tool_source_config_table();
         break;
     }
   }
@@ -586,6 +596,21 @@
         //Otherwise, disable the tool
         else {
           engine_mileage_tool = {
+            enabled: 0
+          };
+        }
+        break;
+      
+      case 3:
+        if (state)
+        {
+          openhaldex_tool = {
+            enabled: 1
+          };
+        }
+        else
+        {
+          openhaldex_tool = {
             enabled: 0
           };
         }
@@ -1692,7 +1717,7 @@
     show_graph_parameters();
   }
   
-  //Protocol: 0=KWP, 1=UDS
+  //Protocol: 0=KWP, 1=UDS, 2=Wi-Fi
   function change_parameter_protocol(protocol) {
     var source = {};
     
@@ -1718,6 +1743,14 @@
           factor: 1,
           divisor: 1,
           offset: 0
+        };
+        break;
+      
+      case 2:
+        source = {
+          protocol: 2,
+          device: 0,
+          measurement: 0
         };
         break;
     }
@@ -2288,6 +2321,29 @@
     page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.module = parseInt(select_device.value.substring(0, 2), 16);
   }
   
+  function change_parameter_wifi_device() {
+    var select_wifi_device = document.getElementById('select_wifi_device');
+    var select_wifi_device_measurement = document.getElementById('select_wifi_device_measurement');
+    var select_page = document.getElementById('select_page');
+    var select_parameter = document.getElementById('select_parameter');
+    
+    for (i = (select_wifi_device_measurement.options.length - 1); i >= 0; i--) {
+      select_wifi_device_measurement.remove(i);
+    }
+    
+    switch (select_wifi_device.value) {
+      case "OpenHaldex":
+        select_wifi_device_measurement.options.add(new Option("mode"));
+        select_wifi_device_measurement.options.add(new Option("lockTarget"));
+        select_wifi_device_measurement.options.add(new Option("haldexEngagement"));
+        select_wifi_device_measurement.options.add(new Option("pedalValue"));
+        select_wifi_device_measurement.options.add(new Option("vehicleSpeed"));
+        
+        page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.device = 0;
+        break;
+    }
+  }
+  
   function show_parameter_protocol() {
     var select_page = document.getElementById('select_page');
     var select_parameter = document.getElementById('select_parameter');
@@ -2309,6 +2365,7 @@
           '<select id="select_protocol" onchange=change_parameter_protocol(this.selectedIndex)>' +
           '<option selected>KWP</option>' +
           '<option>UDS</option>' +
+          '<option>Wi-Fi</option>' +
           '</select>' +
           '</td>' +
           '<td>' + 
@@ -2392,6 +2449,7 @@
           '<select id="select_protocol" onchange=change_parameter_protocol(this.selectedIndex)>' +
           '<option>KWP</option>' +
           '<option selected>UDS</option>' +
+          '<option>Wi-Fi</option>' +
           '</select>' +
           '</td>' +
           '<td>' + 
@@ -2461,6 +2519,38 @@
         input_factor.value = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.factor;
         input_divisor.value = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.divisor;
         input_offset.value = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.offset;
+        break;
+        
+      case 2:
+        protocol_header_row.innerHTML =
+          '<th>' + S_protocol + '</th>' + 
+          '<th>' + S_device + '</th>'+
+          '<th>' + S_measurement + '</th>';
+        
+        protocol_data_row.innerHTML =
+          '<td>' + 
+          '<select id="select_protocol" onchange=change_parameter_protocol(this.selectedIndex)>' +
+          '<option>KWP</option>' +
+          '<option>UDS</option>' +
+          '<option selected>Wi-Fi</option>' +
+          '</select>' +
+          '</td>' +
+          '<td>' + 
+          '<select id="select_wifi_device" onchange="change_parameter_wifi_device()">' +
+          '</select>' +
+          '</td>' +
+          '<td><select id="select_wifi_device_measurement" onchange="set_parameter_wifi_device_measurement(this)"></select></td>';
+        
+        var select_wifi_device = document.getElementById('select_wifi_device');
+        var select_wifi_device_measurement = document.getElementById('select_wifi_device_measurement');
+        
+        select_wifi_device.options.add(new Option("OpenHaldex"));
+        
+        change_parameter_wifi_device();
+        
+        //Select the device and measurement according to what is stored
+        select_wifi_device.selectedIndex = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.device;
+        select_wifi_device_measurement.selectedIndex = page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.measurement;
         break;
     }
   }
@@ -3573,6 +3663,13 @@
     page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].warning.range_max = range_max;
   }
   
+  function set_parameter_wifi_device_measurement(obj) {
+    var select_page = document.getElementById('select_page');
+    var select_parameter = document.getElementById('select_parameter');
+    
+    page_array[select_page.selectedIndex].parameters[select_parameter.selectedIndex].source.measurement = obj.selectedIndex;
+  }
+  
   var load_file = function(event) {
     var reader = new FileReader();
     
@@ -3614,7 +3711,9 @@
     var global_settings_end = global_settings_start + 4;
     var global_settings_array = file_buffer.slice(global_settings_start, global_settings_end);
     var global_settings = (new Uint32Array(global_settings_array.buffer))[0];
-    setting_control_scheme = global_settings & 1;
+    
+    setting_control_scheme = !!(global_settings & (1 << 0));
+    openhaldex_tool.enabled = !!(global_settings & (1 << 1));
     
     change_global_settings();
     
@@ -4067,6 +4166,22 @@
             
             source_end = offset_array_end;
             break;
+            
+          case 2: //Wi-Fi
+            var device_start = module_start + 1;
+            var device = file_buffer[device_start];
+            
+            var measurement_start = device_start + 1;
+            var measurement = file_buffer[measurement_start];
+            
+            page_array[pg].parameters[par].source = {
+              protocol: protocol,
+              device: device,
+              measurement: measurement
+            };
+            
+            source_end = measurement_start + 1;
+            break;
         }
         
         var display_mode_start = source_end;
@@ -4350,7 +4465,9 @@
   function download_file() {
     var file_buffer = [0x55, 0xAA, 0x02, 0x03];
     
-    var global_settings = (setting_control_scheme & 1);
+    var global_settings = 0;
+    global_settings |= ((setting_control_scheme & 1) << 0);
+    global_settings |= ((openhaldex_tool.enabled & 1) << 1);
     file_buffer = file_buffer.concat(Array.from(new Uint8Array((new Uint32Array([global_settings])).buffer)));
         
     var wifi_pass = "";
@@ -4493,10 +4610,10 @@
         parameter_buffer = parameter_buffer.concat(Array.from(encode8859(parameter.units)), 0); //parameter units; null-terminated
         
         parameter_buffer = parameter_buffer.concat(parameter.source.protocol); //source protocol
-        parameter_buffer = parameter_buffer.concat(parameter.source.module); //source module
         
         switch (parameter.source.protocol) {
           case 0: //KWP
+            parameter_buffer = parameter_buffer.concat(parameter.source.module); //source module
             var found = false;
             for (var i = 0; i < 5; i++) {
               if (parameter.source.module === used_kwp_devices[i]) {
@@ -4514,6 +4631,7 @@
             break;
           
           case 1: //UDS
+            parameter_buffer = parameter_buffer.concat(parameter.source.module); //source module
             var found = false;
             for (var i = 0; i < 5; i++) {
               if (parameter.source.module === used_uds_devices[i]) {
@@ -4534,6 +4652,11 @@
             parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array((new Uint16Array([parameter.source.factor])).buffer))); //factor
             parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array((new Uint16Array([parameter.source.divisor])).buffer))); //divisor
             parameter_buffer = parameter_buffer.concat(Array.from(new Uint8Array((new Float32Array([parameter.source.offset])).buffer))); //offset
+            break;
+            
+          case 2: //Wi-Fi
+            parameter_buffer = parameter_buffer.concat(parameter.source.device); //source device
+            parameter_buffer = parameter_buffer.concat(parameter.source.measurement); //source measurement
             break;
         }
         

@@ -15,6 +15,7 @@ const S_configure_tools = "Skonfiguruj narz\u0119dzia dodatkowe";
 const S_acceleration_timer = "Licznik przy\u015Bpieszenia";
 const S_oil_level_gauge = "Miernik poziomu oleju";
 const S_engine_mileage = "Przebieg silnika";
+const S_openhaldex = "OpenHaldex";
 const S_enabled = "W\u0142\u0105czone";
 
 const S_step_3 = "Krok 3";
@@ -62,6 +63,7 @@ const HTML_strings = {
   "S_acceleration_timer":S_acceleration_timer,
   "S_oil_level_gauge":S_oil_level_gauge,
   "S_engine_mileage":S_engine_mileage,
+  "S_openhaldex":S_openhaldex,
   "S_enabled":S_enabled,
   
   "S_step_3":S_step_3,
@@ -103,6 +105,7 @@ const S_protocol = "Protok\u00F3\u0142";
 const S_device = "Urz\u0105dzenie";
 const S_block = "Blok";
 const S_index = "Indeks";
+const S_measurement = "Pomiar";
 const S_min = "Min";
 const S_max = "Maks";
 const S_are_you_sure_you_want_to_delete_page = "Jeste\u015B pewny, \u017Ce chcesz usun\u0105\u0107 stron\u0119 ";
