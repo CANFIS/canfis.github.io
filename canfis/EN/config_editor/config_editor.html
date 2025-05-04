@@ -4168,15 +4168,16 @@
             break;
             
           case 2: //Wi-Fi
-            var device_start = module_start + 1;
-            var device = file_buffer[device_start];
+            //var device_start = module_start + 1;
+            //var device = file_buffer[device_start];
             
-            var measurement_start = device_start + 1;
+            //var measurement_start = device_start + 1;
+            var measurement_start = module_start + 1;
             var measurement = file_buffer[measurement_start];
             
             page_array[pg].parameters[par].source = {
               protocol: protocol,
-              device: device,
+              device: module,
               measurement: measurement
             };
             
