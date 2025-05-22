@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scaleable=no">
+    <title>CANFIS</title>
+    <link rel="icon" type="image/x-icon" href="media/favicon.ico">
+  </head>
+  
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      font-size: 20px;
+      color: white;
+      background-image: url('media/background.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-attachment: fixed;
+      background-size: cover; 
+    }
+    
+    table {
+      border-spacing: 30px;
+      border-collapse: separate;
+    }
+    
+    td {
+      border: 2px solid white;
+      border-radius: 10px;
+    }
+    
+    a:link, a:visited, a:active {
+      text-decoration: none;
+      color: white;
+    }
+    
+    img {
+      width: 100%;
+    }
+    
+    td, #logo {
+      width: 50vmin;
+      text-align: center;
+    }
+
+    .wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .wrap span {
+      width: 100%;
+      align-self: flex-end;
+    }
+  </style>
+  
+  <body>
+    <center>
+      <table>
+        <tr>
+          <td onclick="location.href='DE/mode_selector.html'">
+            <img src="media/flag_de.png">
+            <div class="wrap">
+              <span>DE</span>
+            </div>
+          </td>
+          <td onclick="location.href='EN/mode_selector.html'">
+            <img src="media/flag_us.png">
+            <div class="wrap">
+              <span>EN</span>
+            </div>
+          </td>
+          <td onclick="location.href='PL/mode_selector.html'">
+            <img src="media/flag_pl.png">
+            <div class="wrap">
+              <span>PL</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </center>
+  </body>
+</html>
