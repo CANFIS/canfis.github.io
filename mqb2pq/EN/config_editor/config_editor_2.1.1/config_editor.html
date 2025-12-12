@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+</head>
+
+<script src="FileSaver.js"></script>
+<script src="config_editor_strings_EN.js"></script>
+<script src="jquery-3.7.1.min.js"></script>
+
+<style>
+  body
+  {
+    font-family: sans-serif;
+    font-size: 14px;
+    color: white;
+    background-color: black;
+  }
+  
+  table
+  {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  th, td, table
+  {
+    border-style: solid;
+    border-radius: 5px;
+    text-align: center;
+    border-color: white;
+  }
+  
+  hr
+  {
+    height: 5px;
+    color: white;
+    background-color: white;
+  }
+  
+  .button_image_td
+  {
+    //background-color: white;
+    padding: 5px;
+  }
+  
+  .button_image_td img
+  {
+    height: 100px;
+  }
+  
+  input[type="text"]
+  {
+    text-align: center;
+  }
+  
+  input[type="text"][disabled]
+  {
+   background-color: white;
+  }
+  
+  td select
+  {
+    width: 100%;
+  }
+  
+  input[type="file"], input[type="button"]
+  {
+    display: none;
+  }
+  
+  .custom-file-upload
+  {
+    border: 5px solid white;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .custom-file-upload:hover
+  {
+    background-color: gray;
+    color: white;
+  }
+  
+  input[type='checkbox']
+  {
+    accent-color: #ff7b00;
+  }
+  
+  #light_source_select
+  {
+    text-align: center;
+  }
+  
+  #swm_td,
+  #mfsw_td
+  {
+    display: inline-block;
+    vertical-align: top;
+  }
+</style>
+
+<body onload="load_strings(), reset_selections()">
+  <table style='border:none;width:100%;font-size:50px;padding:10px'>
+    <tr>
+      <td style='border:none'>
+        <label id='S_edit_prev_config' class='custom-file-upload'>
+          <input type='file' onchange='load_file(event)'/>
+        </label>
+      </td>
+    </tr>
+  </table>
+  
+  <br>
+  <hr>
+  <br>
+  
+  <table>
+    <tr>
+      <th colspan="3">Hardware</th>
+    </tr>
+    <tr>
+      <th>MFSW</th>
+      <th colspan="2">SWM</th>
+    </tr>
+    <tr>
+      <td>
+        <select id="mfsw_version_select" onchange="change_mfsw_version_selection(this.selectedIndex)">
+          <option>MQB</option>
+          <option disabled>PQ</option>
+        </select>
+      </td>
+      <td>
+        <input type="checkbox" id="swm_enabled_checkbox" onchange="change_swm_enabled_checkbox(this.checked)">Enabled</input>
+      </td>
+      <td>
+        <select id="swm_version_select" onchange="change_swm_version_selection(this.selectedIndex)">
+          <option>PQ</option>
+          <option>MQB</option>
+          <option>VW</option>
+        </select>
+      </td>
+    </tr>
+  </table>
+  
+  <br>
+  
+  <table>
+    <tr>
+      <th colspan="4">Light</th>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <select id="light_source_select" onchange="change_light_source_selection(this.selectedIndex)">
+          <option>From SWM</option>
+          <option>From CAN</option>
+          <option>Always on</option>
+          <option>Always off</option>
+        </select>
+      </td>
+      <td style="padding-right:5px">
+        <input type="text" id="light_percent_input" onchange="change_light_percent_input(this.value)" style="margin-right:5px">%</input>
+      </td>
+    </tr>
+  </table>
+  
+  <br>
+  <hr>
+  <br>
+  
+  <table style="border: none">
+    <tr>
+      <td id="mfsw_td"></td>
+      <td id="swm_td"></td>
+    </tr>
+  </table>
+  
+  <br>
+  
+  <table>
+    <tr>
+      <th colspan="4">Extra</th>
+    </tr>
+    
+    <tr>
+      <td>MQB2PQ action</td>
+      <td colspan="3">
+        <select id="mqb2pq_action_select" onchange="change_mqb2pq_action_selection(this.selectedIndex)">
+          <option>None
+          <option>Update button 1
+          <option>Update button 2
+        </select>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>RNSE action</td>
+      <td>
+        <select id="rnse_action_select" onchange="change_rnse_action_selection(this.selectedIndex)">
+          <option>None
+          <option>Volume up
+          <option>Volume down
+          <option>Scan up
+          <option>Scan down
+          <option>Previous track
+          <option>Next track
+          <option>Mute
+          <option>Fake mute
+          <option>Confirm
+        </select>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>8P cluster action</td>
+      <td colspan="3">
+        <select id="cluster_8p_action_select" onchange="change_cluster_8p_action_selection(this.selectedIndex)">
+          <option>None
+          <option>Up / Next page
+          <option>Down / Previous page
+          <option>Reset / Select
+        </select>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>VW cluster action</td>
+      <td colspan="3">
+        <select id="cluster_vw_action_select" onchange="change_cluster_vw_action_selection(this.selectedIndex)">
+          <option>None
+          <option>Left
+          <option>Right
+          <option>Phone
+          <option>Volume up
+          <option>Volume down
+          <option>Voice
+          <option>Menu left
+          <option>Menu right
+          <option>OK
+          <option>Up
+          <option>Down
+          <option>Back
+        </select>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>CANFIS action</td>
+      <td colspan="3">
+        <select id="canfis_action_select" onchange="change_canfis_action_selection(this.selectedIndex)">
+          <option>None
+          <option>Up
+          <option>Down
+          <option>Select
+        </select>
+      </td>
+    </tr>
+    
+    <tr>
+      <td>OpenHaldex action</td>
+      <td colspan="3">
+        <select id="openhaldex_action_select" onchange="change_openhaldex_action_selection(this.selectedIndex)">
+          <option>None
+          <option>Next mode
+          <option>Previous mode
+        </select>
+      </td>
+    </tr>
+  </table>
+  
+  <br>
+  <hr>
+  <br>
+  
+  <table style='border:none;width:100%;font-size:50px;padding:10px'>
+    <tr>
+      <td style='border:none'>
+        <label id='S_download_config' class='custom-file-upload'>
+          <input type='button' onclick='download_file()'/>
+        </label>
+      </td>
+    </tr>
+  </table>
+</body>
+
+<script src="config_editor_script.js"></script>
